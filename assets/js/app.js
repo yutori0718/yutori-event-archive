@@ -122,7 +122,7 @@ function renderHome() {
         </div>
       </div>
     </section>
-    ${homeSection("Apexカスタム", "ゆとり主催の通常Apexカスタム大会。チーム1からチーム20まで、各チーム3名を詳細ページで確認できます。", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
+    ${homeSection("Apexカスタム", "", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
     ${homeSection("Apexワイルドカードカスタム", "ワイルドカード形式のカスタム大会。参加者30人の名前、配信URL、Xを詳細ページで確認できます。", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
   `);
 }
@@ -134,7 +134,7 @@ function homeSection(title, lead, items, detailBase, listHref) {
         <div class="section-head">
           <div>
             <h2>${title}</h2>
-            <p class="section-lead">${lead}</p>
+            ${lead ? `<p class="section-lead">${lead}</p>` : ""}
           </div>
           <a class="button secondary" href="${withBase(listHref)}">一覧へ</a>
         </div>
