@@ -110,7 +110,7 @@ function renderHome() {
           <h1>${escapeHtml(home.heroTitle || "YUTORI EVENT ARCHIVE")}</h1>
           ${home.heroCopy ? `<p class="hero-copy">${escapeHtml(home.heroCopy)}</p>` : ""}
           <div class="hero-actions">
-            <a class="button" href="${withBase("/apex-custom/")}">${escapeHtml(home.apexButtonLabel || "Apexカスタムを見る")}</a>
+            <a class="button" href="${withBase("/#custom-archive")}">${escapeHtml(home.apexButtonLabel || "Apexカスタムを見る")}</a>
             <a class="button secondary" href="${withBase("/participation-history/")}">${escapeHtml(home.historyButtonLabel || "出場履歴を見る")}</a>
           </div>
           <div class="ticker" aria-label="登録データ数">
@@ -127,6 +127,7 @@ function renderHome() {
         </div>
       </div>
     </section>
+    <div id="custom-archive"></div>
     ${homeSection(home.apexSectionTitle || "Apexカスタム", home.apexSectionLead || "", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
     ${homeSection(home.wildcardSectionTitle || "Apexワイルドカードカスタム", home.wildcardSectionLead || "", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
   `);
