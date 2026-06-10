@@ -24,6 +24,7 @@ html {
 }
 
 body {
+  overflow-x: hidden;
   min-height: 100vh;
   margin: 0;
   color: var(--white);
@@ -84,6 +85,7 @@ textarea {
   align-items: center;
   gap: 12px;
   min-width: 0;
+  max-width: 100%;
 }
 
 .brand-mark {
@@ -103,6 +105,7 @@ textarea {
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .brand-sub {
@@ -116,6 +119,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
+  max-width: 100%;
 }
 
 .nav a {
@@ -183,6 +187,7 @@ p {
   line-height: 0.92;
   font-weight: 950;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .hero-copy {
@@ -302,7 +307,7 @@ p {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 16px;
 }
 
@@ -378,6 +383,7 @@ p {
 .card h3 {
   font-size: 1.08rem;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .card p {
@@ -554,6 +560,7 @@ tr:last-child td {
 .team-card h3 {
   margin: 0;
   font-size: 1rem;
+  overflow-wrap: anywhere;
 }
 
 .team-card p {
@@ -646,6 +653,7 @@ tr:last-child td {
   margin: 4px 0 0;
   font-size: 1rem;
   line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .link-row {
@@ -752,30 +760,50 @@ tr:last-child td {
   .header-inner {
     align-items: flex-start;
     flex-direction: column;
-    padding: 14px 0;
+    gap: 12px;
+    min-height: auto;
+    padding: 12px 0;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
   }
 
   .nav {
     width: 100%;
     overflow-x: auto;
     padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
   .nav a {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 0.84rem;
     white-space: nowrap;
   }
 
   .hero {
-    padding-top: 44px;
+    padding: 34px 0 26px;
   }
 
   .hero-grid,
   .detail-layout {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .hero-emblem {
-    min-height: 220px;
+    min-height: 160px;
+  }
+
+  .emblem-ring {
+    width: min(220px, 64vw);
   }
 
   .grid,
@@ -795,6 +823,7 @@ tr:last-child td {
   .footer-inner {
     align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
   }
 
   .history-item {
@@ -806,24 +835,109 @@ tr:last-child td {
   .header-inner,
   .section-inner,
   .footer-inner {
-    width: min(100% - 22px, 1160px);
+    width: min(100% - 24px, 1160px);
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .brand-title {
+    font-size: 0.98rem;
+  }
+
+  .brand-sub {
+    font-size: 0.66rem;
+  }
+
+  .hero-copy {
+    margin-top: 14px;
+    font-size: 0.95rem;
+    line-height: 1.75;
   }
 
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.15rem;
+    line-height: 1;
   }
 
   .button {
     width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
   }
 
-  .team-card,
+  .hero-actions {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .ticker {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    gap: 8px;
+  }
+
+  .stat {
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .stat strong {
+    font-size: 1.45rem;
+  }
+
+  .section {
+    padding: 28px 0;
+  }
+
+  .section h2 {
+    font-size: 1.42rem;
+  }
+
+  .team-card {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .team-card-thumb {
+    min-height: 64px;
+  }
+
   .participant-card {
-    grid-template-columns: 1fr;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .participant-visual {
+    grid-row: span 2;
+  }
+
+  .link-row {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .mini-button {
+    min-width: 0;
+    min-height: 32px;
+    padding: 0 8px;
   }
 
   .panel,
   .card-body {
-    padding: 14px;
+    padding: 12px;
+  }
+
+  .table-wrap {
+    margin-inline: -2px;
+  }
+
+  th,
+  td {
+    padding: 10px;
   }
 }
