@@ -7,26 +7,48 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const sourceRoot = path.join(os.homedir(), "Desktop", "サイト用");
 
 const apexEvents = [
-  { folder: "ゆとり祭りvo.1", id: "yutori-fes-vol1" },
-  { folder: "ゆとり祭りvo.2", id: "yutori-fes-vol2" },
+  { folder: path.join("Apexカスタム", "ゆとり祭り"), id: "yutori-fes-vol1" },
+  { folder: path.join("Apexカスタム", "準備中"), id: "yutori-fes-vol2" },
 ];
 
 const wildcardEvents = [
-  { folder: "ワイカですがなにか？vo.1", id: "waika-vol1" },
-  { folder: "ワイカですがなにか？vo.2", id: "waika-vol2" },
+  { folder: path.join("ワイルドカード", "ワイカですがなにか？vo.1"), id: "waika-vol1" },
+  { folder: path.join("ワイルドカード", "ワイカですがなにか？vo.2"), id: "waika-vol2" },
 ];
 
 const participationEntries = [
-  { folder: path.join("出場履歴", "exe-apex-custom"), id: "exe-apex-custom" },
+  { folder: path.join("出場履歴", "EXE Apex Custom"), id: "exe-apex-custom" },
 ];
 
 let changed = 0;
 
+await syncSiteContent();
 await syncApex();
 await syncWildcard();
 await syncParticipation();
 
 console.log(`Synced text files: ${changed}`);
+
+async function syncSiteContent() {
+  const file = path.join(repoRoot, "data", "site-content.json");
+  const data = await readJson(file);
+  data.home ||= {};
+
+  const folder = path.join(sourceRoot, "Topページ");
+  changed += await applyTextFields(folder, data.home, {
+    "小見出し.txt": "heroEyebrow",
+    "メイン見出し.txt": "heroTitle",
+    "説明文.txt": "heroCopy",
+    "Apexボタン.txt": "apexButtonLabel",
+    "出場履歴ボタン.txt": "historyButtonLabel",
+    "Apexカスタム見出し.txt": "apexSectionTitle",
+    "Apexカスタム説明.txt": "apexSectionLead",
+    "ワイルドカード見出し.txt": "wildcardSectionTitle",
+    "ワイルドカード説明.txt": "wildcardSectionLead",
+  });
+
+  await writeJson(file, data);
+}
 
 async function syncApex() {
   const file = path.join(repoRoot, "data", "apex-custom.json");
@@ -38,13 +60,13 @@ async function syncApex() {
 
     const folder = path.join(sourceRoot, config.folder);
     changed += await applyTextFields(folder, event, {
-      "page-title.txt": "title",
-      "page-summary.txt": "summary",
-      "page-description.txt": "description",
-      "memo.txt": "memo",
-      "date.txt": "date",
-      "archive-url.txt": "archiveUrl",
-      "ed-youtube-url.txt": "edYoutubeUrl",
+      "ページ名.txt": "title",
+      "一覧説明.txt": "summary",
+      "大会概要.txt": "description",
+      "メモ.txt": "memo",
+      "開催日.txt": "date",
+      "配信URL.txt": "archiveUrl",
+      "ED動画URL.txt": "edYoutubeUrl",
     });
 
     for (let teamIndex = 0; teamIndex < 20; teamIndex++) {
@@ -52,10 +74,10 @@ async function syncApex() {
       const team = event.teams?.[teamIndex];
       if (!team) continue;
 
-      const teamFolder = path.join(folder, "teams", `team-${teamNo}`);
+      const teamFolder = path.join(folder, "チーム", `チーム${teamNo}`);
       changed += await applyTextFields(teamFolder, team, {
-        "team-name.txt": "name",
-        "team-note.txt": "note",
+        "チーム名.txt": "name",
+        "チームメモ.txt": "note",
       });
 
       for (let memberIndex = 0; memberIndex < 3; memberIndex++) {
@@ -64,8 +86,8 @@ async function syncApex() {
         if (!member || typeof member === "string") continue;
 
         changed += await applyTextFields(teamFolder, member, {
-          [`member-${memberNo}-name.txt`]: "name",
-          [`member-${memberNo}-stream-url.txt`]: "streamUrl",
+          [`メンバー${memberNo}名前.txt`]: "name",
+          [`メンバー${memberNo}配信URL.txt`]: "streamUrl",
         });
       }
     }
@@ -84,13 +106,13 @@ async function syncWildcard() {
 
     const folder = path.join(sourceRoot, config.folder);
     changed += await applyTextFields(folder, event, {
-      "page-title.txt": "title",
-      "page-summary.txt": "summary",
-      "page-description.txt": "description",
-      "memo.txt": "memo",
-      "date.txt": "date",
-      "archive-url.txt": "archiveUrl",
-      "ed-youtube-url.txt": "edYoutubeUrl",
+      "ページ名.txt": "title",
+      "一覧説明.txt": "summary",
+      "大会概要.txt": "description",
+      "メモ.txt": "memo",
+      "開催日.txt": "date",
+      "配信URL.txt": "archiveUrl",
+      "ED動画URL.txt": "edYoutubeUrl",
     });
 
     for (let participantIndex = 0; participantIndex < 30; participantIndex++) {
@@ -98,11 +120,11 @@ async function syncWildcard() {
       const participant = event.participants?.[participantIndex];
       if (!participant) continue;
 
-      const participantFolder = path.join(folder, "participants", `participant-${participantNo}`);
+      const participantFolder = path.join(folder, "参加者", `参加者${participantNo}`);
       changed += await applyTextFields(participantFolder, participant, {
-        "name.txt": "name",
-        "x-url.txt": "xUrl",
-        "stream-url.txt": "streamUrl",
+        "名前.txt": "name",
+        "X.txt": "xUrl",
+        "配信URL.txt": "streamUrl",
       });
     }
   }
@@ -120,17 +142,17 @@ async function syncParticipation() {
 
     const folder = path.join(sourceRoot, config.folder);
     changed += await applyTextFields(folder, entry, {
-      "page-title.txt": "title",
-      "date.txt": "date",
-      "team-name.txt": "teamName",
-      "final-rank.txt": "finalRank",
-      "archive-url.txt": "archiveUrl",
-      "memo.txt": "memo",
+      "ページ名.txt": "title",
+      "開催日.txt": "date",
+      "チーム名.txt": "teamName",
+      "最終順位.txt": "finalRank",
+      "配信URL.txt": "archiveUrl",
+      "メモ.txt": "memo",
     });
 
     const members = [...(entry.members || [])];
     for (let memberIndex = 0; memberIndex < 3; memberIndex++) {
-      const text = await readTextIfExists(path.join(folder, `member-${memberIndex + 1}-name.txt`));
+      const text = await readTextIfExists(path.join(folder, `メンバー${memberIndex + 1}名前.txt`));
       if (text !== null) {
         members[memberIndex] = text;
         changed++;

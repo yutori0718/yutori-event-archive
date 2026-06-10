@@ -13,18 +13,12 @@ $env:Path = "$gitPath;$ghPath;$env:Path"
 $nodePath = "C:\Users\Unknown\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"
 
 $mappings = @(
-  @{ Source = "00-common"; Destination = "images\common" },
-  @{ Source = "01-apex-custom-events"; Destination = "images\apex-custom" },
-  @{ Source = "02-apex-custom-teams"; Destination = "images\apex-custom\teams" },
-  @{ Source = "03-wildcard-events"; Destination = "images\wildcard-custom" },
-  @{ Source = "04-wildcard-participants"; Destination = "images\wildcard-custom\participants" },
-  @{ Source = "05-participation-history"; Destination = "images\participation-history" },
-
-  @{ Source = (TextFromCodes @(0x3086, 0x3068, 0x308A, 0x796D, 0x308A)) + "vo.1"; Destination = "images\apex-custom\yutori-fes-vol1" },
-  @{ Source = (TextFromCodes @(0x3086, 0x3068, 0x308A, 0x796D, 0x308A)) + "vo.2"; Destination = "images\apex-custom\yutori-fes-vol2" },
-  @{ Source = (TextFromCodes @(0x30EF, 0x30A4, 0x30AB, 0x3067, 0x3059, 0x304C, 0x306A, 0x306B, 0x304B, 0xFF1F)) + "vo.1"; Destination = "images\wildcard-custom\waika-vol1" },
-  @{ Source = (TextFromCodes @(0x30EF, 0x30A4, 0x30AB, 0x3067, 0x3059, 0x304C, 0x306A, 0x306B, 0x304B, 0xFF1F)) + "vo.2"; Destination = "images\wildcard-custom\waika-vol2" },
-  @{ Source = TextFromCodes @(0x51FA, 0x5834, 0x5C65, 0x6B74); Destination = "images\participation-history" }
+  @{ Source = TextFromCodes @(0x5171, 0x901A); Destination = "images\common" },
+  @{ Source = "Apex" + (TextFromCodes @(0x30AB, 0x30B9, 0x30BF, 0x30E0)) + "\" + (TextFromCodes @(0x3086, 0x3068, 0x308A, 0x796D, 0x308A)); Destination = "images\apex-custom\yutori-fes-vol1" },
+  @{ Source = "Apex" + (TextFromCodes @(0x30AB, 0x30B9, 0x30BF, 0x30E0)) + "\" + (TextFromCodes @(0x6E96, 0x5099, 0x4E2D)); Destination = "images\apex-custom\yutori-fes-vol2" },
+  @{ Source = (TextFromCodes @(0x30EF, 0x30A4, 0x30EB, 0x30C9, 0x30AB, 0x30FC, 0x30C9)) + "\" + (TextFromCodes @(0x30EF, 0x30A4, 0x30AB, 0x3067, 0x3059, 0x304C, 0x306A, 0x306B, 0x304B, 0xFF1F)) + "vo.1"; Destination = "images\wildcard-custom\waika-vol1" },
+  @{ Source = (TextFromCodes @(0x30EF, 0x30A4, 0x30EB, 0x30C9, 0x30AB, 0x30FC, 0x30C9)) + "\" + (TextFromCodes @(0x30EF, 0x30A4, 0x30AB, 0x3067, 0x3059, 0x304C, 0x306A, 0x306B, 0x304B, 0xFF1F)) + "vo.2"; Destination = "images\wildcard-custom\waika-vol2" },
+  @{ Source = (TextFromCodes @(0x51FA, 0x5834, 0x5C65, 0x6B74)) + "\EXE Apex Custom"; Destination = "images\participation-history\exe-apex-custom" }
 )
 
 $extensions = @(".png", ".jpg", ".jpeg", ".webp", ".svg")

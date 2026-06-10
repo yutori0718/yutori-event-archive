@@ -1,0 +1,17 @@
+{
+  "home": {
+    "heroEyebrow": "Blue neon / Twitch purple / Dachshund emblem",
+    "heroTitle": "YUTORI EVENT ARCHIVE",
+    "heroCopy": "ゆとりが主催・参加した Apex Legends カスタム大会の記録をまとめるアーカイブサイト。",
+    "apexButtonLabel": "Apexカスタムを見る",
+    "historyButtonLabel": "出場履歴を見る",
+    "apexStatLabel": "Apexカスタム",
+    "wildcardStatLabel": "ワイルドカード",
+    "historyStatLabel": "出場履歴",
+    "archiveStatLabel": "大会アーカイブ",
+    "apexSectionTitle": "Apexカスタム",
+    "apexSectionLead": "",
+    "wildcardSectionTitle": "Apexワイルドカードカスタム",
+    "wildcardSectionLead": ""
+  }
+}

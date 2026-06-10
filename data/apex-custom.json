@@ -16,21 +16,21 @@
         {
           "id": "team-1",
           "name": "チーム1",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-1/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム1/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-1/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム1/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-1/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム1/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-1/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム1/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -39,21 +39,21 @@
         {
           "id": "team-2",
           "name": "チーム2",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-2/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム2/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-2/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム2/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-2/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム2/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-2/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム2/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -62,21 +62,21 @@
         {
           "id": "team-3",
           "name": "チーム3",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-3/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム3/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-3/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム3/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-3/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム3/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-3/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム3/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -85,21 +85,21 @@
         {
           "id": "team-4",
           "name": "チーム4",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-4/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム4/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-4/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム4/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-4/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム4/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-4/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム4/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -108,21 +108,21 @@
         {
           "id": "team-5",
           "name": "チーム5",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-5/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム5/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-5/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム5/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-5/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム5/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-5/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム5/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -131,21 +131,21 @@
         {
           "id": "team-6",
           "name": "チーム6",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-6/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム6/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-6/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム6/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-6/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム6/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-6/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム6/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -154,21 +154,21 @@
         {
           "id": "team-7",
           "name": "チーム7",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-7/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム7/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-7/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム7/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-7/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム7/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-7/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム7/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -177,21 +177,21 @@
         {
           "id": "team-8",
           "name": "チーム8",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-8/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム8/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-8/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム8/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-8/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム8/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-8/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム8/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -200,21 +200,21 @@
         {
           "id": "team-9",
           "name": "チーム9",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-9/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム9/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-9/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム9/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-9/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム9/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-9/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム9/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -223,21 +223,21 @@
         {
           "id": "team-10",
           "name": "チーム10",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-10/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム10/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-10/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム10/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-10/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム10/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-10/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム10/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -246,21 +246,21 @@
         {
           "id": "team-11",
           "name": "チーム11",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-11/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム11/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-11/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム11/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-11/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム11/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-11/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム11/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -269,21 +269,21 @@
         {
           "id": "team-12",
           "name": "チーム12",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-12/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム12/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-12/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム12/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-12/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム12/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-12/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム12/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -292,21 +292,21 @@
         {
           "id": "team-13",
           "name": "チーム13",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-13/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム13/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-13/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム13/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-13/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム13/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-13/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム13/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -315,21 +315,21 @@
         {
           "id": "team-14",
           "name": "チーム14",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-14/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム14/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-14/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム14/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-14/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム14/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-14/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム14/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -338,21 +338,21 @@
         {
           "id": "team-15",
           "name": "チーム15",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-15/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム15/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-15/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム15/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-15/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム15/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-15/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム15/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -361,21 +361,21 @@
         {
           "id": "team-16",
           "name": "チーム16",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-16/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム16/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-16/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム16/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-16/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム16/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-16/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム16/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -384,21 +384,21 @@
         {
           "id": "team-17",
           "name": "チーム17",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-17/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム17/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-17/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム17/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-17/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム17/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-17/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム17/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -407,21 +407,21 @@
         {
           "id": "team-18",
           "name": "チーム18",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-18/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム18/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-18/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム18/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-18/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム18/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-18/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム18/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -430,21 +430,21 @@
         {
           "id": "team-19",
           "name": "チーム19",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-19/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム19/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-19/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム19/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-19/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム19/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-19/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム19/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -453,21 +453,21 @@
         {
           "id": "team-20",
           "name": "チーム20",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol1/teams/team-20/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol1/チーム/チーム20/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-20/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム20/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-20/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム20/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol1/teams/team-20/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol1/チーム/チーム20/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -523,21 +523,21 @@
         {
           "id": "team-1",
           "name": "チーム1",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-1/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム1/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-1/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム1/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-1/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム1/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-1/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム1/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -546,21 +546,21 @@
         {
           "id": "team-2",
           "name": "チーム2",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-2/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム2/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-2/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム2/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-2/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム2/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-2/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム2/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -569,21 +569,21 @@
         {
           "id": "team-3",
           "name": "チーム3",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-3/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム3/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-3/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム3/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-3/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム3/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-3/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム3/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -592,21 +592,21 @@
         {
           "id": "team-4",
           "name": "チーム4",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-4/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム4/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-4/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム4/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-4/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム4/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-4/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム4/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -615,21 +615,21 @@
         {
           "id": "team-5",
           "name": "チーム5",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-5/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム5/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-5/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム5/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-5/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム5/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-5/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム5/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -638,21 +638,21 @@
         {
           "id": "team-6",
           "name": "チーム6",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-6/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム6/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-6/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム6/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-6/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム6/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-6/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム6/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -661,21 +661,21 @@
         {
           "id": "team-7",
           "name": "チーム7",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-7/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム7/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-7/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム7/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-7/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム7/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-7/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム7/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -684,21 +684,21 @@
         {
           "id": "team-8",
           "name": "チーム8",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-8/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム8/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-8/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム8/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-8/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム8/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-8/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム8/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -707,21 +707,21 @@
         {
           "id": "team-9",
           "name": "チーム9",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-9/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム9/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-9/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム9/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-9/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム9/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-9/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム9/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -730,21 +730,21 @@
         {
           "id": "team-10",
           "name": "チーム10",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-10/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム10/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-10/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム10/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-10/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム10/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-10/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム10/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -753,21 +753,21 @@
         {
           "id": "team-11",
           "name": "チーム11",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-11/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム11/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-11/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム11/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-11/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム11/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-11/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム11/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -776,21 +776,21 @@
         {
           "id": "team-12",
           "name": "チーム12",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-12/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム12/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-12/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム12/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-12/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム12/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-12/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム12/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -799,21 +799,21 @@
         {
           "id": "team-13",
           "name": "チーム13",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-13/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム13/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-13/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム13/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-13/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム13/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-13/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム13/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -822,21 +822,21 @@
         {
           "id": "team-14",
           "name": "チーム14",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-14/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム14/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-14/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム14/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-14/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム14/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-14/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム14/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -845,21 +845,21 @@
         {
           "id": "team-15",
           "name": "チーム15",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-15/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム15/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-15/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム15/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-15/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム15/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-15/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム15/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -868,21 +868,21 @@
         {
           "id": "team-16",
           "name": "チーム16",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-16/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム16/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-16/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム16/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-16/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム16/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-16/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム16/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -891,21 +891,21 @@
         {
           "id": "team-17",
           "name": "チーム17",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-17/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム17/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-17/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム17/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-17/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム17/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-17/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム17/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -914,21 +914,21 @@
         {
           "id": "team-18",
           "name": "チーム18",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-18/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム18/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-18/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム18/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-18/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム18/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-18/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム18/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -937,21 +937,21 @@
         {
           "id": "team-19",
           "name": "チーム19",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-19/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム19/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-19/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム19/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-19/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム19/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-19/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム19/member-3.png",
               "streamUrl": ""
             }
           ],
@@ -960,21 +960,21 @@
         {
           "id": "team-20",
           "name": "チーム20",
-          "thumbnail": "/images/apex-custom/yutori-fes-vol2/teams/team-20/thumbnail.png",
+          "thumbnail": "/images/apex-custom/yutori-fes-vol2/チーム/チーム20/thumbnail.png",
           "members": [
             {
               "name": "メンバー1",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-20/member-1.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム20/member-1.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー2",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-20/member-2.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム20/member-2.png",
               "streamUrl": ""
             },
             {
               "name": "メンバー3",
-              "standImage": "/images/apex-custom/yutori-fes-vol2/teams/team-20/member-3.png",
+              "standImage": "/images/apex-custom/yutori-fes-vol2/チーム/チーム20/member-3.png",
               "streamUrl": ""
             }
           ],

@@ -1,11 +1,13 @@
 const BASE_PATH = getBasePath();
 const DATA_PATHS = {
+  site: withBase("/data/site-content.json"),
   apex: withBase("/data/apex-custom.json"),
   wildcard: withBase("/data/wildcard-custom.json"),
   participation: withBase("/data/participation-history.json"),
 };
 
 const state = {
+  site: {},
   apex: [],
   wildcard: [],
   participation: [],
@@ -25,11 +27,13 @@ init();
 
 async function init() {
   try {
-    const [apex, wildcard, participation] = await Promise.all([
+    const [site, apex, wildcard, participation] = await Promise.all([
+      loadJson(DATA_PATHS.site),
       loadJson(DATA_PATHS.apex),
       loadJson(DATA_PATHS.wildcard),
       loadJson(DATA_PATHS.participation),
     ]);
+    state.site = site || {};
     state.apex = apex.events || [];
     state.wildcard = wildcard.events || [];
     state.participation = participation.entries || [];
@@ -97,22 +101,23 @@ function isCurrent(href) {
 
 function renderHome() {
   const totalEvents = state.apex.length + state.wildcard.length;
+  const home = state.site.home || {};
   app.innerHTML = layout(`
     <section class="hero">
       <div class="section-inner hero-grid">
         <div>
-          <div class="eyebrow">Blue neon / Twitch purple / Dachshund emblem</div>
-          <h1>YUTORI EVENT ARCHIVE</h1>
-          <p class="hero-copy">ゆとりが主催・参加した Apex Legends カスタム大会の記録を、イベント別・試合別・出場履歴別に残すアーカイブサイト。</p>
+          <div class="eyebrow">${escapeHtml(home.heroEyebrow || "Blue neon / Twitch purple / Dachshund emblem")}</div>
+          <h1>${escapeHtml(home.heroTitle || "YUTORI EVENT ARCHIVE")}</h1>
+          ${home.heroCopy ? `<p class="hero-copy">${escapeHtml(home.heroCopy)}</p>` : ""}
           <div class="hero-actions">
-            <a class="button" href="${withBase("/apex-custom/")}">Apexカスタムを見る</a>
-            <a class="button secondary" href="${withBase("/participation-history/")}">出場履歴を見る</a>
+            <a class="button" href="${withBase("/apex-custom/")}">${escapeHtml(home.apexButtonLabel || "Apexカスタムを見る")}</a>
+            <a class="button secondary" href="${withBase("/participation-history/")}">${escapeHtml(home.historyButtonLabel || "出場履歴を見る")}</a>
           </div>
           <div class="ticker" aria-label="登録データ数">
-            <div class="stat"><strong>${state.apex.length}</strong><span>Apexカスタム</span></div>
-            <div class="stat"><strong>${state.wildcard.length}</strong><span>ワイルドカード</span></div>
-            <div class="stat"><strong>${state.participation.length}</strong><span>出場履歴</span></div>
-            <div class="stat"><strong>${totalEvents}</strong><span>大会アーカイブ</span></div>
+            <div class="stat"><strong>${state.apex.length}</strong><span>${escapeHtml(home.apexStatLabel || "Apexカスタム")}</span></div>
+            <div class="stat"><strong>${state.wildcard.length}</strong><span>${escapeHtml(home.wildcardStatLabel || "ワイルドカード")}</span></div>
+            <div class="stat"><strong>${state.participation.length}</strong><span>${escapeHtml(home.historyStatLabel || "出場履歴")}</span></div>
+            <div class="stat"><strong>${totalEvents}</strong><span>${escapeHtml(home.archiveStatLabel || "大会アーカイブ")}</span></div>
           </div>
         </div>
         <div class="hero-emblem">
@@ -122,11 +127,10 @@ function renderHome() {
         </div>
       </div>
     </section>
-    ${homeSection("Apexカスタム", "", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
-    ${homeSection("Apexワイルドカードカスタム", "", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
+    ${homeSection(home.apexSectionTitle || "Apexカスタム", home.apexSectionLead || "", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
+    ${homeSection(home.wildcardSectionTitle || "Apexワイルドカードカスタム", home.wildcardSectionLead || "", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
   `);
 }
-
 function homeSection(title, lead, items, detailBase, listHref) {
   return `
     <section class="section">
