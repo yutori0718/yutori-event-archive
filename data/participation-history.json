@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "id": "exe-apex-custom",
+      "title": "EXE Apex Custom",
+      "date": "2026-04-12",
+      "teamName": "Team YUTORI",
+      "members": ["YUTORI", "Member A", "Member B"],
+      "finalRank": "最終順位未設定",
+      "thumbnail": "/images/participation-history/exe-apex-custom/thumbnail.png",
+      "teamImage": "/images/participation-history/exe-apex-custom/team-image.png",
+      "archiveUrl": "",
+      "memo": "感想やメモをここに記入できます。"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160">
+  <rect width="720" height="160" rx="8" fill="#050816"/>
+  <text x="38" y="72" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="42" font-weight="900">YUTORI</text>
+  <text x="38" y="116" fill="#1DA1F2" font-family="Arial, sans-serif" font-size="30" font-weight="900">EVENT ARCHIVE</text>
+  <path d="M512 34h85l54 46-54 46h-85l-54-46 54-46Z" fill="#0F172A" stroke="#9146FF" stroke-width="8"/>
+  <path d="M505 94c6-28 28-41 60-38 22 2 43 1 58-13 11 21 4 45-22 56l-8 26h-28l7-25h-45l-7 25h-28l8-31Z" fill="#1DA1F2"/>
+</svg>

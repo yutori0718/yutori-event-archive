@@ -1,0 +1,1029 @@
+{
+  "events": [
+    {
+      "id": "yutori-fes-vol1",
+      "title": "ゆとり祭り Vol.1",
+      "date": "2026-05-16",
+      "category": "Apexカスタム",
+      "summary": "ゆとり主催のApexカスタム第1回大会。総合順位中心で記録できます。",
+      "description": "ゆとり主催の通常Apexカスタム大会。第1回大会は総合順位のみでも掲載できる構成です。チーム紹介画像、順位表画像、ED動画、配信アーカイブURLを後から追加できます。",
+      "thumbnail": "/images/apex-custom/yutori-fes-vol1/thumbnail.png",
+      "teamImage": "/images/apex-custom/yutori-fes-vol1/team-list.png",
+      "totalResultImage": "/images/apex-custom/yutori-fes-vol1/result-total.png",
+      "archiveUrl": "",
+      "edYoutubeUrl": "",
+      "teams": [
+        {
+          "id": "team-1",
+          "name": "チーム1",
+          "thumbnail": "/images/apex-custom/teams/team-1/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム1 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-1/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム1 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-1/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム1 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-1/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": "ゆとり祭り Vol.1 サンプル"
+        },
+        {
+          "id": "team-2",
+          "name": "チーム2",
+          "thumbnail": "/images/apex-custom/teams/team-2/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム2 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-2/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム2 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-2/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム2 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-2/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-3",
+          "name": "チーム3",
+          "thumbnail": "/images/apex-custom/teams/team-3/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム3 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-3/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム3 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-3/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム3 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-3/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-4",
+          "name": "チーム4",
+          "thumbnail": "/images/apex-custom/teams/team-4/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム4 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-4/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム4 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-4/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム4 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-4/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-5",
+          "name": "チーム5",
+          "thumbnail": "/images/apex-custom/teams/team-5/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム5 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-5/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム5 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-5/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム5 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-5/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-6",
+          "name": "チーム6",
+          "thumbnail": "/images/apex-custom/teams/team-6/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム6 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-6/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム6 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-6/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム6 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-6/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-7",
+          "name": "チーム7",
+          "thumbnail": "/images/apex-custom/teams/team-7/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム7 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-7/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム7 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-7/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム7 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-7/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-8",
+          "name": "チーム8",
+          "thumbnail": "/images/apex-custom/teams/team-8/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム8 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-8/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム8 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-8/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム8 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-8/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-9",
+          "name": "チーム9",
+          "thumbnail": "/images/apex-custom/teams/team-9/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム9 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-9/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム9 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-9/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム9 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-9/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-10",
+          "name": "チーム10",
+          "thumbnail": "/images/apex-custom/teams/team-10/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム10 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-10/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム10 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-10/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム10 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-10/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-11",
+          "name": "チーム11",
+          "thumbnail": "/images/apex-custom/teams/team-11/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム11 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-11/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム11 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-11/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム11 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-11/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-12",
+          "name": "チーム12",
+          "thumbnail": "/images/apex-custom/teams/team-12/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム12 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-12/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム12 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-12/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム12 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-12/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-13",
+          "name": "チーム13",
+          "thumbnail": "/images/apex-custom/teams/team-13/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム13 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-13/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム13 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-13/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム13 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-13/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-14",
+          "name": "チーム14",
+          "thumbnail": "/images/apex-custom/teams/team-14/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム14 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-14/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム14 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-14/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム14 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-14/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-15",
+          "name": "チーム15",
+          "thumbnail": "/images/apex-custom/teams/team-15/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム15 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-15/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム15 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-15/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム15 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-15/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-16",
+          "name": "チーム16",
+          "thumbnail": "/images/apex-custom/teams/team-16/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム16 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-16/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム16 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-16/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム16 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-16/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-17",
+          "name": "チーム17",
+          "thumbnail": "/images/apex-custom/teams/team-17/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム17 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-17/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム17 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-17/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム17 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-17/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-18",
+          "name": "チーム18",
+          "thumbnail": "/images/apex-custom/teams/team-18/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム18 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-18/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム18 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-18/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム18 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-18/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-19",
+          "name": "チーム19",
+          "thumbnail": "/images/apex-custom/teams/team-19/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム19 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-19/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム19 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-19/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム19 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-19/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-20",
+          "name": "チーム20",
+          "thumbnail": "/images/apex-custom/teams/team-20/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム20 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-20/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム20 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-20/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム20 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-20/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        }
+      ],
+      "totalResults": [
+        {
+          "rank": "1",
+          "teamName": "Team Blue",
+          "points": "0",
+          "note": "サンプル"
+        }
+      ],
+      "matches": [
+        {
+          "matchName": "Match1",
+          "resultImage": "/images/apex-custom/yutori-fes-vol1/match1.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match2",
+          "resultImage": "/images/apex-custom/yutori-fes-vol1/match2.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match3",
+          "resultImage": "/images/apex-custom/yutori-fes-vol1/match3.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match4",
+          "resultImage": "/images/apex-custom/yutori-fes-vol1/match4.png",
+          "youtubeUrl": ""
+        }
+      ],
+      "sponsors": [],
+      "memo": "第1回大会用のサンプルデータです。実データに差し替えてください。"
+    },
+    {
+      "id": "yutori-fes-vol2",
+      "title": "ゆとり祭り Vol.2",
+      "date": "2026-06-20",
+      "category": "Apexカスタム",
+      "summary": "第2回以降の大会向けに、Match1からMatch5までの試合別記録に対応。",
+      "description": "第2回以降の通常Apexカスタム大会。各試合順位、総合順位、神視点動画、ED動画、スポンサー紹介をJSONで管理できます。",
+      "thumbnail": "/images/apex-custom/yutori-fes-vol2/thumbnail.png",
+      "teamImage": "/images/apex-custom/yutori-fes-vol2/team-list.png",
+      "totalResultImage": "/images/apex-custom/yutori-fes-vol2/result-total.png",
+      "archiveUrl": "",
+      "edYoutubeUrl": "",
+      "teams": [
+        {
+          "id": "team-1",
+          "name": "チーム1",
+          "thumbnail": "/images/apex-custom/teams/team-1/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム1 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-1/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム1 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-1/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム1 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-1/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": "ゆとり祭り Vol.2 サンプル"
+        },
+        {
+          "id": "team-2",
+          "name": "チーム2",
+          "thumbnail": "/images/apex-custom/teams/team-2/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム2 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-2/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム2 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-2/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム2 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-2/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-3",
+          "name": "チーム3",
+          "thumbnail": "/images/apex-custom/teams/team-3/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム3 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-3/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム3 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-3/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム3 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-3/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-4",
+          "name": "チーム4",
+          "thumbnail": "/images/apex-custom/teams/team-4/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム4 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-4/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム4 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-4/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム4 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-4/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-5",
+          "name": "チーム5",
+          "thumbnail": "/images/apex-custom/teams/team-5/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム5 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-5/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム5 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-5/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム5 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-5/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-6",
+          "name": "チーム6",
+          "thumbnail": "/images/apex-custom/teams/team-6/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム6 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-6/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム6 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-6/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム6 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-6/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-7",
+          "name": "チーム7",
+          "thumbnail": "/images/apex-custom/teams/team-7/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム7 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-7/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム7 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-7/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム7 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-7/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-8",
+          "name": "チーム8",
+          "thumbnail": "/images/apex-custom/teams/team-8/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム8 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-8/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム8 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-8/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム8 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-8/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-9",
+          "name": "チーム9",
+          "thumbnail": "/images/apex-custom/teams/team-9/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム9 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-9/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム9 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-9/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム9 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-9/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-10",
+          "name": "チーム10",
+          "thumbnail": "/images/apex-custom/teams/team-10/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム10 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-10/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム10 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-10/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム10 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-10/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-11",
+          "name": "チーム11",
+          "thumbnail": "/images/apex-custom/teams/team-11/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム11 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-11/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム11 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-11/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム11 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-11/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-12",
+          "name": "チーム12",
+          "thumbnail": "/images/apex-custom/teams/team-12/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム12 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-12/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム12 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-12/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム12 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-12/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-13",
+          "name": "チーム13",
+          "thumbnail": "/images/apex-custom/teams/team-13/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム13 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-13/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム13 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-13/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム13 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-13/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-14",
+          "name": "チーム14",
+          "thumbnail": "/images/apex-custom/teams/team-14/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム14 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-14/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム14 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-14/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム14 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-14/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-15",
+          "name": "チーム15",
+          "thumbnail": "/images/apex-custom/teams/team-15/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム15 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-15/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム15 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-15/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム15 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-15/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-16",
+          "name": "チーム16",
+          "thumbnail": "/images/apex-custom/teams/team-16/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム16 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-16/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム16 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-16/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム16 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-16/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-17",
+          "name": "チーム17",
+          "thumbnail": "/images/apex-custom/teams/team-17/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム17 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-17/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム17 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-17/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム17 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-17/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-18",
+          "name": "チーム18",
+          "thumbnail": "/images/apex-custom/teams/team-18/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム18 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-18/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム18 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-18/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム18 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-18/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-19",
+          "name": "チーム19",
+          "thumbnail": "/images/apex-custom/teams/team-19/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム19 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-19/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム19 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-19/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム19 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-19/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        },
+        {
+          "id": "team-20",
+          "name": "チーム20",
+          "thumbnail": "/images/apex-custom/teams/team-20/thumbnail.png",
+          "members": [
+            {
+              "name": "チーム20 メンバー1",
+              "standImage": "/images/apex-custom/teams/team-20/member-1.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム20 メンバー2",
+              "standImage": "/images/apex-custom/teams/team-20/member-2.png",
+              "streamUrl": ""
+            },
+            {
+              "name": "チーム20 メンバー3",
+              "standImage": "/images/apex-custom/teams/team-20/member-3.png",
+              "streamUrl": ""
+            }
+          ],
+          "note": ""
+        }
+      ],
+      "totalResults": [
+        {
+          "rank": "1",
+          "teamName": "Team Neon",
+          "points": "0",
+          "note": "サンプル"
+        }
+      ],
+      "matches": [
+        {
+          "matchName": "Match1",
+          "resultImage": "/images/apex-custom/yutori-fes-vol2/result-match1.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match2",
+          "resultImage": "/images/apex-custom/yutori-fes-vol2/result-match2.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match3",
+          "resultImage": "/images/apex-custom/yutori-fes-vol2/result-match3.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match4",
+          "resultImage": "/images/apex-custom/yutori-fes-vol2/result-match4.png",
+          "youtubeUrl": ""
+        },
+        {
+          "matchName": "Match5",
+          "resultImage": "/images/apex-custom/yutori-fes-vol2/result-match5.png",
+          "youtubeUrl": ""
+        }
+      ],
+      "sponsors": [
+        {
+          "name": "Sponsor Sample",
+          "description": "スポンサー紹介文をここに記入できます。",
+          "url": ""
+        }
+      ],
+      "memo": "YouTube URLを設定すると、各Matchの神視点動画が自動で埋め込まれます。"
+    }
+  ]
+}

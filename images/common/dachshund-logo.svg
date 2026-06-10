@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Dachshund neon logo</title>
+  <desc id="desc">A stylized dachshund silhouette for YUTORI EVENT ARCHIVE.</desc>
+  <defs>
+    <linearGradient id="g" x1="80" y1="84" x2="430" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1DA1F2"/>
+      <stop offset="1" stop-color="#9146FF"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.113 0 0 0 0 0.631 0 0 0 0 0.949 0 0 0 .75 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path d="M256 24 452 137v226L256 488 60 363V137L256 24Z" fill="#08111f" stroke="url(#g)" stroke-width="18"/>
+  <path d="M113 306c4-39 29-71 70-82 22-6 47-7 73-5 23 2 46 2 68-2 29-5 47-18 59-41 13-25 37-38 64-35 11 1 19 10 18 21-2 25-18 50-44 65 9 15 14 35 11 54-2 13-12 22-24 22h-23l-12 68c-2 12-12 20-24 20h-22l15-88H184l-14 68c-2 12-12 20-24 20h-23l16-77c-11 0-20-9-20-20 0-4 1-8 2-11Z" fill="url(#g)" filter="url(#glow)"/>
+  <path d="M391 154c-12-28-36-43-72-44-16-1-26 3-32 10-5 7-4 16 1 24 8 12 28 20 54 24 17 3 34-1 49-14Z" fill="#0f172a" stroke="#1DA1F2" stroke-width="10" stroke-linejoin="round"/>
+  <circle cx="408" cy="173" r="9" fill="#fff"/>
+  <path d="M94 311c-21 1-37-9-47-29" fill="none" stroke="#9146FF" stroke-width="18" stroke-linecap="round"/>
+</svg>
