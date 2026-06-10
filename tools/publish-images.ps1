@@ -10,6 +10,7 @@ $sourceRoot = Join-Path $desktop (TextFromCodes @(0x30B5, 0x30A4, 0x30C8, 0x7528
 $gitPath = "C:\Program Files\Git\cmd"
 $ghPath = "C:\Users\Unknown\AppData\Local\Programs\GitHub CLI Portable\bin"
 $env:Path = "$gitPath;$ghPath;$env:Path"
+$nodePath = "C:\Users\Unknown\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"
 
 $mappings = @(
   @{ Source = "00-common"; Destination = "images\common" },
@@ -28,6 +29,12 @@ $mappings = @(
 
 $extensions = @(".png", ".jpg", ".jpeg", ".webp", ".svg")
 $copied = 0
+
+if (Test-Path $nodePath) {
+  & $nodePath (Join-Path $PSScriptRoot "sync-text-content.mjs")
+} else {
+  node (Join-Path $PSScriptRoot "sync-text-content.mjs")
+}
 
 foreach ($mapping in $mappings) {
   $source = Join-Path $sourceRoot $mapping.Source
