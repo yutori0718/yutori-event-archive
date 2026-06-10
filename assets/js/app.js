@@ -123,7 +123,7 @@ function renderHome() {
       </div>
     </section>
     ${homeSection("Apexカスタム", "", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
-    ${homeSection("Apexワイルドカードカスタム", "ワイルドカード形式のカスタム大会。参加者30人の名前、配信URL、Xを詳細ページで確認できます。", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
+    ${homeSection("Apexワイルドカードカスタム", "", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
   `);
 }
 
