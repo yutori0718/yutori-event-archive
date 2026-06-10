@@ -7,12 +7,12 @@ $ghPath = "C:\Users\Unknown\AppData\Local\Programs\GitHub CLI Portable\bin"
 $env:Path = "$gitPath;$ghPath;$env:Path"
 
 $mappings = @(
-  @{ Source = "00_共通"; Destination = "images\common" },
-  @{ Source = "01_Apexカスタム大会"; Destination = "images\apex-custom" },
-  @{ Source = "02_Apexカスタム_チーム"; Destination = "images\apex-custom\teams" },
-  @{ Source = "03_ワイルドカード大会"; Destination = "images\wildcard-custom" },
-  @{ Source = "04_ワイルドカード参加者"; Destination = "images\wildcard-custom\participants" },
-  @{ Source = "05_出場履歴"; Destination = "images\participation-history" }
+  @{ Source = "00-common"; Destination = "images\common" },
+  @{ Source = "01-apex-custom-events"; Destination = "images\apex-custom" },
+  @{ Source = "02-apex-custom-teams"; Destination = "images\apex-custom\teams" },
+  @{ Source = "03-wildcard-events"; Destination = "images\wildcard-custom" },
+  @{ Source = "04-wildcard-participants"; Destination = "images\wildcard-custom\participants" },
+  @{ Source = "05-participation-history"; Destination = "images\participation-history" }
 )
 
 $extensions = @(".png", ".jpg", ".jpeg", ".webp", ".svg")
@@ -43,7 +43,7 @@ Set-Location $repoRoot
 $status = git status --short
 
 if (-not $status) {
-  Write-Host "画像の変更はありません。"
+  Write-Host "No image changes found."
   exit 0
 }
 
@@ -53,6 +53,6 @@ git commit -m $commitMessage
 git push
 
 Write-Host ""
-Write-Host "画像を公開しました。GitHub Pagesへは数十秒から数分で反映されます。"
-Write-Host "公開URL: https://yutori0718.github.io/yutori-event-archive/"
-Write-Host "コピーした画像数: $copied"
+Write-Host "Images published. GitHub Pages will update in a few minutes."
+Write-Host "URL: https://yutori0718.github.io/yutori-event-archive/"
+Write-Host "Copied images: $copied"
