@@ -458,7 +458,14 @@ function wildcardMatchTeams(matchTeams = []) {
           <article class="match-card">
             <h3>${escapeHtml(match.matchName)}</h3>
             <div class="match-body">
-              ${(match.teams || []).map((team) => `<p><strong>${escapeHtml(team.name)}</strong><br>${escapeHtml((team.members || []).join(" / "))}</p>`).join("")}
+              ${(match.teams || []).map((team) => `
+                <div class="match-team">
+                  <strong>${escapeHtml(team.name)}</strong>
+                  <ul>
+                    ${(team.members || []).map((member) => `<li>${escapeHtml(member)}</li>`).join("")}
+                  </ul>
+                </div>
+              `).join("")}
             </div>
           </article>
         `).join("")}
