@@ -412,7 +412,14 @@ p {
   align-items: start;
 }
 
+.detail-layout > *,
+.detail-layout main,
+.detail-layout aside {
+  min-width: 0;
+}
+
 .panel {
+  min-width: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 18px;
