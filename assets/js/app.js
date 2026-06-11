@@ -106,7 +106,7 @@ function renderHome() {
     <section class="hero">
       <div class="section-inner hero-grid">
         <div>
-          <div class="eyebrow">${escapeHtml(home.heroEyebrow || "Blue neon / Twitch purple / Dachshund emblem")}</div>
+          ${home.heroEyebrow ? `<div class="eyebrow">${escapeHtml(home.heroEyebrow)}</div>` : ""}
           <h1>${escapeHtml(home.heroTitle || "YUTORI EVENT ARCHIVE")}</h1>
           ${home.heroCopy ? `<p class="hero-copy">${escapeHtml(home.heroCopy)}</p>` : ""}
           <div class="hero-actions">
