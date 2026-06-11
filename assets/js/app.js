@@ -307,7 +307,7 @@ function historyItem(item) {
 
 function pageHero(title, lead, backHref = "") {
   return `
-    <section class="hero">
+    <section class="hero page-hero">
       <div class="section-inner">
         <div class="eyebrow">YUTORI EVENT ARCHIVE</div>
         <h1>${escapeHtml(title)}</h1>

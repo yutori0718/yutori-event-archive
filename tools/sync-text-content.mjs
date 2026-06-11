@@ -16,10 +16,6 @@ const wildcardEvents = [
   { folder: path.join("ワイルドカード", "ワイカですがなにか？vo.2"), id: "waika-vol2" },
 ];
 
-const participationEntries = [
-  { folder: path.join("出場履歴", "EXE Apex Custom"), id: "exe-apex-custom" },
-];
-
 let changed = 0;
 
 await syncSiteContent();
@@ -135,12 +131,31 @@ async function syncWildcard() {
 async function syncParticipation() {
   const file = path.join(repoRoot, "data", "participation-history.json");
   const data = await readJson(file);
+  data.entries ||= [];
 
-  for (const config of participationEntries) {
-    const entry = data.entries.find((item) => item.id === config.id);
-    if (!entry) continue;
+  const historyRoot = path.join(sourceRoot, "出場履歴");
+  const folders = await listDirectories(historyRoot);
 
-    const folder = path.join(sourceRoot, config.folder);
+  for (const folderName of folders) {
+    const folder = path.join(historyRoot, folderName);
+    const id = folderName === "EXE Apex Custom" ? "exe-apex-custom" : slugify(folderName);
+    let entry = data.entries.find((item) => item.id === id);
+    if (!entry) {
+      entry = {
+        id,
+        title: folderName,
+        date: "",
+        teamName: "",
+        members: ["", "", ""],
+        finalRank: "",
+        thumbnail: "",
+        teamImage: "",
+        archiveUrl: "",
+        memo: "",
+      };
+      data.entries.push(entry);
+    }
+
     changed += await applyTextFields(folder, entry, {
       "ページ名.txt": "title",
       "開催日.txt": "date",
@@ -159,9 +174,59 @@ async function syncParticipation() {
       }
     }
     entry.members = members;
+
+    const thumbnail = await findImage(folder, "thumbnail");
+    if (thumbnail) entry.thumbnail = `/images/participation-history/${folderName}/${thumbnail}`;
+
+    const teamImage = await findImage(folder, "team-image");
+    if (teamImage) entry.teamImage = `/images/participation-history/${folderName}/${teamImage}`;
   }
 
   await writeJson(file, data);
+}
+
+async function listDirectories(folder) {
+  try {
+    const entries = await fs.readdir(folder, { withFileTypes: true });
+    return entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  } catch (error) {
+    if (error.code === "ENOENT") return [];
+    throw error;
+  }
+}
+
+async function findImage(folder, baseName) {
+  try {
+    const entries = await fs.readdir(folder, { withFileTypes: true });
+    const image = entries
+      .filter((entry) => entry.isFile())
+      .map((entry) => entry.name)
+      .find((name) => {
+        const lower = name.toLowerCase();
+        return lower === `${baseName}.png`
+          || lower === `${baseName}.jpg`
+          || lower === `${baseName}.jpeg`
+          || lower === `${baseName}.webp`
+          || lower.startsWith(`${baseName}.png.`)
+          || lower.startsWith(`${baseName}.jpg.`)
+          || lower.startsWith(`${baseName}.jpeg.`)
+          || lower.startsWith(`${baseName}.webp.`);
+      });
+    return image || "";
+  } catch (error) {
+    if (error.code === "ENOENT") return "";
+    throw error;
+  }
+}
+
+function slugify(value) {
+  const ascii = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  if (ascii) return ascii;
+  const hex = [...value].map((char) => char.codePointAt(0).toString(16)).join("-");
+  return `history-${hex}`;
 }
 
 async function applyTextFields(folder, target, mapping) {

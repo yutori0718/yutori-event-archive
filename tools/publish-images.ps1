@@ -18,7 +18,7 @@ $mappings = @(
   @{ Source = "Apex" + (TextFromCodes @(0x30AB, 0x30B9, 0x30BF, 0x30E0)) + "\" + (TextFromCodes @(0x6E96, 0x5099, 0x4E2D)); Destination = "images\apex-custom\yutori-fes-vol2" },
   @{ Source = (TextFromCodes @(0x30EF, 0x30A4, 0x30EB, 0x30C9, 0x30AB, 0x30FC, 0x30C9)) + "\" + (TextFromCodes @(0x30EF, 0x30A4, 0x30AB, 0x3067, 0x3059, 0x304C, 0x306A, 0x306B, 0x304B, 0xFF1F)) + "vo.1"; Destination = "images\wildcard-custom\waika-vol1" },
   @{ Source = (TextFromCodes @(0x30EF, 0x30A4, 0x30EB, 0x30C9, 0x30AB, 0x30FC, 0x30C9)) + "\" + (TextFromCodes @(0x30EF, 0x30A4, 0x30AB, 0x3067, 0x3059, 0x304C, 0x306A, 0x306B, 0x304B, 0xFF1F)) + "vo.2"; Destination = "images\wildcard-custom\waika-vol2" },
-  @{ Source = (TextFromCodes @(0x51FA, 0x5834, 0x5C65, 0x6B74)) + "\EXE Apex Custom"; Destination = "images\participation-history\exe-apex-custom" }
+  @{ Source = TextFromCodes @(0x51FA, 0x5834, 0x5C65, 0x6B74); Destination = "images\participation-history" }
 )
 
 $extensions = @(".png", ".jpg", ".jpeg", ".webp", ".svg")

@@ -198,6 +198,20 @@ p {
   line-height: 1.9;
 }
 
+.page-hero {
+  padding: 52px 0 32px;
+}
+
+.page-hero h1 {
+  max-width: 1120px;
+  font-size: clamp(2.15rem, 4.6vw, 4.35rem);
+  line-height: 1.06;
+}
+
+.page-hero .hero-copy {
+  max-width: 900px;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -701,6 +715,13 @@ tr:last-child td {
   background: var(--panel);
 }
 
+.history-item h2 {
+  margin: 8px 0 12px;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+
 .history-item .card-media {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -792,6 +813,15 @@ tr:last-child td {
     padding: 34px 0 26px;
   }
 
+  .page-hero {
+    padding: 30px 0 24px;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.12;
+  }
+
   .hero-grid,
   .detail-layout {
     grid-template-columns: 1fr;
@@ -859,6 +889,11 @@ tr:last-child td {
   .hero h1 {
     font-size: 2.15rem;
     line-height: 1;
+  }
+
+  .page-hero h1 {
+    font-size: 1.86rem;
+    line-height: 1.15;
   }
 
   .button {
@@ -930,6 +965,16 @@ tr:last-child td {
   .panel,
   .card-body {
     padding: 12px;
+  }
+
+  .history-item {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .history-item h2 {
+    font-size: 1.18rem;
+    line-height: 1.32;
   }
 
   .table-wrap {
