@@ -677,6 +677,11 @@ tr:last-child td {
   overflow-wrap: anywhere;
 }
 
+.participant-card-name-only {
+  grid-template-columns: 1fr;
+  min-height: 64px;
+}
+
 .link-row {
   display: flex;
   flex: 0 0 auto;

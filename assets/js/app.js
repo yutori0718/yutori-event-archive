@@ -398,21 +398,41 @@ function participantList(participants = []) {
     <section class="panel">
       <h2>参加者一覧</h2>
       <div class="participant-list">
-        ${normalized.map((participant, index) => `
-          <article class="participant-card">
-            <div class="participant-visual">${imageOrPlaceholder(participant.standImage, `${participant.name} 立ち絵`)}</div>
-            <div>
-              <span class="participant-number">${String(index + 1).padStart(2, "0")}</span>
-              <h3>${escapeHtml(participant.name)}</h3>
-            </div>
-            <div class="link-row">
-              ${participant.streamUrl ? `<a class="mini-button" href="${participant.streamUrl}" target="_blank" rel="noreferrer">配信</a>` : `<span class="mini-button disabled">配信</span>`}
-              ${participant.xUrl ? `<a class="mini-button purple" href="${participant.xUrl}" target="_blank" rel="noreferrer">X</a>` : `<span class="mini-button disabled">X</span>`}
-            </div>
-          </article>
-        `).join("")}
+        ${normalized.map(participantCard).join("")}
       </div>
     </section>
+  `;
+}
+
+function participantCard(participant, index) {
+  const hasVisual = Boolean(participant.standImage);
+  const hasLinks = Boolean(participant.streamUrl || participant.xUrl);
+  const nameBlock = `
+    <div>
+      <span class="participant-number">${String(index + 1).padStart(2, "0")}</span>
+      <h3>${escapeHtml(participant.name)}</h3>
+    </div>
+  `;
+
+  if (!hasVisual && !hasLinks) {
+    return `
+      <article class="participant-card participant-card-name-only">
+        ${nameBlock}
+      </article>
+    `;
+  }
+
+  return `
+    <article class="participant-card">
+      ${hasVisual ? `<div class="participant-visual">${imageOrPlaceholder(participant.standImage, `${participant.name} 立ち絵`)}</div>` : ""}
+      ${nameBlock}
+      ${hasLinks ? `
+        <div class="link-row">
+          ${participant.streamUrl ? `<a class="mini-button" href="${participant.streamUrl}" target="_blank" rel="noreferrer">配信</a>` : ""}
+          ${participant.xUrl ? `<a class="mini-button purple" href="${participant.xUrl}" target="_blank" rel="noreferrer">X</a>` : ""}
+        </div>
+      ` : ""}
+    </article>
   `;
 }
 
@@ -421,7 +441,7 @@ function normalizeParticipants(participants) {
     const existing = participants[index] || {};
     return {
       name: existing.name || `参加者${index + 1}`,
-      standImage: existing.standImage || `/images/wildcard-custom/participants/participant-${index + 1}.png`,
+      standImage: existing.standImage || "",
       streamUrl: existing.streamUrl || "",
       xUrl: existing.xUrl || "",
     };

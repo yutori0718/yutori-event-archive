@@ -5,8 +5,8 @@
       "title": "ワイカですがなにか？vo.1",
       "date": "2026-05-30",
       "category": "Apexワイルドカードカスタム",
-      "summary": "ワイルドカード形式のApexカスタム大会。参加者一覧と試合別チーム構成を掲載できます。",
-      "description": "ワイルドカード形式のカスタム大会。イベント名、開催日、概要、参加者一覧、各試合のチーム構成、試合結果、総合結果をまとめられます。",
+      "summary": "ワイルドカード形式のApexカスタム大会。参加者30名の一覧と大会記録を掲載します。",
+      "description": "ワイカですがなにか？vo.1 の大会アーカイブです。大会サムネイル、参加者一覧画像、参加者名、大会結果、動画URLを管理できます。",
       "thumbnail": "/images/wildcard-custom/waika-vol1/thumbnail.png",
       "teamImage": "/images/wildcard-custom/waika-vol1/team-list.png",
       "totalResultImage": "/images/wildcard-custom/waika-vol1/result-total.png",
@@ -57,184 +57,94 @@
       "memo": "試合ごとにチームが変わる場合は matchTeams に追加してください。",
       "participants": [
         {
-          "name": "参加者1",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者1/stand.png",
-          "xUrl": "https://x.com/participant01",
-          "streamUrl": "https://www.twitch.tv/participant01"
+          "name": "ゆとりですが"
         },
         {
-          "name": "参加者2",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者2/stand.png",
-          "xUrl": "https://x.com/participant02",
-          "streamUrl": "https://www.twitch.tv/participant02"
+          "name": "さっとん さん"
         },
         {
-          "name": "参加者3",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者3/stand.png",
-          "xUrl": "https://x.com/participant03",
-          "streamUrl": "https://www.twitch.tv/participant03"
+          "name": "めちゃんまん さん"
         },
         {
-          "name": "参加者4",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者4/stand.png",
-          "xUrl": "https://x.com/participant04",
-          "streamUrl": "https://www.twitch.tv/participant04"
+          "name": "和幸村長 さん"
         },
         {
-          "name": "参加者5",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者5/stand.png",
-          "xUrl": "https://x.com/participant05",
-          "streamUrl": "https://www.twitch.tv/participant05"
+          "name": "ぱんくん さん"
         },
         {
-          "name": "参加者6",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者6/stand.png",
-          "xUrl": "https://x.com/participant06",
-          "streamUrl": "https://www.twitch.tv/participant06"
+          "name": "志摩フユキ さん"
         },
         {
-          "name": "参加者7",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者7/stand.png",
-          "xUrl": "https://x.com/participant07",
-          "streamUrl": "https://www.twitch.tv/participant07"
+          "name": "GABUNARA9 さん"
         },
         {
-          "name": "参加者8",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者8/stand.png",
-          "xUrl": "https://x.com/participant08",
-          "streamUrl": "https://www.twitch.tv/participant08"
+          "name": "黒田音流 さん"
         },
         {
-          "name": "参加者9",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者9/stand.png",
-          "xUrl": "https://x.com/participant09",
-          "streamUrl": "https://www.twitch.tv/participant09"
+          "name": "YUKI_REX さん"
         },
         {
-          "name": "参加者10",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者10/stand.png",
-          "xUrl": "https://x.com/participant10",
-          "streamUrl": "https://www.twitch.tv/participant10"
+          "name": "そらち さん"
         },
         {
-          "name": "参加者11",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者11/stand.png",
-          "xUrl": "https://x.com/participant11",
-          "streamUrl": "https://www.twitch.tv/participant11"
+          "name": "ぽんぽこおなつ さん"
         },
         {
-          "name": "参加者12",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者12/stand.png",
-          "xUrl": "https://x.com/participant12",
-          "streamUrl": "https://www.twitch.tv/participant12"
+          "name": "なっちゃん さん"
         },
         {
-          "name": "参加者13",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者13/stand.png",
-          "xUrl": "https://x.com/participant13",
-          "streamUrl": "https://www.twitch.tv/participant13"
+          "name": "チラチン さん"
         },
         {
-          "name": "参加者14",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者14/stand.png",
-          "xUrl": "https://x.com/participant14",
-          "streamUrl": "https://www.twitch.tv/participant14"
+          "name": "らざぁー さん"
         },
         {
-          "name": "参加者15",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者15/stand.png",
-          "xUrl": "https://x.com/participant15",
-          "streamUrl": "https://www.twitch.tv/participant15"
+          "name": "玖彪 黝簾さん"
         },
         {
-          "name": "参加者16",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者16/stand.png",
-          "xUrl": "https://x.com/participant16",
-          "streamUrl": "https://www.twitch.tv/participant16"
+          "name": "水瀬名月 さん"
         },
         {
-          "name": "参加者17",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者17/stand.png",
-          "xUrl": "https://x.com/participant17",
-          "streamUrl": "https://www.twitch.tv/participant17"
+          "name": "愛姫みこな さん"
         },
         {
-          "name": "参加者18",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者18/stand.png",
-          "xUrl": "https://x.com/participant18",
-          "streamUrl": "https://www.twitch.tv/participant18"
+          "name": "影宮無名 さん"
         },
         {
-          "name": "参加者19",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者19/stand.png",
-          "xUrl": "https://x.com/participant19",
-          "streamUrl": "https://www.twitch.tv/participant19"
+          "name": "すぅちゃん さん"
         },
         {
-          "name": "参加者20",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者20/stand.png",
-          "xUrl": "https://x.com/participant20",
-          "streamUrl": "https://www.twitch.tv/participant20"
+          "name": "RISU さん"
         },
         {
-          "name": "参加者21",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者21/stand.png",
-          "xUrl": "https://x.com/participant21",
-          "streamUrl": "https://www.twitch.tv/participant21"
+          "name": "くろの さん"
         },
         {
-          "name": "参加者22",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者22/stand.png",
-          "xUrl": "https://x.com/participant22",
-          "streamUrl": "https://www.twitch.tv/participant22"
+          "name": "maimeronさん"
         },
         {
-          "name": "参加者23",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者23/stand.png",
-          "xUrl": "https://x.com/participant23",
-          "streamUrl": "https://www.twitch.tv/participant23"
+          "name": "Noah さん"
         },
         {
-          "name": "参加者24",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者24/stand.png",
-          "xUrl": "https://x.com/participant24",
-          "streamUrl": "https://www.twitch.tv/participant24"
+          "name": "そらのチョコ さん"
         },
         {
-          "name": "参加者25",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者25/stand.png",
-          "xUrl": "https://x.com/participant25",
-          "streamUrl": "https://www.twitch.tv/participant25"
+          "name": "Sinon さん"
         },
         {
-          "name": "参加者26",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者26/stand.png",
-          "xUrl": "https://x.com/participant26",
-          "streamUrl": "https://www.twitch.tv/participant26"
+          "name": "すいちやん さん"
         },
         {
-          "name": "参加者27",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者27/stand.png",
-          "xUrl": "https://x.com/participant27",
-          "streamUrl": "https://www.twitch.tv/participant27"
+          "name": "かーき さん"
         },
         {
-          "name": "参加者28",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者28/stand.png",
-          "xUrl": "https://x.com/participant28",
-          "streamUrl": "https://www.twitch.tv/participant28"
+          "name": "RoM さん"
         },
         {
-          "name": "参加者29",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者29/stand.png",
-          "xUrl": "https://x.com/participant29",
-          "streamUrl": "https://www.twitch.tv/participant29"
+          "name": "コタだよ さん"
         },
         {
-          "name": "参加者30",
-          "standImage": "/images/wildcard-custom/waika-vol1/参加者/参加者30/stand.png",
-          "xUrl": "https://x.com/participant30",
-          "streamUrl": "https://www.twitch.tv/participant30"
+          "name": "Aimeeさん"
         }
       ]
     },
