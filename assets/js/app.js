@@ -1,9 +1,12 @@
+import { applyGoogleSheetsData } from "./google-sheets.js";
+
 const BASE_PATH = getBasePath();
 const DATA_PATHS = {
   site: withBase("/data/site-content.json"),
   apex: withBase("/data/apex-custom.json"),
   wildcard: withBase("/data/wildcard-custom.json"),
   participation: withBase("/data/participation-history.json"),
+  googleSheets: withBase("/data/google-sheets.json"),
 };
 
 const state = {
@@ -37,6 +40,7 @@ async function init() {
     state.apex = apex.events || [];
     state.wildcard = wildcard.events || [];
     state.participation = participation.entries || [];
+    await applyGoogleSheetsData(state, DATA_PATHS.googleSheets);
     render();
   } catch (error) {
     app.innerHTML = layout(`

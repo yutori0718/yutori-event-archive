@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>YUTORI EVENT ARCHIVE Googleスプレッドシート編集マニュアル</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: #172033;
+        background: #ffffff;
+        font-family: "Yu Gothic UI", "Meiryo", "Noto Sans JP", sans-serif;
+        line-height: 1.75;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .page {
+        min-height: 267mm;
+        padding: 0;
+        page-break-after: always;
+      }
+
+      .cover {
+        display: grid;
+        align-content: center;
+        min-height: 267mm;
+        color: #ffffff;
+        background:
+          linear-gradient(135deg, rgba(29, 161, 242, 0.94), rgba(145, 70, 255, 0.84)),
+          #0f172a;
+        padding: 22mm;
+      }
+
+      .cover h1 {
+        font-size: 34pt;
+        line-height: 1.15;
+      }
+
+      .cover p {
+        margin-top: 14px;
+        font-size: 13pt;
+      }
+
+      .badge {
+        display: inline-block;
+        width: fit-content;
+        margin-bottom: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 10pt;
+        font-weight: 700;
+      }
+
+      .content {
+        padding: 0 0 8mm;
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        border-left: 6px solid #1da1f2;
+        padding-left: 12px;
+        color: #0f172a;
+        font-size: 20pt;
+      }
+
+      h3 {
+        margin: 18px 0 8px;
+        color: #0f172a;
+        font-size: 13pt;
+      }
+
+      .lead {
+        margin-bottom: 16px;
+        color: #334155;
+      }
+
+      .note {
+        margin: 12px 0;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 12px;
+        background: #eff6ff;
+      }
+
+      .warning {
+        border-color: #fde68a;
+        background: #fffbeb;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 16px 0 22px;
+      }
+
+      .flow div,
+      .card {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 12px;
+        background: #f8fafc;
+      }
+
+      .flow strong {
+        display: block;
+        color: #1d4ed8;
+        font-size: 11pt;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0 16px;
+        font-size: 9pt;
+      }
+
+      th,
+      td {
+        border: 1px solid #cbd5e1;
+        padding: 7px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: #ffffff;
+        background: #0f172a;
+      }
+
+      code {
+        border-radius: 4px;
+        padding: 2px 5px;
+        background: #e2e8f0;
+        font-family: Consolas, monospace;
+      }
+
+      pre {
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+        border-radius: 8px;
+        padding: 12px;
+        color: #dbeafe;
+        background: #0f172a;
+        font-size: 9pt;
+      }
+
+      .mock {
+        border: 1px solid #94a3b8;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 12px 0 18px;
+        background: #ffffff;
+      }
+
+      .mock-bar {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        padding: 8px;
+        background: #e2e8f0;
+      }
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #1da1f2;
+      }
+
+      .sheet {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        font-size: 8pt;
+      }
+
+      .sheet div {
+        min-height: 28px;
+        border-right: 1px solid #cbd5e1;
+        border-top: 1px solid #cbd5e1;
+        padding: 6px;
+      }
+
+      .sheet .head {
+        color: #ffffff;
+        background: #1da1f2;
+        font-weight: 700;
+      }
+
+      .arrow {
+        color: #9146ff;
+        font-size: 24pt;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      ul,
+      ol {
+        margin-top: 8px;
+        padding-left: 1.3em;
+      }
+
+      li {
+        margin-bottom: 6px;
+      }
+
+      .small {
+        color: #475569;
+        font-size: 9pt;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page cover">
+      <span class="badge">YUTORI EVENT ARCHIVE</span>
+      <h1>Googleスプレッドシート<br />編集マニュアル</h1>
+      <p>Apexカスタム大会・ワイルドカード大会・出場履歴を、表編集で更新するための手順書です。</p>
+      <p class="small">GitHub Pages + Google Sheets 公開CSV方式</p>
+    </section>
+
+    <section class="page content">
+      <h2>1. できるようになること</h2>
+      <p class="lead">
+        Googleスプレッドシートを編集すると、サイト側が公開CSVを読み込み、表示内容を更新できます。
+        JSONを直接編集しなくても、大会名・参加者・チーム構成・出場履歴を表で管理できます。
+      </p>
+
+      <div class="flow">
+        <div><strong>1</strong>テンプレCSVをGoogle Sheetsへ入れる</div>
+        <div><strong>2</strong>シートを編集する</div>
+        <div><strong>3</strong>CSV公開URLを設定する</div>
+        <div><strong>4</strong>サイトが読み込む</div>
+      </div>
+
+      <div class="note">
+        画像そのものは今まで通りサイト内の <code>/images/...</code> に置きます。
+        スプレッドシートには画像ファイルではなく、<code>/images/wildcard-custom/waika-vol1/thumbnail.png</code>
+        のような画像パスを書きます。
+      </div>
+
+      <h3>サイトで読み込めるシート</h3>
+      <table>
+        <thead>
+          <tr><th>シート名</th><th>編集できる内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>siteContent</td><td>Topページの見出し、説明、ボタン文言</td></tr>
+          <tr><td>apexEvents</td><td>Apexカスタム大会の基本情報</td></tr>
+          <tr><td>apexTeams</td><td>Apexカスタムのチーム名、メンバー、立ち絵、配信URL</td></tr>
+          <tr><td>wildcardEvents</td><td>ワイルドカード大会の基本情報</td></tr>
+          <tr><td>wildcardParticipants</td><td>ワイルドカード大会の参加者一覧</td></tr>
+          <tr><td>wildcardMatchTeams</td><td>Matchごとのチーム構成</td></tr>
+          <tr><td>participationHistory</td><td>ゆとり自身の出場履歴</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="page content">
+      <h2>2. Googleスプレッドシートを作る</h2>
+      <ol>
+        <li>Googleドライブで新しいスプレッドシートを作成します。</li>
+        <li>下部タブを追加し、シート名をテンプレートと同じ名前にします。</li>
+        <li><code>google-sheets-templates</code> フォルダー内のCSVを開き、同じ名前のシートへ貼り付けます。</li>
+      </ol>
+
+      <div class="mock">
+        <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Google Sheets イメージ</div>
+        <div class="sheet">
+          <div class="head">eventId</div><div class="head">matchName</div><div class="head">teamNo</div><div class="head">teamName</div><div class="head">member1</div>
+          <div>waika-vol1</div><div>Match1</div><div>1</div><div>チーム 1</div><div>水瀬名月</div>
+          <div>waika-vol1</div><div>Match1</div><div>2</div><div>チーム 2</div><div>めちゃんまん</div>
+          <div>waika-vol1</div><div>Match2</div><div>1</div><div>チーム 1</div><div>そらのチョコ</div>
+        </div>
+      </div>
+
+      <h3>重要なID</h3>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>対象</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>yutori-fes-vol1</code></td><td>ゆとり祭り</td></tr>
+          <tr><td><code>yutori-fes-vol2</code></td><td>ゆとり祭り Vol.2</td></tr>
+          <tr><td><code>waika-vol1</code></td><td>ワイカですがなにか？vo.1</td></tr>
+          <tr><td><code>waika-vol2</code></td><td>ワイカですがなにか？vo.2</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warning note">
+        <strong>IDは変えないでください。</strong>
+        IDが変わると、既存ページのURLと紐づかなくなります。大会名を変えたい場合は <code>title</code> だけ変更します。
+      </div>
+    </section>
+
+    <section class="page content">
+      <h2>3. シートをCSVとして公開する</h2>
+      <ol>
+        <li>Google Sheetsで <strong>ファイル → 共有 → ウェブに公開</strong> を開きます。</li>
+        <li>公開したいシートを選びます。</li>
+        <li>形式を <strong>カンマ区切り値（.csv）</strong> にします。</li>
+        <li>公開URLをコピーします。</li>
+        <li>各シート分のURLを <code>data/google-sheets.json</code> に貼ります。</li>
+      </ol>
+
+      <div class="flow">
+        <div>Google Sheets</div>
+        <div class="arrow">→</div>
+        <div>CSV公開URL</div>
+        <div>サイトで表示</div>
+      </div>
+
+      <h3>設定ファイル例</h3>
+      <pre>{
+  "enabled": true,
+  "sheets": {
+    "wildcardParticipants": "https://docs.google.com/spreadsheets/d/e/xxxxx/pub?gid=0&single=true&output=csv",
+    "wildcardMatchTeams": "https://docs.google.com/spreadsheets/d/e/xxxxx/pub?gid=123&single=true&output=csv"
+  }
+}</pre>
+
+      <div class="note">
+        すべてのURLを一度に入れる必要はありません。使いたいシートだけURLを入れれば、その部分だけスプレッドシートが優先されます。
+      </div>
+    </section>
+
+    <section class="page content">
+      <h2>4. 日常の編集方法</h2>
+
+      <h3>参加者一覧を更新する</h3>
+      <p><code>wildcardParticipants</code> を編集します。</p>
+      <table>
+        <thead>
+          <tr><th>列</th><th>入力例</th><th>説明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>eventId</td><td>waika-vol1</td><td>対象大会ID</td></tr>
+          <tr><td>number</td><td>1</td><td>表示順</td></tr>
+          <tr><td>name</td><td>ゆとりですが</td><td>参加者名</td></tr>
+          <tr><td>standImage</td><td>/images/...</td><td>空欄なら画像なし</td></tr>
+          <tr><td>streamUrl</td><td>https://...</td><td>空欄なら配信ボタンなし</td></tr>
+          <tr><td>xUrl</td><td>https://x.com/...</td><td>空欄ならXボタンなし</td></tr>
+        </tbody>
+      </table>
+
+      <h3>各試合チーム構成を更新する</h3>
+      <p><code>wildcardMatchTeams</code> を編集します。Matchごとに10行作ると、10チーム表示されます。</p>
+      <table>
+        <thead>
+          <tr><th>eventId</th><th>matchName</th><th>teamNo</th><th>teamName</th><th>member1</th><th>member2</th><th>member3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>waika-vol1</td><td>Match1</td><td>1</td><td>チーム 1</td><td>水瀬名月</td><td>かーき</td><td>らざぁー</td></tr>
+          <tr><td>waika-vol1</td><td>Match1</td><td>2</td><td>チーム 2</td><td>めちゃんまん</td><td>すいちやん</td><td>くろの</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        王冠マークなどを表示したい場合は、セル内に <code>👑かーき</code> のようにそのまま入力できます。
+      </div>
+    </section>
+
+    <section class="page content">
+      <h2>5. 画像を使うとき</h2>
+      <p class="lead">
+        Google Sheetsには画像ファイルそのものを入れず、サイト内の画像パスを書きます。
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>画像を置く場所</h3>
+          <pre>images/
+  wildcard-custom/
+    waika-vol1/
+      thumbnail.png
+      team-list.png</pre>
+        </div>
+        <div class="card">
+          <h3>シートに書くパス</h3>
+          <pre>/images/wildcard-custom/waika-vol1/thumbnail.png
+/images/wildcard-custom/waika-vol1/team-list.png</pre>
+        </div>
+      </div>
+
+      <h3>反映されないときの確認</h3>
+      <ul>
+        <li><code>data/google-sheets.json</code> の <code>enabled</code> が <code>true</code> になっているか</li>
+        <li>CSV公開URLの末尾が <code>output=csv</code> になっているか</li>
+        <li>シートの列名を消していないか</li>
+        <li>画像パスが <code>/images/...</code> から始まっているか</li>
+        <li>GitHub Pagesの反映待ちやブラウザキャッシュではないか</li>
+      </ul>
+
+      <div class="warning note">
+        Google Sheetsを非公開に戻すと、サイトから読み込めなくなります。
+        公開したくない情報はシートに書かないでください。
+      </div>
+    </section>
+  </body>
+</html>

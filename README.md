@@ -1,5 +1,23 @@
 # YUTORI EVENT ARCHIVE
 
+## Googleスプレッドシート編集
+
+サイトはGoogleスプレッドシートの公開CSVから内容を読み込めるようになっています。
+
+- 設定ファイル: `data/google-sheets.json`
+- テンプレートCSV: `google-sheets-templates/`
+- PDFマニュアル: `docs/google-sheets-editing-manual.pdf`
+
+使い始める流れ:
+
+1. `google-sheets-templates/` のCSVをGoogleスプレッドシートへ入れる
+2. 各シートを「ウェブに公開」してCSV URLを取得する
+3. `data/google-sheets.json` のURL欄へ貼る
+4. `enabled` を `true` にする
+5. GitHub Pagesへ公開する
+
+URL未設定、または `enabled: false` の場合は、今まで通り `data/*.json` の内容で表示されます。
+
 ゆとり主催・参加の Apex Legends カスタム大会アーカイブサイトです。  
 GitHub Pages で公開しています。
 
