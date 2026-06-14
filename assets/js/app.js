@@ -254,19 +254,24 @@ function renderTeamDetail() {
     <section class="section">
       <div class="section-inner">
         <article class="panel">
-          <div class="team-page-head">
+          <div class="team-profile">
             <div>
               <div class="eyebrow">Team</div>
               <h2>${escapeHtml(team.name)}</h2>
               ${team.note ? `<p class="content-text">${escapeHtml(team.note)}</p>` : ""}
             </div>
-            <div class="team-thumb">${imageOrPlaceholder(team.thumbnail, `${team.name} サムネイル`)}</div>
+            <div class="team-profile-image">${imageOrPlaceholder(team.thumbnail, `${team.name} チーム紹介サムネ`)}</div>
           </div>
         </article>
         <section class="panel">
           <h2>メンバー</h2>
-          <div class="standee-grid">
-            ${team.members.map((member) => memberProfile(member)).join("")}
+          <div class="team-member-list">
+            ${team.members.map((member, index) => `
+              <div class="team-member-name">
+                <span>${String(index + 1).padStart(2, "0")}</span>
+                <strong>${escapeHtml(member.name)}</strong>
+              </div>
+            `).join("")}
           </div>
         </section>
       </div>
