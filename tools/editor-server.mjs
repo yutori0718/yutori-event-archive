@@ -106,7 +106,17 @@ async function serveStatic(pathname, response) {
     return;
   }
 
-  const fileStat = await stat(resolved);
+  let fileStat;
+  try {
+    fileStat = await stat(resolved);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      response.end("Not Found");
+      return;
+    }
+    throw error;
+  }
   const ext = path.extname(resolved).toLowerCase();
   response.writeHead(200, {
     "content-type": mimeTypes[ext] || "application/octet-stream",

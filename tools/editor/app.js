@@ -6,11 +6,7 @@ const publishButton = document.querySelector("#publishButton");
 
 let data;
 let activeTab = "home";
-let selected = {
-  apex: 0,
-  wildcard: 0,
-  history: 0,
-};
+let selected = { apex: 0, wildcard: 0, history: 0 };
 
 load();
 
@@ -51,21 +47,29 @@ function render() {
   if (activeTab === "wildcard") renderWildcard();
   if (activeTab === "history") renderHistory();
   if (activeTab === "images") renderImages();
-  bindEventHandlers();
+  bindCommonHandlers();
 }
 
 function renderHome() {
-  const home = data.site.home || {};
+  data.site.home ||= {};
+  const home = data.site.home;
   app.innerHTML = `
     <section class="panel">
       <h2>Topページ</h2>
       <div class="grid">
+        ${field("heroEyebrow", "小見出し", home.heroEyebrow)}
         ${field("heroTitle", "メイン見出し", home.heroTitle)}
-        ${field("heroCopy", "説明文", home.heroCopy)}
+        ${area("heroCopy", "説明文", home.heroCopy)}
         ${field("apexButtonLabel", "Apexボタン", home.apexButtonLabel)}
         ${field("historyButtonLabel", "出場履歴ボタン", home.historyButtonLabel)}
         ${field("apexSectionTitle", "Apexカスタム見出し", home.apexSectionTitle)}
+        ${area("apexSectionLead", "Apexカスタム説明", home.apexSectionLead)}
         ${field("wildcardSectionTitle", "ワイルドカード見出し", home.wildcardSectionTitle)}
+        ${area("wildcardSectionLead", "ワイルドカード説明", home.wildcardSectionLead)}
+        ${field("apexStatLabel", "Apex件数ラベル", home.apexStatLabel)}
+        ${field("wildcardStatLabel", "ワイルドカード件数ラベル", home.wildcardStatLabel)}
+        ${field("historyStatLabel", "出場履歴件数ラベル", home.historyStatLabel)}
+        ${field("archiveStatLabel", "大会アーカイブラベル", home.archiveStatLabel)}
       </div>
     </section>
   `;
@@ -85,6 +89,9 @@ function renderApex() {
       ${event ? eventFields(event, "apex") : empty("大会データがありません。")}
     </section>
     ${event ? apexTeams(event) : ""}
+    ${event ? totalResults(event) : ""}
+    ${event ? matchRecords(event, "apex") : ""}
+    ${event ? sponsors(event) : ""}
   `;
   bindEventSelect("apex");
 }
@@ -103,7 +110,11 @@ function renderWildcard() {
       ${event ? eventFields(event, "wildcard") : empty("大会データがありません。")}
     </section>
     ${event ? wildcardParticipants(event) : ""}
+    ${event ? wildcardBaseTeams(event) : ""}
     ${event ? wildcardMatchTeams(event) : ""}
+    ${event ? totalResults(event) : ""}
+    ${event ? matchRecords(event, "wildcard") : ""}
+    ${event ? sponsors(event) : ""}
   `;
   bindEventSelect("wildcard");
 }
@@ -134,7 +145,7 @@ function renderImages() {
   app.innerHTML = `
     <section class="panel">
       <h2>画像アップロード</h2>
-      <p class="status">保存先は /images/... または /public/images/... から始まるパスにしてください。各編集欄の「PCから画像を選択」でも変更できます。</p>
+      <p class="status">各編集欄の「PCから画像を選択」でも画像を変更できます。この画面では任意の /images/... パスへ保存できます。</p>
       <div class="grid">
         <label>保存先パス<input id="imagePath" value="/images/wildcard-custom/waika-vol1/thumbnail.png"></label>
         <label>画像ファイル<input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
@@ -166,7 +177,7 @@ function eventFields(event, type) {
       ${imageField("thumbnail", "大会サムネイル", event.thumbnail, defaultEventImagePath(type, event, "thumbnail.png"))}
       ${imageField("teamImage", "チーム/参加者一覧画像", event.teamImage, defaultEventImagePath(type, event, "team-list.png"))}
       ${imageField("totalResultImage", "総合結果画像", event.totalResultImage, defaultEventImagePath(type, event, "result-total.png"))}
-      ${field("archiveUrl", "配信URL", event.archiveUrl)}
+      ${field("archiveUrl", "配信アーカイブURL", event.archiveUrl)}
       ${field("edYoutubeUrl", "ED YouTube URL", event.edYoutubeUrl)}
     </div>
     <div class="grid">
@@ -186,17 +197,27 @@ function apexTeams(event) {
         <button class="primary" data-action="add-apex-team">チームを追加</button>
       </div>
       <div class="list">
-        ${event.teams.map((team, index) => `
+        ${event.teams.map((team, teamIndex) => `
           <details>
-            <summary>${escapeHtml(team.name || `チーム${index + 1}`)}</summary>
+            <summary>${escapeHtml(team.name || `チーム${teamIndex + 1}`)}</summary>
             <div class="grid">
-              ${field(`team-${index}-id`, "チームID", team.id)}
-              ${field(`team-${index}-name`, "チーム名", team.name)}
-              ${imageField(`team-${index}-thumbnail`, "チーム紹介サムネ", team.thumbnail, defaultTeamImagePath(event, index))}
-              ${field(`team-${index}-note`, "メモ", team.note)}
+              ${field(`team-${teamIndex}-id`, "チームID", team.id)}
+              ${field(`team-${teamIndex}-name`, "チーム名", team.name)}
+              ${imageField(`team-${teamIndex}-thumbnail`, "チーム紹介サムネ", team.thumbnail, defaultTeamImagePath(event, teamIndex))}
+              ${area(`team-${teamIndex}-note`, "メモ", team.note)}
             </div>
-            <div class="grid three">
-              ${[0, 1, 2].map((memberIndex) => field(`team-${index}-member-${memberIndex}`, `メンバー${memberIndex + 1}`, team.members?.[memberIndex]?.name || "")).join("")}
+            <div class="grid">
+              ${[0, 1, 2].map((memberIndex) => {
+                const member = team.members?.[memberIndex] || {};
+                return `
+                  <div class="panel nested">
+                    <h3>メンバー${memberIndex + 1}</h3>
+                    ${field(`team-${teamIndex}-member-${memberIndex}-name`, "名前", member.name || "")}
+                    ${imageField(`team-${teamIndex}-member-${memberIndex}-standImage`, "立ち絵画像", member.standImage || "", defaultApexMemberImagePath(event, teamIndex, memberIndex))}
+                    ${field(`team-${teamIndex}-member-${memberIndex}-streamUrl`, "配信URL", member.streamUrl || "")}
+                  </div>
+                `;
+              }).join("")}
             </div>
           </details>
         `).join("")}
@@ -214,12 +235,43 @@ function wildcardParticipants(event) {
         ${Array.from({ length: Math.max(30, event.participants.length) }, (_, index) => {
           const participant = event.participants[index] || {};
           return `
-            <div class="row">
-              <label>No.<input value="${index + 1}" disabled></label>
-              ${field(`participant-${index}`, "名前", participant.name)}
-            </div>
+            <details>
+              <summary>${String(index + 1).padStart(2, "0")} ${escapeHtml(participant.name || "未入力")}</summary>
+              <div class="grid">
+                ${field(`participant-${index}-name`, "名前", participant.name)}
+                ${imageField(`participant-${index}-standImage`, "立ち絵画像", participant.standImage, defaultParticipantImagePath(event, index))}
+                ${field(`participant-${index}-streamUrl`, "配信URL", participant.streamUrl)}
+                ${field(`participant-${index}-xUrl`, "X URL", participant.xUrl)}
+              </div>
+            </details>
           `;
         }).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function wildcardBaseTeams(event) {
+  event.teams ||= [];
+  return `
+    <section class="panel">
+      <h2>通常チーム情報</h2>
+      <div class="actions inline-actions">
+        <button class="primary" data-action="add-wildcard-base-team">通常チームを追加</button>
+      </div>
+      <div class="list">
+        ${event.teams.map((team, teamIndex) => `
+          <details>
+            <summary>${escapeHtml(team.name || `Team ${teamIndex + 1}`)}</summary>
+            <div class="grid">
+              ${field(`wild-base-team-${teamIndex}-name`, "チーム名", team.name)}
+              ${area(`wild-base-team-${teamIndex}-note`, "メモ", team.note)}
+            </div>
+            <div class="grid three">
+              ${[0, 1, 2].map((memberIndex) => field(`wild-base-team-${teamIndex}-member-${memberIndex}`, `メンバー${memberIndex + 1}`, team.members?.[memberIndex] || "")).join("")}
+            </div>
+          </details>
+        `).join("")}
       </div>
     </section>
   `;
@@ -256,6 +308,75 @@ function wildcardMatchTeams(event) {
   `;
 }
 
+function totalResults(event) {
+  event.totalResults ||= [];
+  return `
+    <section class="panel">
+      <h2>総合順位</h2>
+      <div class="actions inline-actions">
+        <button class="primary" data-action="add-total-result">順位行を追加</button>
+      </div>
+      <div class="list">
+        ${event.totalResults.map((row, rowIndex) => resultRow("total", rowIndex, row)).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function matchRecords(event, type) {
+  event.matches ||= [];
+  return `
+    <section class="panel">
+      <h2>試合別記録</h2>
+      <div class="actions inline-actions">
+        <button class="primary" data-action="add-event-match">試合記録を追加</button>
+      </div>
+      <div class="list">
+        ${event.matches.map((match, matchIndex) => `
+          <details>
+            <summary>${escapeHtml(match.matchName || `Match${matchIndex + 1}`)}</summary>
+            <div class="actions inline-actions">
+              <button data-action="add-match-result" data-match-index="${matchIndex}">この試合に順位行を追加</button>
+            </div>
+            <div class="grid">
+              ${field(`event-match-${matchIndex}-name`, "試合名", match.matchName)}
+              ${imageField(`event-match-${matchIndex}-resultImage`, "順位表画像", match.resultImage, defaultMatchImagePath(type, event, matchIndex))}
+              ${field(`event-match-${matchIndex}-youtubeUrl`, "神視点YouTube URL", match.youtubeUrl)}
+            </div>
+            <div class="list">
+              ${(match.results || []).map((row, rowIndex) => resultRow(`event-match-${matchIndex}-result`, rowIndex, row)).join("")}
+            </div>
+          </details>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function sponsors(event) {
+  event.sponsors ||= [];
+  return `
+    <section class="panel">
+      <h2>スポンサー</h2>
+      <div class="actions inline-actions">
+        <button class="primary" data-action="add-sponsor">スポンサーを追加</button>
+      </div>
+      <div class="list">
+        ${event.sponsors.map((sponsor, sponsorIndex) => `
+          <details>
+            <summary>${escapeHtml(sponsor.name || `スポンサー${sponsorIndex + 1}`)}</summary>
+            <div class="grid">
+              ${field(`sponsor-${sponsorIndex}-name`, "スポンサー名", sponsor.name)}
+              ${field(`sponsor-${sponsorIndex}-url`, "URL", sponsor.url)}
+              ${area(`sponsor-${sponsorIndex}-description`, "説明", sponsor.description)}
+            </div>
+          </details>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function historyFields(entry) {
   return `
     <div class="grid">
@@ -275,7 +396,18 @@ function historyFields(entry) {
   `;
 }
 
-function bindEventHandlers() {
+function resultRow(prefix, rowIndex, row) {
+  return `
+    <div class="row compact">
+      ${field(`${prefix}-${rowIndex}-rank`, "順位", row.rank)}
+      ${field(`${prefix}-${rowIndex}-teamName`, "チーム名", row.teamName)}
+      ${field(`${prefix}-${rowIndex}-points`, "ポイント", row.points)}
+      ${field(`${prefix}-${rowIndex}-note`, "メモ", row.note)}
+    </div>
+  `;
+}
+
+function bindCommonHandlers() {
   document.querySelectorAll("[data-action]").forEach((button) => {
     button.addEventListener("click", () => {
       collect();
@@ -290,9 +422,7 @@ function bindEventHandlers() {
       if (!file) return;
       const targetName = input.dataset.imageFile;
       const pathInput = document.querySelector(`[name="${CSS.escape(targetName)}"]`);
-      const defaultPath = input.dataset.defaultPath;
-      const currentPath = pathInput.value.trim();
-      const uploadPath = currentPath || defaultPath || `/images/uploads/${safeFileName(file.name)}`;
+      const uploadPath = pathInput.value.trim() || input.dataset.defaultPath || `/images/uploads/${safeFileName(file.name)}`;
       const result = await uploadImage(uploadPath, file);
       pathInput.value = result.path;
       setStatus(`画像を保存しました: ${result.path}`);
@@ -305,31 +435,20 @@ function handleAction(action, dataset) {
   if (action === "add-wildcard-event") addWildcardEvent();
   if (action === "add-history") addHistory();
   if (action === "add-apex-team") addApexTeam();
+  if (action === "add-wildcard-base-team") addWildcardBaseTeam();
   if (action === "add-wildcard-match") addWildcardMatch();
   if (action === "add-wildcard-team") addWildcardTeam(Number(dataset.matchIndex));
+  if (action === "add-total-result") addTotalResult();
+  if (action === "add-event-match") addEventMatch();
+  if (action === "add-match-result") addMatchResult(Number(dataset.matchIndex));
+  if (action === "add-sponsor") addSponsor();
 }
 
 function addApexEvent() {
   data.apex.events ||= [];
   const index = data.apex.events.length + 1;
   const id = `apex-custom-${index}`;
-  data.apex.events.push({
-    id,
-    title: `Apexカスタム ${index}`,
-    date: "",
-    category: "Apexカスタム",
-    summary: "",
-    description: "",
-    thumbnail: `/images/apex-custom/${id}/thumbnail.png`,
-    teamImage: `/images/apex-custom/${id}/team-list.png`,
-    totalResultImage: `/images/apex-custom/${id}/result-total.png`,
-    archiveUrl: "",
-    edYoutubeUrl: "",
-    teams: [],
-    matches: [],
-    sponsors: [],
-    memo: "",
-  });
+  data.apex.events.push(newEvent(id, `Apexカスタム ${index}`, "Apexカスタム", "apex-custom"));
   selected.apex = data.apex.events.length - 1;
 }
 
@@ -338,24 +457,32 @@ function addWildcardEvent() {
   const index = data.wildcard.events.length + 1;
   const id = `wildcard-custom-${index}`;
   data.wildcard.events.push({
-    id,
-    title: `ワイルドカードカスタム ${index}`,
-    date: "",
-    category: "Apexワイルドカードカスタム",
-    summary: "",
-    description: "",
-    thumbnail: `/images/wildcard-custom/${id}/thumbnail.png`,
-    teamImage: `/images/wildcard-custom/${id}/team-list.png`,
-    totalResultImage: `/images/wildcard-custom/${id}/result-total.png`,
-    archiveUrl: "",
-    edYoutubeUrl: "",
+    ...newEvent(id, `ワイルドカードカスタム ${index}`, "Apexワイルドカードカスタム", "wildcard-custom"),
     participants: [],
     matchTeams: [],
+  });
+  selected.wildcard = data.wildcard.events.length - 1;
+}
+
+function newEvent(id, title, category, imageRoot) {
+  return {
+    id,
+    title,
+    date: "",
+    category,
+    summary: "",
+    description: "",
+    thumbnail: `/images/${imageRoot}/${id}/thumbnail.png`,
+    teamImage: `/images/${imageRoot}/${id}/team-list.png`,
+    totalResultImage: `/images/${imageRoot}/${id}/result-total.png`,
+    archiveUrl: "",
+    edYoutubeUrl: "",
+    teams: [],
+    totalResults: [],
     matches: [],
     sponsors: [],
     memo: "",
-  });
-  selected.wildcard = data.wildcard.events.length - 1;
+  };
 }
 
 function addHistory() {
@@ -387,23 +514,26 @@ function addApexTeam() {
     name: `チーム${index}`,
     thumbnail: `/images/apex-custom/${event.id}/teams/team-${index}/thumbnail.png`,
     members: [
-      { name: "メンバー1", streamUrl: "" },
-      { name: "メンバー2", streamUrl: "" },
-      { name: "メンバー3", streamUrl: "" },
+      { name: "メンバー1", standImage: "", streamUrl: "" },
+      { name: "メンバー2", standImage: "", streamUrl: "" },
+      { name: "メンバー3", standImage: "", streamUrl: "" },
     ],
     note: "",
   });
+}
+
+function addWildcardBaseTeam() {
+  const event = data.wildcard.events?.[selected.wildcard];
+  if (!event) return;
+  event.teams ||= [];
+  event.teams.push({ name: `Team ${event.teams.length + 1}`, members: ["", "", ""], note: "" });
 }
 
 function addWildcardMatch() {
   const event = data.wildcard.events?.[selected.wildcard];
   if (!event) return;
   event.matchTeams ||= [];
-  const index = event.matchTeams.length + 1;
-  event.matchTeams.push({
-    matchName: `Match${index}`,
-    teams: [],
-  });
+  event.matchTeams.push({ matchName: `Match${event.matchTeams.length + 1}`, teams: [] });
 }
 
 function addWildcardTeam(matchIndex) {
@@ -411,11 +541,41 @@ function addWildcardTeam(matchIndex) {
   const match = event?.matchTeams?.[matchIndex];
   if (!match) return;
   match.teams ||= [];
-  const index = match.teams.length + 1;
-  match.teams.push({
-    name: `チーム ${index}`,
-    members: ["", "", ""],
-  });
+  match.teams.push({ name: `チーム ${match.teams.length + 1}`, members: ["", "", ""] });
+}
+
+function addTotalResult() {
+  const event = currentEvent();
+  if (!event) return;
+  event.totalResults ||= [];
+  event.totalResults.push({ rank: String(event.totalResults.length + 1), teamName: "", points: "", note: "" });
+}
+
+function addEventMatch() {
+  const event = currentEvent();
+  if (!event) return;
+  event.matches ||= [];
+  event.matches.push({ matchName: `Match${event.matches.length + 1}`, resultImage: "", youtubeUrl: "", results: [] });
+}
+
+function addMatchResult(matchIndex) {
+  const match = currentEvent()?.matches?.[matchIndex];
+  if (!match) return;
+  match.results ||= [];
+  match.results.push({ rank: String(match.results.length + 1), teamName: "", points: "", note: "" });
+}
+
+function addSponsor() {
+  const event = currentEvent();
+  if (!event) return;
+  event.sponsors ||= [];
+  event.sponsors.push({ name: `スポンサー${event.sponsors.length + 1}`, description: "", url: "" });
+}
+
+function currentEvent() {
+  if (activeTab === "apex") return data.apex.events?.[selected.apex];
+  if (activeTab === "wildcard") return data.wildcard.events?.[selected.wildcard];
+  return null;
 }
 
 function collect() {
@@ -428,7 +588,21 @@ function collect() {
 
 function collectHome() {
   data.site.home ||= {};
-  for (const key of ["heroTitle", "heroCopy", "apexButtonLabel", "historyButtonLabel", "apexSectionTitle", "wildcardSectionTitle"]) {
+  for (const key of [
+    "heroEyebrow",
+    "heroTitle",
+    "heroCopy",
+    "apexButtonLabel",
+    "historyButtonLabel",
+    "apexSectionTitle",
+    "apexSectionLead",
+    "wildcardSectionTitle",
+    "wildcardSectionLead",
+    "apexStatLabel",
+    "wildcardStatLabel",
+    "historyStatLabel",
+    "archiveStatLabel",
+  ]) {
     data.site.home[key] = value(key);
   }
 }
@@ -437,17 +611,20 @@ function collectApex() {
   const event = data.apex.events?.[selected.apex];
   if (!event) return;
   collectEvent(event);
-  event.teams = (event.teams || []).map((team, index) => ({
+  event.teams = (event.teams || []).map((team, teamIndex) => ({
     ...team,
-    id: value(`team-${index}-id`),
-    name: value(`team-${index}-name`),
-    thumbnail: value(`team-${index}-thumbnail`),
-    note: value(`team-${index}-note`),
+    id: value(`team-${teamIndex}-id`),
+    name: value(`team-${teamIndex}-name`),
+    thumbnail: value(`team-${teamIndex}-thumbnail`),
+    note: value(`team-${teamIndex}-note`),
     members: [0, 1, 2].map((memberIndex) => ({
       ...(team.members?.[memberIndex] || {}),
-      name: value(`team-${index}-member-${memberIndex}`),
+      name: value(`team-${teamIndex}-member-${memberIndex}-name`),
+      standImage: value(`team-${teamIndex}-member-${memberIndex}-standImage`),
+      streamUrl: value(`team-${teamIndex}-member-${memberIndex}-streamUrl`),
     })),
   }));
+  collectSharedEventSections(event);
 }
 
 function collectWildcard() {
@@ -456,8 +633,17 @@ function collectWildcard() {
   collectEvent(event);
   event.participants = Array.from({ length: Math.max(30, event.participants?.length || 0) }, (_, index) => ({
     ...(event.participants?.[index] || {}),
-    name: value(`participant-${index}`),
-  })).filter((participant) => participant.name);
+    name: value(`participant-${index}-name`),
+    standImage: value(`participant-${index}-standImage`),
+    streamUrl: value(`participant-${index}-streamUrl`),
+    xUrl: value(`participant-${index}-xUrl`),
+  })).filter((participant) => participant.name || participant.standImage || participant.streamUrl || participant.xUrl);
+  event.teams = (event.teams || []).map((team, teamIndex) => ({
+    ...team,
+    name: value(`wild-base-team-${teamIndex}-name`),
+    note: value(`wild-base-team-${teamIndex}-note`),
+    members: [0, 1, 2].map((memberIndex) => value(`wild-base-team-${teamIndex}-member-${memberIndex}`)).filter(Boolean),
+  }));
   event.matchTeams = (event.matchTeams || []).map((match, matchIndex) => ({
     ...match,
     matchName: value(`match-${matchIndex}-name`),
@@ -467,6 +653,40 @@ function collectWildcard() {
       members: [0, 1, 2].map((memberIndex) => value(`match-${matchIndex}-team-${teamIndex}-member-${memberIndex}`)).filter(Boolean),
     })),
   }));
+  collectSharedEventSections(event);
+}
+
+function collectEvent(event) {
+  for (const key of ["id", "title", "date", "category", "thumbnail", "teamImage", "totalResultImage", "archiveUrl", "edYoutubeUrl", "summary", "description", "memo"]) {
+    event[key] = value(key);
+  }
+}
+
+function collectSharedEventSections(event) {
+  event.totalResults = (event.totalResults || []).map((row, rowIndex) => collectResultRow("total", rowIndex, row));
+  event.matches = (event.matches || []).map((match, matchIndex) => ({
+    ...match,
+    matchName: value(`event-match-${matchIndex}-name`),
+    resultImage: value(`event-match-${matchIndex}-resultImage`),
+    youtubeUrl: value(`event-match-${matchIndex}-youtubeUrl`),
+    results: (match.results || []).map((row, rowIndex) => collectResultRow(`event-match-${matchIndex}-result`, rowIndex, row)),
+  }));
+  event.sponsors = (event.sponsors || []).map((sponsor, sponsorIndex) => ({
+    ...sponsor,
+    name: value(`sponsor-${sponsorIndex}-name`),
+    url: value(`sponsor-${sponsorIndex}-url`),
+    description: value(`sponsor-${sponsorIndex}-description`),
+  }));
+}
+
+function collectResultRow(prefix, rowIndex, row) {
+  return {
+    ...row,
+    rank: value(`${prefix}-${rowIndex}-rank`),
+    teamName: value(`${prefix}-${rowIndex}-teamName`),
+    points: value(`${prefix}-${rowIndex}-points`),
+    note: value(`${prefix}-${rowIndex}-note`),
+  };
 }
 
 function collectHistory() {
@@ -482,12 +702,6 @@ function collectHistory() {
   entry.archiveUrl = value("history-archiveUrl");
   entry.memo = value("history-memo");
   entry.members = [0, 1, 2].map((index) => value(`history-member-${index}`)).filter(Boolean);
-}
-
-function collectEvent(event) {
-  for (const key of ["id", "title", "date", "category", "thumbnail", "teamImage", "totalResultImage", "archiveUrl", "edYoutubeUrl", "summary", "description", "memo"]) {
-    event[key] = value(key);
-  }
 }
 
 function eventSelect(type, events) {
@@ -575,8 +789,21 @@ function defaultEventImagePath(type, event, fileName) {
   return `/images/${root}/${event.id || "new-event"}/${fileName}`;
 }
 
-function defaultTeamImagePath(event, index) {
-  return `/images/apex-custom/${event.id || "new-event"}/teams/team-${index + 1}/thumbnail.png`;
+function defaultTeamImagePath(event, teamIndex) {
+  return `/images/apex-custom/${event.id || "new-event"}/teams/team-${teamIndex + 1}/thumbnail.png`;
+}
+
+function defaultApexMemberImagePath(event, teamIndex, memberIndex) {
+  return `/images/apex-custom/${event.id || "new-event"}/teams/team-${teamIndex + 1}/member-${memberIndex + 1}.png`;
+}
+
+function defaultParticipantImagePath(event, index) {
+  return `/images/wildcard-custom/${event.id || "new-event"}/participants/participant-${index + 1}.png`;
+}
+
+function defaultMatchImagePath(type, event, matchIndex) {
+  const root = type === "apex" ? "apex-custom" : "wildcard-custom";
+  return `/images/${root}/${event.id || "new-event"}/result-match${matchIndex + 1}.png`;
 }
 
 function defaultHistoryImagePath(entry, fileName) {
