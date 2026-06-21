@@ -376,7 +376,25 @@
       "matches": [
         {
           "matchName": "Match1",
-          "resultImage": "",
+          "resultImage": "/images/wildcard-custom/waika-vol1/result-match1.png",
+          "youtubeUrl": "",
+          "results": []
+        },
+        {
+          "matchName": "Match2",
+          "resultImage": "/images/wildcard-custom/waika-vol1/result-match2.png",
+          "youtubeUrl": "",
+          "results": []
+        },
+        {
+          "matchName": "Match3",
+          "resultImage": "/images/wildcard-custom/waika-vol1/result-match3.png",
+          "youtubeUrl": "",
+          "results": []
+        },
+        {
+          "matchName": "Match4",
+          "resultImage": "/images/wildcard-custom/waika-vol1/result-match4.png",
           "youtubeUrl": "",
           "results": []
         }
