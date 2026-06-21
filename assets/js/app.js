@@ -106,6 +106,7 @@ function isCurrent(href) {
 function renderHome() {
   const totalEvents = state.apex.length + state.wildcard.length;
   const home = state.site.home || {};
+  const archiveMonth = archiveCoverageLabel();
   app.innerHTML = layout(`
     <section class="hero">
       <div class="section-inner hero-grid">
@@ -123,6 +124,7 @@ function renderHome() {
             <div class="stat"><strong>${state.participation.length}</strong><span>${escapeHtml(home.historyStatLabel || "出場履歴")}</span></div>
             <div class="stat"><strong>${totalEvents}</strong><span>${escapeHtml(home.archiveStatLabel || "大会アーカイブ")}</span></div>
           </div>
+          ${archiveMonth ? `<div class="archive-coverage">掲載データ：${archiveMonth}まで</div>` : ""}
         </div>
         <div class="hero-emblem">
           <div class="emblem-ring">
@@ -280,10 +282,12 @@ function renderTeamDetail() {
 }
 
 function renderParticipation() {
+  const archiveMonth = archiveCoverageLabel(state.participation);
   app.innerHTML = layout(`
     ${pageHero("Apexカスタム出場履歴", "ゆとり自身が出場したApexカスタム大会の履歴。大会名、チーム名、メンバー、最終順位、配信アーカイブ、メモを管理できます。")}
     <section class="section">
       <div class="section-inner">
+        ${archiveMonth ? `<div class="archive-coverage panel">出場履歴：${archiveMonth}まで掲載</div>` : ""}
         <div class="history-list">
           ${state.participation.map(historyItem).join("") || empty("出場履歴がまだありません。")}
         </div>
@@ -611,13 +615,33 @@ function getYoutubeId(url) {
 
 function formatDate(value) {
   if (!value) return "日付未設定";
-  const date = new Date(`${value}T00:00:00`);
+  const date = parseDate(value);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat("ja-JP", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   }).format(date);
+}
+
+function archiveCoverageLabel(items = [...state.apex, ...state.wildcard, ...state.participation]) {
+  const latest = items
+    .map((item) => parseDate(item.date))
+    .filter((date) => !Number.isNaN(date.getTime()))
+    .sort((a, b) => b.getTime() - a.getTime())[0];
+  if (!latest) return "";
+  return new Intl.DateTimeFormat("ja-JP", {
+    year: "numeric",
+    month: "long",
+  }).format(latest);
+}
+
+function parseDate(value) {
+  if (!value) return new Date(Number.NaN);
+  const normalized = String(value).trim().replaceAll("/", "-");
+  const match = normalized.match(/^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?/);
+  if (!match) return new Date(`${value}T00:00:00`);
+  return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3] || 1));
 }
 
 function escapeHtml(value = "") {

@@ -108,6 +108,16 @@ button.danger {
   margin: 0 0 12px;
 }
 
+.order-actions {
+  align-items: center;
+}
+
+.order-note {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
 .workspace {
   min-width: 0;
   padding: 18px;

@@ -793,6 +793,23 @@ tr:last-child td {
   gap: 14px;
 }
 
+.archive-coverage {
+  width: fit-content;
+  margin-top: 14px;
+  border: 1px solid rgba(29, 161, 242, 0.46);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--white);
+  background: rgba(29, 161, 242, 0.12);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.archive-coverage.panel {
+  width: 100%;
+  margin: 0 0 14px;
+}
+
 .history-item {
   display: grid;
   grid-template-columns: 190px minmax(0, 1fr);

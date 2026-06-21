@@ -183,6 +183,7 @@ function renderHistoryEditor() {
     <section class="panel">
       ${editHeader("出場履歴")}
       ${historySelect(data.participation.entries)}
+      ${historyOrderControls(data.participation.entries)}
       ${entry ? historyFields(entry) : empty("出場履歴がありません。")}
     </section>
   `;
@@ -193,6 +194,17 @@ function renderHistoryEditor() {
     editTarget = { type: "history" };
     render();
   });
+}
+
+function historyOrderControls(entries) {
+  if (!entries.length) return "";
+  return `
+    <div class="actions inline-actions order-actions">
+      <button data-action="move-history-up">上へ移動</button>
+      <button data-action="move-history-down">下へ移動</button>
+      <span class="order-note">現在の表示順: ${selected.history + 1} / ${entries.length}</span>
+    </div>
+  `;
 }
 
 function editHeader(title) {
@@ -507,6 +519,8 @@ function handleAction(action, dataset) {
   if (action === "add-event-match") addEventMatch();
   if (action === "add-match-result") addMatchResult(Number(dataset.matchIndex));
   if (action === "add-sponsor") addSponsor();
+  if (action === "move-history-up") moveHistory(-1);
+  if (action === "move-history-down") moveHistory(1);
 }
 
 function selectEdit(type, index) {
@@ -576,6 +590,20 @@ function addHistory() {
   });
   selected.history = data.participation.entries.length - 1;
   selectEdit("history", selected.history);
+}
+
+function moveHistory(direction) {
+  const entries = data.participation.entries || [];
+  const current = selected.history;
+  const next = current + direction;
+  if (next < 0 || next >= entries.length) {
+    setStatus("これ以上は移動できません。");
+    return;
+  }
+  [entries[current], entries[next]] = [entries[next], entries[current]];
+  selected.history = next;
+  editTarget = { type: "history" };
+  setStatus("出場履歴の順番を変更しました。保存するとサイトに反映されます。");
 }
 
 function addApexTeam() {
