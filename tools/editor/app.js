@@ -7,6 +7,7 @@ const publishButton = document.querySelector("#publishButton");
 let data;
 let activeTab = "home";
 let selected = { apex: 0, wildcard: 0, history: 0 };
+let editTarget = null;
 
 load();
 
@@ -14,7 +15,7 @@ tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     collect();
     activeTab = tab.dataset.tab;
-    tabs.forEach((item) => item.classList.toggle("active", item === tab));
+    if (activeTab !== "edit") editTarget = null;
     render();
   });
 });
@@ -42,10 +43,10 @@ async function load() {
 
 function render() {
   if (!data) return;
+  tabs.forEach((item) => item.classList.toggle("active", item.dataset.tab === activeTab));
   if (activeTab === "home") renderHome();
-  if (activeTab === "apex") renderApex();
-  if (activeTab === "wildcard") renderWildcard();
-  if (activeTab === "history") renderHistory();
+  if (activeTab === "edit") renderEdit();
+  if (activeTab === "add") renderAdd();
   if (activeTab === "images") renderImages();
   bindCommonHandlers();
 }
@@ -75,16 +76,74 @@ function renderHome() {
   `;
 }
 
-function renderApex() {
+function renderEdit() {
+  data.apex.events ||= [];
+  data.wildcard.events ||= [];
+  data.participation.entries ||= [];
+
+  if (editTarget?.type === "apex") return renderApexEditor();
+  if (editTarget?.type === "wildcard") return renderWildcardEditor();
+  if (editTarget?.type === "history") return renderHistoryEditor();
+
+  app.innerHTML = `
+    <section class="panel">
+      <h2>掲載中の内容を編集</h2>
+      <p class="status">現在サイトに掲載しているものを一覧から選択して編集します。</p>
+      <div class="edit-sections">
+        ${editList("apex", "Apexカスタム", data.apex.events)}
+        ${editList("wildcard", "ワイルドカードカスタム", data.wildcard.events)}
+        ${editList("history", "出場履歴", data.participation.entries)}
+      </div>
+    </section>
+  `;
+}
+
+function renderAdd() {
+  app.innerHTML = `
+    <section class="panel">
+      <h2>新しく追加</h2>
+      <p class="status">一から入力できる空フォーマットを作成します。作成後、自動で編集画面へ移動します。</p>
+      <div class="add-grid">
+        <button class="create-card" data-action="add-apex-event">
+          <strong>Apexカスタム</strong>
+          <span>通常Apexカスタム大会を新規作成</span>
+        </button>
+        <button class="create-card" data-action="add-wildcard-event">
+          <strong>ワイルドカードカスタム</strong>
+          <span>参加者30人と各試合チーム構成を入れられる大会を新規作成</span>
+        </button>
+        <button class="create-card" data-action="add-history">
+          <strong>出場履歴</strong>
+          <span>ゆとり自身の出場履歴を新規作成</span>
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+function editList(type, title, items) {
+  return `
+    <section class="panel nested">
+      <h3>${escapeHtml(title)}</h3>
+      <div class="list">
+        ${items.length ? items.map((item, index) => `
+          <button class="list-button" data-action="select-edit" data-type="${type}" data-index="${index}">
+            <span>${escapeHtml(item.title || item.id || `${title} ${index + 1}`)}</span>
+            <small>${escapeHtml(item.date || item.id || "日付未設定")}</small>
+          </button>
+        `).join("") : empty("登録データがありません。追加タブから作成できます。")}
+      </div>
+    </section>
+  `;
+}
+
+function renderApexEditor() {
   data.apex.events ||= [];
   clampSelection("apex", data.apex.events);
   const event = data.apex.events[selected.apex];
   app.innerHTML = `
     <section class="panel">
-      <h2>Apexカスタム</h2>
-      <div class="actions inline-actions">
-        <button class="primary" data-action="add-apex-event">Apexカスタムを追加</button>
-      </div>
+      ${editHeader("Apexカスタム")}
       ${eventSelect("apex", data.apex.events)}
       ${event ? eventFields(event, "apex") : empty("大会データがありません。")}
     </section>
@@ -96,16 +155,13 @@ function renderApex() {
   bindEventSelect("apex");
 }
 
-function renderWildcard() {
+function renderWildcardEditor() {
   data.wildcard.events ||= [];
   clampSelection("wildcard", data.wildcard.events);
   const event = data.wildcard.events[selected.wildcard];
   app.innerHTML = `
     <section class="panel">
-      <h2>ワイルドカード</h2>
-      <div class="actions inline-actions">
-        <button class="primary" data-action="add-wildcard-event">ワイルドカードカスタムを追加</button>
-      </div>
+      ${editHeader("ワイルドカードカスタム")}
       ${eventSelect("wildcard", data.wildcard.events)}
       ${event ? eventFields(event, "wildcard") : empty("大会データがありません。")}
     </section>
@@ -119,16 +175,13 @@ function renderWildcard() {
   bindEventSelect("wildcard");
 }
 
-function renderHistory() {
+function renderHistoryEditor() {
   data.participation.entries ||= [];
   clampSelection("history", data.participation.entries);
   const entry = data.participation.entries[selected.history];
   app.innerHTML = `
     <section class="panel">
-      <h2>出場履歴</h2>
-      <div class="actions inline-actions">
-        <button class="primary" data-action="add-history">出場履歴を追加</button>
-      </div>
+      ${editHeader("出場履歴")}
       ${historySelect(data.participation.entries)}
       ${entry ? historyFields(entry) : empty("出場履歴がありません。")}
     </section>
@@ -137,8 +190,18 @@ function renderHistory() {
   select?.addEventListener("change", () => {
     collect();
     selected.history = Number(select.value);
+    editTarget = { type: "history" };
     render();
   });
+}
+
+function editHeader(title) {
+  return `
+    <div class="edit-header">
+      <button data-action="back-edit-list">一覧へ戻る</button>
+      <h2>${escapeHtml(title)}</h2>
+    </div>
+  `;
 }
 
 function renderImages() {
@@ -262,7 +325,7 @@ function wildcardBaseTeams(event) {
       <div class="list">
         ${event.teams.map((team, teamIndex) => `
           <details>
-            <summary>${escapeHtml(team.name || `Team ${teamIndex + 1}`)}</summary>
+            <summary>${escapeHtml(team.name || `チーム${teamIndex + 1}`)}</summary>
             <div class="grid">
               ${field(`wild-base-team-${teamIndex}-name`, "チーム名", team.name)}
               ${area(`wild-base-team-${teamIndex}-note`, "メモ", team.note)}
@@ -431,6 +494,8 @@ function bindCommonHandlers() {
 }
 
 function handleAction(action, dataset) {
+  if (action === "select-edit") selectEdit(dataset.type, Number(dataset.index));
+  if (action === "back-edit-list") editTarget = null;
   if (action === "add-apex-event") addApexEvent();
   if (action === "add-wildcard-event") addWildcardEvent();
   if (action === "add-history") addHistory();
@@ -444,12 +509,19 @@ function handleAction(action, dataset) {
   if (action === "add-sponsor") addSponsor();
 }
 
+function selectEdit(type, index) {
+  selected[type] = index;
+  activeTab = "edit";
+  editTarget = { type };
+}
+
 function addApexEvent() {
   data.apex.events ||= [];
   const index = data.apex.events.length + 1;
   const id = `apex-custom-${index}`;
   data.apex.events.push(newEvent(id, `Apexカスタム ${index}`, "Apexカスタム", "apex-custom"));
   selected.apex = data.apex.events.length - 1;
+  selectEdit("apex", selected.apex);
 }
 
 function addWildcardEvent() {
@@ -458,10 +530,11 @@ function addWildcardEvent() {
   const id = `wildcard-custom-${index}`;
   data.wildcard.events.push({
     ...newEvent(id, `ワイルドカードカスタム ${index}`, "Apexワイルドカードカスタム", "wildcard-custom"),
-    participants: [],
+    participants: Array.from({ length: 30 }, () => ({ name: "", standImage: "", streamUrl: "", xUrl: "" })),
     matchTeams: [],
   });
   selected.wildcard = data.wildcard.events.length - 1;
+  selectEdit("wildcard", selected.wildcard);
 }
 
 function newEvent(id, title, category, imageRoot) {
@@ -502,6 +575,7 @@ function addHistory() {
     memo: "",
   });
   selected.history = data.participation.entries.length - 1;
+  selectEdit("history", selected.history);
 }
 
 function addApexTeam() {
@@ -526,7 +600,7 @@ function addWildcardBaseTeam() {
   const event = data.wildcard.events?.[selected.wildcard];
   if (!event) return;
   event.teams ||= [];
-  event.teams.push({ name: `Team ${event.teams.length + 1}`, members: ["", "", ""], note: "" });
+  event.teams.push({ name: `チーム${event.teams.length + 1}`, members: ["", "", ""], note: "" });
 }
 
 function addWildcardMatch() {
@@ -541,7 +615,7 @@ function addWildcardTeam(matchIndex) {
   const match = event?.matchTeams?.[matchIndex];
   if (!match) return;
   match.teams ||= [];
-  match.teams.push({ name: `チーム ${match.teams.length + 1}`, members: ["", "", ""] });
+  match.teams.push({ name: `チーム${match.teams.length + 1}`, members: ["", "", ""] });
 }
 
 function addTotalResult() {
@@ -573,17 +647,17 @@ function addSponsor() {
 }
 
 function currentEvent() {
-  if (activeTab === "apex") return data.apex.events?.[selected.apex];
-  if (activeTab === "wildcard") return data.wildcard.events?.[selected.wildcard];
+  if (editTarget?.type === "apex") return data.apex.events?.[selected.apex];
+  if (editTarget?.type === "wildcard") return data.wildcard.events?.[selected.wildcard];
   return null;
 }
 
 function collect() {
   if (!data) return;
   if (activeTab === "home") collectHome();
-  if (activeTab === "apex") collectApex();
-  if (activeTab === "wildcard") collectWildcard();
-  if (activeTab === "history") collectHistory();
+  if (activeTab === "edit" && editTarget?.type === "apex") collectApex();
+  if (activeTab === "edit" && editTarget?.type === "wildcard") collectWildcard();
+  if (activeTab === "edit" && editTarget?.type === "history") collectHistory();
 }
 
 function collectHome() {
@@ -719,6 +793,7 @@ function bindEventSelect(type) {
   select?.addEventListener("change", () => {
     collect();
     selected[type] = Number(select.value);
+    editTarget = { type };
     render();
   });
 }

@@ -221,6 +221,48 @@ summary {
   gap: 10px;
 }
 
+.edit-sections,
+.add-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.edit-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.edit-header h2 {
+  margin-bottom: 0;
+}
+
+.list-button,
+.create-card {
+  width: 100%;
+  height: auto;
+  min-height: 78px;
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  text-align: left;
+}
+
+.list-button span,
+.create-card strong {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.list-button small,
+.create-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
 .row {
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr);
@@ -266,7 +308,14 @@ summary {
 
   .grid,
   .grid.three,
+  .edit-sections,
+  .add-grid,
   .row.compact {
     grid-template-columns: 1fr;
+  }
+
+  .edit-header {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
