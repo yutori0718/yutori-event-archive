@@ -148,8 +148,8 @@ function renderApexEditor() {
       ${event ? eventFields(event, "apex") : empty("大会データがありません。")}
     </section>
     ${event ? apexTeams(event) : ""}
-    ${event ? totalResults(event) : ""}
-    ${event ? matchRecords(event, "apex") : ""}
+    ${event && !isHidden(event, "totalResults") ? totalResults(event) : ""}
+    ${event && !isHidden(event, "matches") ? matchRecords(event, "apex") : ""}
     ${event ? sponsors(event) : ""}
   `;
   bindEventSelect("apex");
@@ -166,10 +166,10 @@ function renderWildcardEditor() {
       ${event ? eventFields(event, "wildcard") : empty("大会データがありません。")}
     </section>
     ${event ? wildcardParticipants(event) : ""}
-    ${event ? wildcardBaseTeams(event) : ""}
+    ${event && !isHidden(event, "wildcardBaseTeams") ? wildcardBaseTeams(event) : ""}
     ${event ? wildcardMatchTeams(event) : ""}
-    ${event ? totalResults(event) : ""}
-    ${event ? matchRecords(event, "wildcard") : ""}
+    ${event && !isHidden(event, "totalResults") ? totalResults(event) : ""}
+    ${event && !isHidden(event, "matches") ? matchRecords(event, "wildcard") : ""}
     ${event ? sponsors(event) : ""}
   `;
   bindEventSelect("wildcard");
@@ -678,6 +678,10 @@ function currentEvent() {
   if (editTarget?.type === "apex") return data.apex.events?.[selected.apex];
   if (editTarget?.type === "wildcard") return data.wildcard.events?.[selected.wildcard];
   return null;
+}
+
+function isHidden(event, section) {
+  return (event.hiddenSections || []).includes(section);
 }
 
 function collect() {

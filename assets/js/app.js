@@ -215,9 +215,9 @@ function renderEventDetail(type) {
           ${isApex ? imagePanel("チーム紹介画像", item.teamImage) : imagePanel("参加者一覧画像", item.teamImage)}
           ${isApex ? teamCardList(item) : participantList(item.participants)}
           ${wildcardMatchTeams(item.matchTeams)}
-          ${resultTable(item.totalResults, "総合順位")}
-          ${imagePanel("総合順位表画像", item.totalResultImage)}
-          ${matchSection(item.matches)}
+          ${isHidden(item, "totalResults") ? "" : resultTable(item.totalResults, "総合順位")}
+          ${isHidden(item, "totalResultImage") ? "" : imagePanel("総合順位表画像", item.totalResultImage)}
+          ${isHidden(item, "matches") ? "" : matchSection(item.matches)}
           ${videoSection("ED動画", item.edYoutubeUrl)}
           ${sponsorSection(item.sponsors)}
           ${memoSection(item.memo)}
@@ -339,6 +339,10 @@ function imagePanel(title, src) {
       <div class="image-frame">${imageOrPlaceholder(src, title)}</div>
     </section>
   `;
+}
+
+function isHidden(item, section) {
+  return (item.hiddenSections || []).includes(section);
 }
 
 function teamCardList(event) {

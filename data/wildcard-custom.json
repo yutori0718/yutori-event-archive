@@ -12,17 +12,7 @@
       "totalResultImage": "/images/wildcard-custom/waika-vol1/result-total.png",
       "archiveUrl": "",
       "edYoutubeUrl": "",
-      "teams": [
-        {
-          "name": "Wildcard A",
-          "members": [
-            "Player A",
-            "Player B",
-            "Player C"
-          ],
-          "note": "参加者サンプル"
-        }
-      ],
+      "teams": [],
       "matchTeams": [
         {
           "matchName": "Match1",
@@ -365,14 +355,7 @@
           ]
         }
       ],
-      "totalResults": [
-        {
-          "rank": "1",
-          "teamName": "Wildcard A",
-          "points": "0",
-          "note": "サンプル"
-        }
-      ],
+      "totalResults": [],
       "matches": [
         {
           "matchName": "Match1",
@@ -582,6 +565,10 @@
           "streamUrl": "",
           "xUrl": ""
         }
+      ],
+      "hiddenSections": [
+        "wildcardBaseTeams",
+        "totalResults"
       ]
     },
     {
