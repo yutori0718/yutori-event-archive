@@ -18,6 +18,31 @@
 
 URL未設定、または `enabled: false` の場合は、今まで通り `data/*.json` の内容で表示されます。
 
+## GitHub Pages編集アプリ
+
+PC上で管理アプリを起動して、GitHub Pages用のJSONと画像を編集できます。
+
+```powershell
+node tools/editor-server.mjs
+```
+
+起動後に開くURL:
+
+```text
+http://127.0.0.1:5190/
+```
+
+できること:
+
+- Topページ文言の編集
+- Apexカスタム大会情報の編集
+- Apexチーム名、チーム紹介サムネ、メンバー名の編集
+- ワイルドカード参加者一覧の編集
+- ワイルドカード各試合チーム構成の編集
+- 出場履歴の編集
+- `/images/...` への画像アップロード
+- 保存後にGitHubへ公開
+
 ゆとり主催・参加の Apex Legends カスタム大会アーカイブサイトです。  
 GitHub Pages で公開しています。
 

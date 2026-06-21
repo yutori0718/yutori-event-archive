@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YUTORI EVENT ARCHIVE Editor</title>
+    <link rel="stylesheet" href="/editor/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">GitHub Pages Editor</p>
+        <h1>YUTORI EVENT ARCHIVE 管理アプリ</h1>
+      </div>
+      <div class="actions">
+        <button id="saveButton">保存</button>
+        <button id="publishButton" class="primary">GitHubへ公開</button>
+      </div>
+    </header>
+
+    <main>
+      <aside class="sidebar">
+        <button class="tab active" data-tab="home">Top</button>
+        <button class="tab" data-tab="apex">Apexカスタム</button>
+        <button class="tab" data-tab="wildcard">ワイルドカード</button>
+        <button class="tab" data-tab="history">出場履歴</button>
+        <button class="tab" data-tab="images">画像</button>
+      </aside>
+
+      <section class="workspace">
+        <div id="status" class="status">読み込み中...</div>
+        <div id="app"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/editor/app.js"></script>
+  </body>
+</html>
