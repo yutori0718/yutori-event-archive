@@ -486,22 +486,26 @@
         {
           "matchName": "Match1",
           "resultImage": "/images/apex-custom/yutori-fes-vol1/match1.png",
-          "youtubeUrl": ""
+          "youtubeUrl": "",
+          "results": []
         },
         {
           "matchName": "Match2",
           "resultImage": "/images/apex-custom/yutori-fes-vol1/match2.png",
-          "youtubeUrl": ""
+          "youtubeUrl": "",
+          "results": []
         },
         {
           "matchName": "Match3",
           "resultImage": "/images/apex-custom/yutori-fes-vol1/match3.png",
-          "youtubeUrl": ""
+          "youtubeUrl": "",
+          "results": []
         },
         {
           "matchName": "Match4",
           "resultImage": "/images/apex-custom/yutori-fes-vol1/match4.png",
-          "youtubeUrl": ""
+          "youtubeUrl": "",
+          "results": []
         }
       ],
       "sponsors": [],

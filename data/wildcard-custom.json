@@ -3,9 +3,9 @@
     {
       "id": "waika-vol1",
       "title": "ワイカですがなにか？vo.1",
-      "date": "2026-05-30",
+      "date": "2026-05-5",
       "category": "Apexワイルドカードカスタム",
-      "summary": "ワイルドカード形式のApexカスタム大会。参加者30名の一覧と大会記録を掲載します。",
+      "summary": "ワイルドカード形式のApexカスタム大会。参加者30名の一覧と大会記録を掲載しています。",
       "description": "ワイカですがなにか？vo.1 の大会アーカイブです。大会サムネイル、参加者一覧画像、参加者名、大会結果、動画URLを管理できます。",
       "thumbnail": "/images/wildcard-custom/waika-vol1/thumbnail.png",
       "teamImage": "/images/wildcard-custom/waika-vol1/team-list.png",
@@ -377,101 +377,192 @@
         {
           "matchName": "Match1",
           "resultImage": "",
-          "youtubeUrl": ""
+          "youtubeUrl": "",
+          "results": []
         }
       ],
       "sponsors": [],
-      "memo": "試合ごとにチームが変わる場合は matchTeams に追加してください。",
+      "memo": "初めてのワイルドカードカスタムを実施\n当日、人数が30人集まらないと開始できないことがわかり、2名連絡がつかず\nしかし、木曜日固定メンバーのNoahちゃんとRoMさんが参加していただき無事開催ができた。",
       "participants": [
         {
-          "name": "ゆとりですが"
+          "name": "ゆとりですが",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "さっとん"
+          "name": "さっとん",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "めちゃんまん"
+          "name": "めちゃんまん",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "和幸村長"
+          "name": "和幸村長",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "ぱんくん"
+          "name": "ぱんくん",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "志摩フユキ"
+          "name": "志摩フユキ",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "GABUNARA9"
+          "name": "GABUNARA9",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "黒田音流"
+          "name": "黒田音流",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "YUKI_REX"
+          "name": "YUKI_REX",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "そらち"
+          "name": "そらち",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "ぽんぽこおなつ"
+          "name": "ぽんぽこおなつ",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "なっちゃん"
+          "name": "なっちゃん",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "チラチン"
+          "name": "チラチン",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "らざぁー"
+          "name": "らざぁー",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "玖彪 黝簾"
+          "name": "玖彪 黝簾",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "水瀬名月"
+          "name": "水瀬名月",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "愛姫みこな"
+          "name": "愛姫みこな",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "影宮無名"
+          "name": "影宮無名",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "すぅちゃん"
+          "name": "すぅちゃん",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "RISU"
+          "name": "RISU",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "くろの"
+          "name": "くろの",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "maimeron"
+          "name": "maimeron",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "Noah"
+          "name": "Noah",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "そらのチョコ"
+          "name": "そらのチョコ",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "Sinon"
+          "name": "Sinon",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "すいちやん"
+          "name": "すいちやん",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "かーき"
+          "name": "かーき",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "RoM"
+          "name": "RoM",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "コタだよ"
+          "name": "コタだよ",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         },
         {
-          "name": "Aimee"
+          "name": "Aimee",
+          "standImage": "",
+          "streamUrl": "",
+          "xUrl": ""
         }
       ]
     },
