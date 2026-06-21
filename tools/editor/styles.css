@@ -104,6 +104,10 @@ button.danger {
   gap: 8px;
 }
 
+.inline-actions {
+  margin: 0 0 12px;
+}
+
 .workspace {
   min-width: 0;
   padding: 18px;
@@ -146,6 +150,33 @@ label {
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 900;
+}
+
+.image-field {
+  align-content: start;
+}
+
+.file-button {
+  position: relative;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(29, 161, 242, 0.58);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #fff;
+  background: rgba(29, 161, 242, 0.14);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.file-button input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 input,
