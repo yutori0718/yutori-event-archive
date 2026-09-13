@@ -12,6 +12,8 @@ const root = document.querySelector("#admin-app");
 
 const state = {
   token: "",
+  masterPassword: "",
+  teamPasswords: {},
   view: localStorage.getItem(VAULT_KEY) ? "login" : "setup",
   busy: false,
   message: "",
@@ -124,14 +126,17 @@ async function setupVault(email, password, confirmPassword, token) {
     if (repo.permissions?.push !== true) {
       throw new Error("このトークンには書き込み権限がありません。Contents を Read and write にしたトークンを入力してください。");
     }
-    const encrypted = await encryptWithPassword(password, { token: state.token });
-    localStorage.setItem(VAULT_KEY, JSON.stringify({ email: ADMIN_EMAIL, ...encrypted }));
+    state.masterPassword = password;
+    state.teamPasswords = {};
+    await persistVault();
     const { json, sha } = await fetchDataFile();
     state.data = json;
     state.sha = sha;
     state.view = "dashboard";
   } catch (error) {
     state.token = "";
+    state.masterPassword = "";
+    state.teamPasswords = {};
     state.message = error.message || "設定に失敗しました。";
     state.messageType = "error";
   } finally {
@@ -162,6 +167,8 @@ async function loginWithPassword(email, password) {
   }
   try {
     state.token = secret.token;
+    state.masterPassword = password;
+    state.teamPasswords = secret.teamPasswords || {};
     const repo = await fetchRepoInfo();
     if (repo.permissions?.push !== true) {
       throw new Error("保存されているGitHubトークンに書き込み権限がありません。「初期設定からやり直す」をお試しください。");
@@ -172,6 +179,8 @@ async function loginWithPassword(email, password) {
     state.view = "dashboard";
   } catch (error) {
     state.token = "";
+    state.masterPassword = "";
+    state.teamPasswords = {};
     state.message = error.message || "ログインに失敗しました。";
     state.messageType = "error";
   } finally {
@@ -180,10 +189,23 @@ async function loginWithPassword(email, password) {
   }
 }
 
+// 端末にはトークン本体ではなく、マスターパスワードで暗号化した保管庫だけを置く。
+// チームごとのパスワードもここに一緒にしまうので、一度入力・保存したチームは
+// 次回の編集時に自動でロック解除され、毎回パスワードを入れ直す必要がない。
+async function persistVault() {
+  const encrypted = await encryptWithPassword(state.masterPassword, {
+    token: state.token,
+    teamPasswords: state.teamPasswords,
+  });
+  localStorage.setItem(VAULT_KEY, JSON.stringify({ email: ADMIN_EMAIL, ...encrypted }));
+}
+
 function resetVault() {
-  if (!confirm("初期設定をやり直します。GitHubのPersonal Access Tokenを再入力する必要があります。よろしいですか？")) return;
+  if (!confirm("初期設定をやり直します。GitHubのPersonal Access Tokenの再入力に加えて、これまで自動記憶されていたチームごとのパスワードも端末から消えます（GitHub上のデータ自体は消えません）。よろしいですか？")) return;
   localStorage.removeItem(VAULT_KEY);
   state.token = "";
+  state.masterPassword = "";
+  state.teamPasswords = {};
   state.view = "setup";
   state.message = "";
   render();
@@ -191,6 +213,8 @@ function resetVault() {
 
 function logout() {
   state.token = "";
+  state.masterPassword = "";
+  state.teamPasswords = {};
   state.data = null;
   state.sha = null;
   state.view = localStorage.getItem(VAULT_KEY) ? "login" : "setup";
@@ -355,6 +379,30 @@ function openForm(event) {
   state.view = "form";
   state.message = "";
   render();
+  if (event) autoUnlockTeams();
+}
+
+// この端末で以前保存したチームは、パスワードを保管庫から自動取得してロック解除する。
+// 手入力の手間・入れ忘れによる「編集のたびに消えたように見える」問題を防ぐ。
+async function autoUnlockTeams() {
+  const targets = state.form.teams.filter(
+    (team) => team.passwordState === "locked" && state.teamPasswords[team.id],
+  );
+  if (!targets.length) return;
+  await Promise.all(
+    targets.map(async (team) => {
+      try {
+        const detail = await decryptTeamDetail(state.teamPasswords[team.id], team);
+        team.detail = detail;
+        team.passwordState = "unlocked";
+        team.activePassword = state.teamPasswords[team.id];
+      } catch {
+        // 保管庫のパスワードが合わなくなっている場合はロックのままにする
+      }
+    }),
+  );
+  syncMatchCount();
+  render();
 }
 
 function normalizeFormEvent(event) {
@@ -436,7 +484,7 @@ function regenPassword(index) {
 
 function resetTeamPassword(index) {
   const team = state.form.teams[index];
-  if (!confirm("パスワードをリセットすると、これまでの試合結果・個人成績データは復元できなくなり、白紙から入力し直すことになります。よろしいですか？")) return;
+  if (!confirm("⚠️ これまで入力した試合結果・個人成績データは元に戻せなくなり、白紙になります。本当にパスワードを作り直しますか？")) return;
   team.passwordState = "reset";
   team.activePassword = generatePassword();
   team.detail = blankDetail(state.form.maps.length);
@@ -455,6 +503,7 @@ async function unlockTeam(index) {
     team.passwordState = "unlocked";
     team.activePassword = password;
     team.unlockError = "";
+    state.teamPasswords[team.id] = password;
     syncMatchCount();
   } catch {
     team.unlockError = "パスワードが違います。";
@@ -529,8 +578,14 @@ async function handleSave() {
     }
     const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
     await saveDataFile(state.data, `${state.editingId ? "Update" : "Add"} apex event: ${cleaned.tournamentName} (${stamp})`);
+    state.form.teams.forEach((team) => {
+      if (team.passwordState !== "locked") {
+        state.teamPasswords[team.id] = team.activePassword.trim();
+      }
+    });
+    await persistVault();
     state.view = "dashboard";
-    state.message = "保存しました。数十秒〜数分でサイトに反映されます。新しく発行したパスワードは今のうちに控えておいてください。";
+    state.message = "保存しました。数十秒〜数分でサイトに反映されます。この端末では次回の編集時にチームのパスワードは自動で入力されます。";
     state.messageType = "info";
     state.form = null;
     state.editingId = null;
@@ -787,13 +842,13 @@ function passwordSection(team, teamIndex, matchCount) {
   if (team.passwordState === "locked") {
     return `
       <div class="password-box">
-        <p class="hint">🔒 このチームの詳細データ（試合結果・個人成績）はパスワードで保護されています。編集するにはパスワードを入力してください。</p>
+        <p class="hint">🔒 このチームの詳細データ（試合結果・個人成績）はパスワードで保護されています。通常はこの端末で以前入力したパスワードが自動で使われますが、うまく開けない場合は下に入力してください。</p>
         <div class="field-row">
           <div class="field"><input type="password" data-unlock-input="${teamIndex}" placeholder="現在のパスワード" /></div>
           <button class="button secondary" data-action="unlock-team" data-index="${teamIndex}" type="button">ロック解除して編集</button>
-          <button class="icon-button" data-action="reset-team-password" data-index="${teamIndex}" type="button">パスワードを忘れた（作り直す）</button>
         </div>
         ${team.unlockError ? `<div class="message-banner error">${escapeHtml(team.unlockError)}</div>` : ""}
+        <button class="icon-button" data-action="reset-team-password" data-index="${teamIndex}" type="button">⚠️ パスワードが分からない場合はここから作り直す（これまでの試合結果・個人成績は消えます）</button>
       </div>
     `;
   }
