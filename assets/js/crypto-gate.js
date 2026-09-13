@@ -4,7 +4,7 @@
 
 const PBKDF2_ITERATIONS = 150000;
 
-export async function encryptTeamDetail(password, plainObject) {
+export async function encryptWithPassword(password, plainObject) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const key = await deriveKey(password, salt);
@@ -17,14 +17,18 @@ export async function encryptTeamDetail(password, plainObject) {
   };
 }
 
-export async function decryptTeamDetail(password, team) {
-  const salt = fromBase64(team.passwordSalt);
-  const iv = fromBase64(team.passwordIv);
+export async function decryptWithPassword(password, record) {
+  const salt = fromBase64(record.passwordSalt);
+  const iv = fromBase64(record.passwordIv);
   const key = await deriveKey(password, salt);
-  const cipherBytes = fromBase64(team.passwordCipher);
+  const cipherBytes = fromBase64(record.passwordCipher);
   const plainBuffer = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, cipherBytes);
   return JSON.parse(new TextDecoder().decode(plainBuffer));
 }
+
+// チーム詳細向けの名前付きラッパー（意味のわかりやすさのため）
+export const encryptTeamDetail = encryptWithPassword;
+export const decryptTeamDetail = decryptWithPassword;
 
 async function deriveKey(password, salt) {
   const baseKey = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, [

@@ -1,17 +1,18 @@
-import { decryptTeamDetail, encryptTeamDetail, generatePassword } from "./crypto-gate.js";
+import { decryptTeamDetail, decryptWithPassword, encryptTeamDetail, encryptWithPassword, generatePassword } from "./crypto-gate.js";
 
 const OWNER = "yutori0718";
 const REPO = "yutori-event-archive";
 const BRANCH = "main";
 const DATA_PATH = "data/apex-custom.json";
-const TOKEN_KEY = "yutoriAdminToken";
+const VAULT_KEY = "yutoriAdminVault";
+const ADMIN_EMAIL = "yutoridesuga.30@gmail.com";
 const API = "https://api.github.com";
 
 const root = document.querySelector("#admin-app");
 
 const state = {
-  token: localStorage.getItem(TOKEN_KEY) || "",
-  view: "login",
+  token: "",
+  view: localStorage.getItem(VAULT_KEY) ? "login" : "setup",
   busy: false,
   message: "",
   messageType: "info",
@@ -26,11 +27,7 @@ init();
 async function init() {
   root.addEventListener("click", onClick);
   root.addEventListener("input", onInput);
-  if (state.token) {
-    await loginWithToken(state.token, { silent: true });
-  } else {
-    render();
-  }
+  render();
 }
 
 // ---------- GitHub API ----------
@@ -93,26 +90,88 @@ function encodeUtf8Base64(text) {
 }
 
 // ---------- Auth ----------
+//
+// ログインはメールアドレス+パスワードで行うが、実際にGitHubへ書き込むには
+// GitHub Personal Access Tokenが必要。サーバーを持たない静的サイトなので、
+// 初回だけトークンを入力してもらい、パスワードから作った鍵でこの端末の
+// localStorageにAES-GCM暗号化して保存する（トークンの平文はどこにも残さない）。
+// 以降はメールアドレス+パスワードだけで、そのトークンを復号して使う。
+// この保管庫は「この端末のこのブラウザ」限定なので、別の端末からログインする
+// 場合は、その端末でもう一度だけトークンを入力する初期設定が必要になる。
 
-async function loginWithToken(token, { silent = false } = {}) {
-  state.token = token.trim();
+async function setupVault(email, password, confirmPassword, token) {
+  if (email.trim().toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+    state.message = "メールアドレスが正しくありません。";
+    state.messageType = "error";
+    return render();
+  }
+  if (!password || password !== confirmPassword) {
+    state.message = "パスワードが一致しません。";
+    state.messageType = "error";
+    return render();
+  }
+  if (!token.trim()) {
+    state.message = "GitHubのPersonal Access Tokenを入力してください。";
+    state.messageType = "error";
+    return render();
+  }
   state.busy = true;
-  if (!silent) render();
+  state.message = "";
+  render();
   try {
+    state.token = token.trim();
     const repo = await fetchRepoInfo();
     if (repo.permissions?.push !== true) {
-      throw new Error("このトークンには書き込み権限がありません。Contents を Read and write にしたトークンでログインしてください。");
+      throw new Error("このトークンには書き込み権限がありません。Contents を Read and write にしたトークンを入力してください。");
     }
-    localStorage.setItem(TOKEN_KEY, state.token);
+    const encrypted = await encryptWithPassword(password, { token: state.token });
+    localStorage.setItem(VAULT_KEY, JSON.stringify({ email: ADMIN_EMAIL, ...encrypted }));
     const { json, sha } = await fetchDataFile();
     state.data = json;
     state.sha = sha;
     state.view = "dashboard";
-    state.message = "";
   } catch (error) {
-    localStorage.removeItem(TOKEN_KEY);
     state.token = "";
-    state.view = "login";
+    state.message = error.message || "設定に失敗しました。";
+    state.messageType = "error";
+  } finally {
+    state.busy = false;
+    render();
+  }
+}
+
+async function loginWithPassword(email, password) {
+  const vaultRaw = localStorage.getItem(VAULT_KEY);
+  const vault = vaultRaw ? JSON.parse(vaultRaw) : null;
+  if (!vault || email.trim().toLowerCase() !== vault.email.toLowerCase()) {
+    state.message = "メールアドレスまたはパスワードが違います。";
+    state.messageType = "error";
+    return render();
+  }
+  state.busy = true;
+  state.message = "";
+  render();
+  let secret;
+  try {
+    secret = await decryptWithPassword(password, vault);
+  } catch {
+    state.busy = false;
+    state.message = "メールアドレスまたはパスワードが違います。";
+    state.messageType = "error";
+    return render();
+  }
+  try {
+    state.token = secret.token;
+    const repo = await fetchRepoInfo();
+    if (repo.permissions?.push !== true) {
+      throw new Error("保存されているGitHubトークンに書き込み権限がありません。「初期設定からやり直す」をお試しください。");
+    }
+    const { json, sha } = await fetchDataFile();
+    state.data = json;
+    state.sha = sha;
+    state.view = "dashboard";
+  } catch (error) {
+    state.token = "";
     state.message = error.message || "ログインに失敗しました。";
     state.messageType = "error";
   } finally {
@@ -121,12 +180,20 @@ async function loginWithToken(token, { silent = false } = {}) {
   }
 }
 
+function resetVault() {
+  if (!confirm("初期設定をやり直します。GitHubのPersonal Access Tokenを再入力する必要があります。よろしいですか？")) return;
+  localStorage.removeItem(VAULT_KEY);
+  state.token = "";
+  state.view = "setup";
+  state.message = "";
+  render();
+}
+
 function logout() {
-  localStorage.removeItem(TOKEN_KEY);
   state.token = "";
   state.data = null;
   state.sha = null;
-  state.view = "login";
+  state.view = localStorage.getItem(VAULT_KEY) ? "login" : "setup";
   state.message = "";
   render();
 }
@@ -139,12 +206,23 @@ function onClick(event) {
   const action = actionEl.dataset.action;
   const index = actionEl.dataset.index !== undefined ? Number(actionEl.dataset.index) : undefined;
 
-  if (action === "login-submit") {
+  if (action === "setup-submit") {
     event.preventDefault();
-    const input = root.querySelector("#token-input");
-    if (input?.value.trim()) loginWithToken(input.value.trim());
+    const email = root.querySelector("#setup-email")?.value || "";
+    const password = root.querySelector("#setup-password")?.value || "";
+    const confirmPassword = root.querySelector("#setup-password-confirm")?.value || "";
+    const token = root.querySelector("#setup-token")?.value || "";
+    setupVault(email, password, confirmPassword, token);
     return;
   }
+  if (action === "login-submit") {
+    event.preventDefault();
+    const email = root.querySelector("#login-email")?.value || "";
+    const password = root.querySelector("#login-password")?.value || "";
+    loginWithPassword(email, password);
+    return;
+  }
+  if (action === "reset-vault") return resetVault();
   if (action === "logout") return logout();
   if (action === "create-event") return openForm(null);
   if (action === "edit-event") return openForm(state.data.events.find((entry) => entry.id === actionEl.dataset.id));
@@ -477,12 +555,14 @@ function setPath(obj, path, value) {
 // ---------- Rendering ----------
 
 function render() {
+  if (state.view === "setup") return renderSetup();
   if (state.view === "login") return renderLogin();
   if (state.view === "dashboard") return renderDashboard();
   if (state.view === "form") return renderForm();
 }
 
 function shell(content) {
+  const showLogout = state.view !== "setup" && state.view !== "login";
   root.innerHTML = `
     <div class="admin-shell${state.busy ? " busy" : ""}">
       <header class="admin-header">
@@ -490,7 +570,7 @@ function shell(content) {
           <div class="brand-title">YUTORI EVENT ARCHIVE 管理者ページ</div>
           <div class="brand-sub">Apexカスタム大会 結果入力</div>
         </div>
-        ${state.view !== "login" ? `<button class="button secondary" data-action="logout">ログアウト</button>` : ""}
+        ${showLogout ? `<button class="button secondary" data-action="logout">ログアウト</button>` : ""}
       </header>
       <main class="admin-main">${content}</main>
     </div>
@@ -502,6 +582,46 @@ function messageBanner() {
   return `<div class="message-banner ${state.messageType === "error" ? "error" : ""}">${escapeHtml(state.message)}</div>`;
 }
 
+function renderSetup() {
+  shell(`
+    <div class="admin-login">
+      <div>
+        <div class="eyebrow">初期設定</div>
+        <h1>管理者アカウントの初期設定</h1>
+      </div>
+      ${messageBanner()}
+      <p class="hint">
+        この端末で初めてログインする場合は、最初にGitHubのPersonal Access Tokenを一度だけ入力してください。
+        入力したトークンはこの端末のブラウザの中で、今設定するパスワードを使って暗号化して保存されます
+        （平文のまま保存されることはありません）。次回からはメールアドレスとパスワードだけでログインできます。<br /><br />
+        トークンの発行方法：GitHub → 右上のアイコン → Settings → Developer settings → Personal access tokens →
+        Fine-grained tokens → Generate new token。Repository access で「yutori-event-archive」のみを選択し、
+        Permissions → Contents を「Read and write」に設定してください。<br /><br />
+        ※ この設定はこの端末のブラウザだけに保存されます。別の端末やブラウザで使うときは、そちらでもう一度この初期設定が必要です。
+      </p>
+      <form>
+        <div class="field">
+          <label for="setup-email">メールアドレス</label>
+          <input id="setup-email" type="email" autocomplete="username" value="${escapeHtml(ADMIN_EMAIL)}" />
+        </div>
+        <div class="field">
+          <label for="setup-password">新しいパスワード</label>
+          <input id="setup-password" type="password" autocomplete="new-password" />
+        </div>
+        <div class="field">
+          <label for="setup-password-confirm">新しいパスワード（確認）</label>
+          <input id="setup-password-confirm" type="password" autocomplete="new-password" />
+        </div>
+        <div class="field">
+          <label for="setup-token">GitHub Personal Access Token</label>
+          <input id="setup-token" type="password" autocomplete="off" placeholder="github_pat_..." />
+        </div>
+        <button class="button" data-action="setup-submit" type="submit">この内容で設定してログイン</button>
+      </form>
+    </div>
+  `);
+}
+
 function renderLogin() {
   shell(`
     <div class="admin-login">
@@ -510,19 +630,18 @@ function renderLogin() {
         <h1>管理者ログイン</h1>
       </div>
       ${messageBanner()}
-      <p class="hint">
-        GitHubで「このリポジトリ(yutori-event-archive)」の「Contents: Read and write」権限だけを付けた
-        Fine-grained personal access token を発行し、下に貼り付けてログインしてください。<br />
-        （GitHub → 右上アイコン → Settings → Developer settings → Personal access tokens → Fine-grained tokens）<br />
-        トークンはこの端末のブラウザにのみ保存されます。共有PCで使った場合は、使用後に必ずログアウトしてください。
-      </p>
       <form>
         <div class="field">
-          <label for="token-input">Personal Access Token</label>
-          <input id="token-input" type="password" autocomplete="off" placeholder="github_pat_..." />
+          <label for="login-email">メールアドレス</label>
+          <input id="login-email" type="email" autocomplete="username" value="${escapeHtml(ADMIN_EMAIL)}" />
+        </div>
+        <div class="field">
+          <label for="login-password">パスワード</label>
+          <input id="login-password" type="password" autocomplete="current-password" />
         </div>
         <button class="button" data-action="login-submit" type="submit">ログイン</button>
       </form>
+      <button class="icon-button" data-action="reset-vault" type="button">初期設定からやり直す（パスワードを忘れた場合）</button>
     </div>
   `);
 }
