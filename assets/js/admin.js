@@ -282,11 +282,37 @@ function blankDetail(matchCount) {
   };
 }
 
+const MEMBER_STAT_FIELDS = [
+  { key: "kills", label: "キル" },
+  { key: "damage", label: "ダメージ" },
+  { key: "assists", label: "アシスト" },
+  { key: "knockdowns", label: "ダウン" },
+  { key: "revives", label: "復活" },
+  { key: "respawns", label: "リスポーン" },
+  { key: "shots", label: "ショット" },
+  { key: "hits", label: "命中" },
+  { key: "headshots", label: "ヘッドショット" },
+];
+
+function blankMemberMatchStats() {
+  return {
+    kills: null,
+    damage: null,
+    assists: null,
+    knockdowns: null,
+    revives: null,
+    respawns: null,
+    shots: null,
+    hits: null,
+    headshots: null,
+    survivalTime: null,
+  };
+}
+
 function blankMember(matchCount) {
   return {
     name: "",
-    damageByMatch: Array.from({ length: matchCount }, () => null),
-    killsByMatch: Array.from({ length: matchCount }, () => null),
+    statsByMatch: Array.from({ length: matchCount }, () => blankMemberMatchStats()),
   };
 }
 
@@ -368,8 +394,7 @@ function syncMatchCount() {
       };
     });
     team.detail.members.forEach((member) => {
-      member.damageByMatch = Array.from({ length: n }, (_, i) => member.damageByMatch[i] ?? null);
-      member.killsByMatch = Array.from({ length: n }, (_, i) => member.killsByMatch[i] ?? null);
+      member.statsByMatch = Array.from({ length: n }, (_, i) => member.statsByMatch[i] ?? blankMemberMatchStats());
     });
   });
 }
@@ -822,12 +847,16 @@ function memberBlock(member, teamIndex, memberIndex, matchCount) {
   return `
     <div class="member-block">
       <div class="field"><label>メンバー${memberIndex + 1} 名前</label><input type="text" data-path="teams.${teamIndex}.detail.members.${memberIndex}.name" value="${escapeHtml(member.name)}" /></div>
+      <p class="hint">命中率(Acc%)・ヘッドショット率(HSR%)は、ショット数・命中数・ヘッドショット数の合計から公開ページで自動計算されます。</p>
       <div class="table-wrap">
         <table class="stat-grid-table">
           <thead><tr><th>成績</th>${Array.from({ length: matchCount }, (_, m) => `<th>M${m + 1}</th>`).join("")}</tr></thead>
           <tbody>
-            <tr><th>ダメージ</th>${memberCells(teamIndex, memberIndex, "damageByMatch", matchCount, member.damageByMatch)}</tr>
-            <tr><th>キル</th>${memberCells(teamIndex, memberIndex, "killsByMatch", matchCount, member.killsByMatch)}</tr>
+            ${MEMBER_STAT_FIELDS.map(
+              ({ key, label }) => `
+            <tr><th>${label}</th>${memberStatCells(teamIndex, memberIndex, key, matchCount, member.statsByMatch)}</tr>`,
+            ).join("")}
+            <tr><th>生存時間(秒)</th>${memberStatCells(teamIndex, memberIndex, "survivalTime", matchCount, member.statsByMatch)}</tr>
           </tbody>
         </table>
       </div>
@@ -835,9 +864,10 @@ function memberBlock(member, teamIndex, memberIndex, matchCount) {
   `;
 }
 
-function memberCells(teamIndex, memberIndex, field, matchCount, values) {
+function memberStatCells(teamIndex, memberIndex, field, matchCount, statsByMatch) {
   return Array.from({ length: matchCount }, (_, m) => {
-    return `<td><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.members.${memberIndex}.${field}.${m}" value="${numValue(values[m])}" /></td>`;
+    const value = statsByMatch[m]?.[field];
+    return `<td><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.members.${memberIndex}.statsByMatch.${m}.${field}" value="${numValue(value)}" /></td>`;
   }).join("");
 }
 

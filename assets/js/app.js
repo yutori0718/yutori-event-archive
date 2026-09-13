@@ -325,22 +325,56 @@ function teamDetailBody(detail) {
   `;
 }
 
+const MEMBER_STAT_FIELDS = [
+  { key: "kills", label: "キル" },
+  { key: "damage", label: "ダメージ" },
+  { key: "assists", label: "アシスト" },
+  { key: "knockdowns", label: "ダウン" },
+  { key: "revives", label: "復活" },
+  { key: "respawns", label: "リスポーン" },
+  { key: "shots", label: "ショット" },
+  { key: "hits", label: "命中" },
+  { key: "headshots", label: "ヘッドショット" },
+];
+
 function memberStatsTable(member, matchNumbers) {
-  const damage = member.damageByMatch || [];
-  const kills = member.killsByMatch || [];
-  const totalDamage = typeof member.totalDamage === "number" ? member.totalDamage : sumArray(damage);
-  const totalKills = typeof member.totalKills === "number" ? member.totalKills : sumArray(kills);
+  const stats = member.statsByMatch || [];
+  const totals = {};
+  MEMBER_STAT_FIELDS.forEach(({ key }) => {
+    totals[key] = sumArray(stats.map((entry) => entry?.[key]));
+  });
+  totals.survivalTime = sumArray(stats.map((entry) => entry?.survivalTime));
+  const accPct = totals.shots ? (totals.hits / totals.shots) * 100 : null;
+  const hsrPct = totals.shots ? (totals.headshots / totals.shots) * 100 : null;
+
   return `
     <div class="table-wrap member-stat-table">
       <table class="stat-table">
         <thead><tr><th>${escapeHtml(member.name || "メンバー")}</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}<th>合計</th></tr></thead>
         <tbody>
-          <tr><th>ダメージ</th>${matchNumbers.map((m, index) => `<td>${numOrDash(damage[index])}</td>`).join("")}<td>${totalDamage}</td></tr>
-          <tr><th>キル</th>${matchNumbers.map((m, index) => `<td>${numOrDash(kills[index])}</td>`).join("")}<td>${totalKills}</td></tr>
+          ${MEMBER_STAT_FIELDS.map(
+            ({ key, label }) => `
+          <tr><th>${label}</th>${matchNumbers.map((m, index) => `<td>${numOrDash(stats[index]?.[key])}</td>`).join("")}<td>${numOrDash(totals[key])}</td></tr>`,
+          ).join("")}
+          <tr><th>生存時間</th>${matchNumbers.map((m, index) => `<td>${formatSurvival(stats[index]?.survivalTime)}</td>`).join("")}<td>${formatSurvival(totals.survivalTime)}</td></tr>
+          <tr><th>命中率(Acc%)</th>${matchNumbers.map(() => `<td>-</td>`).join("")}<td>${formatPercent(accPct)}</td></tr>
+          <tr><th>ヘッドショット率(HSR%)</th>${matchNumbers.map(() => `<td>-</td>`).join("")}<td>${formatPercent(hsrPct)}</td></tr>
         </tbody>
       </table>
     </div>
   `;
+}
+
+function formatSurvival(totalSeconds) {
+  if (typeof totalSeconds !== "number" || Number.isNaN(totalSeconds)) return "-";
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = Math.round(totalSeconds % 60);
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
+function formatPercent(value) {
+  if (typeof value !== "number" || Number.isNaN(value)) return "-";
+  return `${value.toFixed(1)}%`;
 }
 
 function sumArray(values = []) {
