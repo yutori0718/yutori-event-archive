@@ -76,6 +76,33 @@ async function saveDataFile(json, message) {
   state.sha = result.content.sha;
 }
 
+// リポジトリ全体の権限(permissions.push)は、たとえば書き込み不可のトークンでも
+// アカウント自体のアクセス権を反映してtrueになることがある。実際に書き込めるかは
+// 本当に1回書いてみないと分からないので、初期設定の時点で使い捨てのテストファイルを
+// 作成・削除して確認する。ここで失敗するトークンは、後で「保存」を押しても毎回
+// 書き込みに失敗するだけになってしまうため、先に気づけるようにしている。
+async function verifyWriteAccess() {
+  const testPath = "data/.admin-write-test.json";
+  const content = encodeUtf8Base64(JSON.stringify({ ok: true, ts: Date.now() }));
+  let putResult;
+  try {
+    putResult = await ghRequest(`/repos/${OWNER}/${REPO}/contents/${testPath}`, {
+      method: "PUT",
+      body: JSON.stringify({ message: "Verify admin write access", content, branch: BRANCH }),
+    });
+  } catch (error) {
+    throw new Error(`このトークンでは書き込みができませんでした（${error.message}）。Contents を Read and write にしたトークンを入力し直してください。`);
+  }
+  try {
+    await ghRequest(`/repos/${OWNER}/${REPO}/contents/${testPath}`, {
+      method: "DELETE",
+      body: JSON.stringify({ message: "Remove write access test file", sha: putResult.content.sha, branch: BRANCH }),
+    });
+  } catch {
+    // 書き込み自体は確認できているので、後片付けの削除に失敗しても致命的ではない
+  }
+}
+
 function decodeUtf8Base64(base64) {
   const binary = atob(base64.replace(/\n/g, ""));
   const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
@@ -126,6 +153,7 @@ async function setupVault(email, password, confirmPassword, token) {
     if (repo.permissions?.push !== true) {
       throw new Error("このトークンには書き込み権限がありません。Contents を Read and write にしたトークンを入力してください。");
     }
+    await verifyWriteAccess();
     state.masterPassword = password;
     state.teamPasswords = {};
     await persistVault();
@@ -139,6 +167,7 @@ async function setupVault(email, password, confirmPassword, token) {
     state.teamPasswords = {};
     state.message = error.message || "設定に失敗しました。";
     state.messageType = "error";
+    alert(state.message);
   } finally {
     state.busy = false;
     render();
@@ -183,6 +212,7 @@ async function loginWithPassword(email, password) {
     state.teamPasswords = {};
     state.message = error.message || "ログインに失敗しました。";
     state.messageType = "error";
+    alert(state.message);
   } finally {
     state.busy = false;
     render();
@@ -578,6 +608,17 @@ async function handleSave() {
     }
     const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
     await saveDataFile(state.data, `${state.editingId ? "Update" : "Add"} apex event: ${cleaned.tournamentName} (${stamp})`);
+
+    // 保存できたつもりで実は反映されていない、という事態を防ぐため、直後に
+    // GitHubへ読みに行って本当にこのイベントが入っているかを必ず確認する。
+    const verify = await fetchDataFile();
+    const savedEvent = (verify.json.events || []).find((entry) => entry.id === cleaned.id);
+    if (!savedEvent) {
+      throw new Error("保存を送信しましたが、GitHub上のデータに反映されていることを確認できませんでした。もう一度お試しください。");
+    }
+    state.data = verify.json;
+    state.sha = verify.sha;
+
     state.form.teams.forEach((team) => {
       if (team.passwordState !== "locked") {
         state.teamPasswords[team.id] = team.activePassword.trim();
@@ -585,13 +626,14 @@ async function handleSave() {
     });
     await persistVault();
     state.view = "dashboard";
-    state.message = "保存しました。数十秒〜数分でサイトに反映されます。この端末では次回の編集時にチームのパスワードは自動で入力されます。";
+    state.message = "保存し、GitHub上のデータで反映を確認しました。数十秒〜数分でサイトに反映されます。この端末では次回の編集時にチームのパスワードは自動で入力されます。";
     state.messageType = "info";
     state.form = null;
     state.editingId = null;
   } catch (error) {
     state.message = `保存に失敗しました: ${error.message}`;
     state.messageType = "error";
+    alert(state.message);
   } finally {
     state.busy = false;
     render();
@@ -608,17 +650,28 @@ async function handleDeleteEvent() {
     const { json, sha } = await fetchDataFile();
     state.data = json;
     state.sha = sha;
-    state.data.events = (state.data.events || []).filter((entry) => entry.id !== state.editingId);
+    const targetId = state.editingId;
+    state.data.events = (state.data.events || []).filter((entry) => entry.id !== targetId);
     const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
-    await saveDataFile(state.data, `Delete apex event: ${state.editingId} (${stamp})`);
+    await saveDataFile(state.data, `Delete apex event: ${targetId} (${stamp})`);
+
+    const verify = await fetchDataFile();
+    const stillPresent = (verify.json.events || []).some((entry) => entry.id === targetId);
+    if (stillPresent) {
+      throw new Error("削除を送信しましたが、GitHub上のデータからまだ消えていないことを確認しました。もう一度お試しください。");
+    }
+    state.data = verify.json;
+    state.sha = verify.sha;
+
     state.view = "dashboard";
-    state.message = "削除しました。";
+    state.message = "削除し、GitHub上のデータで反映を確認しました。";
     state.messageType = "info";
     state.form = null;
     state.editingId = null;
   } catch (error) {
     state.message = `削除に失敗しました: ${error.message}`;
     state.messageType = "error";
+    alert(state.message);
   } finally {
     state.busy = false;
     render();
