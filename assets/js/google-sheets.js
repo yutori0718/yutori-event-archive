@@ -67,17 +67,36 @@ async function applyApexTeams(events, url) {
   for (const [eventId, eventRows] of grouped) {
     const event = events.find((entry) => entry.id === eventId);
     if (!event) continue;
-    event.teams = eventRows.map((row) => ({
-      id: pick(row, ["teamId", "チームID"]) || `team-${pick(row, ["teamNo", "チーム番号"]) || event.teams?.length + 1 || 1}`,
-      name: pick(row, ["teamName", "チーム名"]),
-      thumbnail: pick(row, ["thumbnail", "チームサムネイル"]),
-      note: pick(row, ["note", "メモ"]),
-      members: [1, 2, 3].map((number) => ({
-        name: pick(row, [`member${number}`, `メンバー${number}`]),
-        standImage: pick(row, [`member${number}Image`, `メンバー${number}立ち絵`]),
-        streamUrl: pick(row, [`member${number}StreamUrl`, `メンバー${number}配信URL`]),
-      })),
-    }));
+    const existingById = new Map((event.teams || []).map((team) => [team.id, team]));
+    event.teams = eventRows.map((row) => {
+      const id = pick(row, ["teamId", "チームID"]) || `team-${pick(row, ["teamNo", "チーム番号"]) || event.teams?.length + 1 || 1}`;
+      const existing = existingById.get(id) || {};
+      return {
+        id,
+        name: pick(row, ["teamName", "チーム名"]),
+        thumbnail: pick(row, ["thumbnail", "チームサムネイル"]),
+        note: pick(row, ["note", "メモ"]),
+        // 結果発表用の数値データはシート未対応のため、既存JSONの値を保持する
+        rank: existing.rank,
+        point: existing.point,
+        matchPoint: existing.matchPoint,
+        rankBonus: existing.rankBonus,
+        bestPlace: existing.bestPlace,
+        matchResults: existing.matchResults,
+        members: [1, 2, 3].map((number) => {
+          const existingMember = existing.members?.[number - 1] || {};
+          return {
+            name: pick(row, [`member${number}`, `メンバー${number}`]),
+            standImage: pick(row, [`member${number}Image`, `メンバー${number}立ち絵`]),
+            streamUrl: pick(row, [`member${number}StreamUrl`, `メンバー${number}配信URL`]),
+            damageByMatch: existingMember.damageByMatch,
+            killsByMatch: existingMember.killsByMatch,
+            totalDamage: existingMember.totalDamage,
+            totalKills: existingMember.totalKills,
+          };
+        }),
+      };
+    });
   }
 }
 

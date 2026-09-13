@@ -211,6 +211,8 @@ function renderEventDetail(type) {
             <h2>大会概要</h2>
             <p class="content-text">${escapeHtml(item.description || item.summary || "")}</p>
           </article>
+          ${isApex && !isHidden(item, "mapProgress") ? mapProgressSection(item) : ""}
+          ${isApex && !isHidden(item, "finalRanking") ? finalRankingSection(item) : ""}
           ${imagePanel("大会サムネイル", item.thumbnail)}
           ${isApex ? imagePanel("チーム紹介画像", item.teamImage) : imagePanel("参加者一覧画像", item.teamImage)}
           ${isApex ? teamCardList(item) : participantList(item.participants)}
@@ -343,6 +345,163 @@ function imagePanel(title, src) {
 
 function isHidden(item, section) {
   return (item.hiddenSections || []).includes(section);
+}
+
+function mapProgressSection(event) {
+  const maps = event.maps || [];
+  if (!maps.length) return "";
+  const completed = completedMatchSet(event);
+  return `
+    <section class="panel">
+      <h2>マップ進行</h2>
+      <div class="map-progress">
+        ${maps.map((mapName, index) => {
+          const matchNo = index + 1;
+          const done = completed.has(matchNo);
+          return `
+            <div class="map-step${done ? " done" : ""}">
+              <span class="map-step-label">M${matchNo}</span>
+              <span class="map-step-name">${escapeHtml(mapName)}</span>
+              <span class="map-step-status">${done ? "終了済み" : "未実施"}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function completedMatchSet(event) {
+  const set = new Set();
+  (event.teams || []).forEach((team) => {
+    (team.matchResults || []).forEach((result) => {
+      const hasData = ["teamRank", "teamPoint", "teamKills"].some((key) => typeof result?.[key] === "number");
+      if (hasData) set.add(Number(result.match));
+    });
+  });
+  (event.matches || []).forEach((match, index) => {
+    if (typeof match.completed !== "boolean") return;
+    const matchNo = index + 1;
+    if (match.completed) set.add(matchNo);
+    else set.delete(matchNo);
+  });
+  return set;
+}
+
+function rankedTeamsList(event) {
+  return (event.teams || [])
+    .filter((team) => typeof team.point === "number" || typeof team.rank === "number")
+    .slice()
+    .sort((a, b) => {
+      const rankA = typeof a.rank === "number" ? a.rank : Infinity;
+      const rankB = typeof b.rank === "number" ? b.rank : Infinity;
+      if (rankA !== rankB) return rankA - rankB;
+      return (b.point || 0) - (a.point || 0);
+    });
+}
+
+function finalRankingSection(event) {
+  const ranked = rankedTeamsList(event);
+  if (!ranked.length) return "";
+  const top3 = ranked.slice(0, 3);
+  const rest = ranked.slice(3);
+  const podiumOrder = { 1: "gold", 2: "silver", 3: "bronze" };
+  return `
+    <section class="panel">
+      <h2>最終順位</h2>
+      <div class="rank-podium">
+        ${top3.map((team) => rankEntry(team, event, `rank-card ${podiumOrder[team.rank] || ""}`)).join("")}
+      </div>
+      ${rest.length ? `<div class="rank-list">${rest.map((team) => rankEntry(team, event, "rank-row")).join("")}</div>` : ""}
+    </section>
+  `;
+}
+
+function rankEntry(team, event, className) {
+  return `
+    <details class="${className}">
+      <summary>
+        <span class="rank-badge">${escapeHtml(placeLabel(team.rank))}</span>
+        <span class="rank-team-name">${escapeHtml(team.name)}</span>
+        <span class="rank-points">${escapeHtml(numOrDash(team.point))}pt</span>
+        <span class="rank-chevron" aria-hidden="true"></span>
+      </summary>
+      ${teamDetailAccordionBody(team, event)}
+    </details>
+  `;
+}
+
+function teamDetailAccordionBody(team, event) {
+  const resultMatchNumbers = (team.matchResults || []).map((result) => Number(result.match));
+  const matchCount =
+    (event.matches || []).length ||
+    (event.maps || []).length ||
+    (resultMatchNumbers.length ? Math.max(...resultMatchNumbers) : 0) ||
+    5;
+  const matchNumbers = Array.from({ length: matchCount }, (_, index) => index + 1);
+  const results = team.matchResults || [];
+  const findResult = (matchNo) => results.find((result) => Number(result.match) === matchNo) || {};
+
+  return `
+    <div class="rank-detail">
+      <dl class="point-breakdown">
+        <div><dt>マッチpt</dt><dd>${escapeHtml(numOrDash(team.matchPoint))}</dd></div>
+        <div><dt>ランクボーナス</dt><dd>${escapeHtml(numOrDash(team.rankBonus))}</dd></div>
+        <div><dt>最高順位</dt><dd>${escapeHtml(placeLabel(team.bestPlace))}</dd></div>
+      </dl>
+      ${results.length ? `
+      <div class="table-wrap">
+        <table class="stat-table">
+          <thead><tr><th>試合ごとのチーム成績</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}<th>合計</th></tr></thead>
+          <tbody>
+            <tr><th>順位</th>${matchNumbers.map((m) => `<td>${placeLabel(findResult(m).teamRank)}</td>`).join("")}<td>-</td></tr>
+            <tr><th>pt</th>${matchNumbers.map((m) => `<td>${numOrDash(findResult(m).teamPoint)}</td>`).join("")}<td>${numOrDash(team.point)}</td></tr>
+            <tr><th>キル</th>${matchNumbers.map((m) => `<td>${numOrDash(findResult(m).teamKills)}</td>`).join("")}<td>${numOrDash(sumField(results, "teamKills"))}</td></tr>
+          </tbody>
+        </table>
+      </div>` : ""}
+      ${(team.members || []).some((member) => (member.damageByMatch || []).length || (member.killsByMatch || []).length) ? `
+      <div class="member-stats">
+        <h3>メンバー個人成績</h3>
+        ${team.members.map((member) => memberStatsTable(member, matchNumbers)).join("")}
+      </div>` : ""}
+    </div>
+  `;
+}
+
+function memberStatsTable(member, matchNumbers) {
+  const damage = member.damageByMatch || [];
+  const kills = member.killsByMatch || [];
+  if (!damage.length && !kills.length) return "";
+  const totalDamage = typeof member.totalDamage === "number" ? member.totalDamage : sumArray(damage);
+  const totalKills = typeof member.totalKills === "number" ? member.totalKills : sumArray(kills);
+  return `
+    <div class="table-wrap member-stat-table">
+      <table class="stat-table">
+        <thead><tr><th>${escapeHtml(member.name)}</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}<th>合計</th></tr></thead>
+        <tbody>
+          <tr><th>ダメージ</th>${matchNumbers.map((m, index) => `<td>${numOrDash(damage[index])}</td>`).join("")}<td>${totalDamage}</td></tr>
+          <tr><th>キル</th>${matchNumbers.map((m, index) => `<td>${numOrDash(kills[index])}</td>`).join("")}<td>${totalKills}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function sumArray(values = []) {
+  return values.reduce((total, value) => total + (Number(value) || 0), 0);
+}
+
+function sumField(rows = [], field) {
+  return rows.reduce((total, row) => total + (Number(row?.[field]) || 0), 0);
+}
+
+function numOrDash(value) {
+  return typeof value === "number" && !Number.isNaN(value) ? String(value) : "-";
+}
+
+function placeLabel(value) {
+  return typeof value === "number" && !Number.isNaN(value) ? `${value}位` : "-";
 }
 
 function teamCardList(event) {
