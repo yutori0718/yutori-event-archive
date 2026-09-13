@@ -266,36 +266,6 @@ p {
   filter: drop-shadow(0 0 24px rgba(29, 161, 242, 0.75));
 }
 
-.ticker {
-  position: relative;
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 16px 0 0;
-}
-
-.stat {
-  min-width: 160px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
-  background: rgba(15, 23, 42, 0.64);
-}
-
-.stat strong {
-  display: block;
-  font-size: 1.8rem;
-  line-height: 1;
-}
-
-.stat span {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
 .section {
   padding: 42px 0;
 }
@@ -405,19 +375,6 @@ p {
   line-height: 1.7;
 }
 
-.detail-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 18px;
-  align-items: start;
-}
-
-.detail-layout > *,
-.detail-layout main,
-.detail-layout aside {
-  min-width: 0;
-}
-
 .panel {
   min-width: 0;
   border: 1px solid var(--line);
@@ -473,85 +430,6 @@ td {
 
 tr:last-child td {
   border-bottom: 0;
-}
-
-.image-frame {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(2, 6, 23, 0.56);
-}
-
-.image-frame img {
-  width: 100%;
-}
-
-.video-grid,
-.match-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.video {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(2, 6, 23, 0.66);
-}
-
-.video h3,
-.match-card h3 {
-  padding: 12px;
-  margin: 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.95rem;
-}
-
-.video iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 0;
-}
-
-.match-card {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(2, 6, 23, 0.48);
-}
-
-.match-body {
-  display: grid;
-  gap: 12px;
-  padding: 12px;
-}
-
-.match-team {
-  min-width: 0;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 8px;
-  padding: 12px;
-  background: rgba(15, 23, 42, 0.46);
-}
-
-.match-team strong {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.match-team ul {
-  display: grid;
-  gap: 6px;
-  margin: 0;
-  padding: 0;
-  color: var(--ink);
-  list-style: none;
-}
-
-.match-team li {
-  line-height: 1.5;
-  overflow-wrap: anywhere;
 }
 
 .map-progress {
@@ -704,6 +582,31 @@ details[open] .rank-chevron {
   padding: 14px;
 }
 
+.password-gate {
+  display: grid;
+  gap: 10px;
+}
+
+.password-gate-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.password-gate-row input {
+  flex: 1 1 220px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--white);
+  background: rgba(2, 6, 23, 0.55);
+}
+
+.password-gate-message {
+  min-height: 1.2em;
+}
+
 .point-breakdown {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -746,240 +649,6 @@ details[open] .rank-chevron {
 .member-stats h3 {
   margin: 0;
   font-size: 0.95rem;
-}
-
-.team-card-grid,
-.participant-list {
-  display: grid;
-  gap: 10px;
-}
-
-.team-card-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.team-card {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: 118px minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 10px;
-  background: rgba(2, 6, 23, 0.42);
-}
-
-.team-card:hover {
-  border-color: rgba(29, 161, 242, 0.48);
-  background: rgba(29, 161, 242, 0.08);
-}
-
-.team-card-thumb,
-.team-thumb,
-.participant-visual {
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border: 1px solid rgba(29, 161, 242, 0.22);
-  border-radius: 8px;
-  background: rgba(2, 6, 23, 0.52);
-}
-
-.team-card-thumb {
-  aspect-ratio: 16 / 9;
-}
-
-.team-card-thumb img,
-.team-thumb img,
-.participant-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.team-card h3 {
-  margin: 0;
-  font-size: 1rem;
-  overflow-wrap: anywhere;
-}
-
-.team-card p {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 0.84rem;
-  line-height: 1.5;
-}
-
-.team-page-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
-  gap: 18px;
-  align-items: center;
-}
-
-.team-profile {
-  display: grid;
-  gap: 16px;
-}
-
-.team-profile h2 {
-  margin-top: 4px;
-}
-
-.team-profile-image {
-  overflow: hidden;
-  border: 1px solid rgba(29, 161, 242, 0.28);
-  border-radius: 8px;
-  background: rgba(2, 6, 23, 0.56);
-}
-
-.team-profile-image img {
-  width: 100%;
-  max-height: 620px;
-  object-fit: contain;
-}
-
-.team-thumb {
-  aspect-ratio: 16 / 9;
-}
-
-.team-member-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.team-member-name {
-  min-width: 0;
-  display: grid;
-  gap: 6px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
-  background: rgba(2, 6, 23, 0.42);
-}
-
-.team-member-name span {
-  color: var(--blue);
-  font-size: 0.78rem;
-  font-weight: 900;
-}
-
-.team-member-name strong {
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-}
-
-.standee-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.standee-card {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(2, 6, 23, 0.42);
-}
-
-.standee-image {
-  aspect-ratio: 3 / 4;
-  display: grid;
-  place-items: center;
-  border-bottom: 1px solid var(--line);
-  background:
-    linear-gradient(135deg, rgba(29, 161, 242, 0.12), rgba(145, 70, 255, 0.1)),
-    #071022;
-}
-
-.standee-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.standee-info {
-  display: grid;
-  gap: 10px;
-  justify-items: center;
-  padding: 12px;
-  text-align: center;
-}
-
-.standee-info h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.participant-number {
-  color: var(--blue);
-  font-size: 0.82rem;
-  font-weight: 900;
-}
-
-.participant-list {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.participant-card {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: 74px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 12px;
-  background: rgba(2, 6, 23, 0.42);
-}
-
-.participant-visual {
-  aspect-ratio: 3 / 4;
-}
-
-.participant-card h3 {
-  margin: 4px 0 0;
-  font-size: 1rem;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-.participant-card-name-only {
-  grid-template-columns: 1fr;
-  min-height: 64px;
-}
-
-.link-row {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 8px;
-}
-
-.mini-button {
-  min-width: 52px;
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(29, 161, 242, 0.5);
-  border-radius: 8px;
-  padding: 0 10px;
-  color: var(--white);
-  background: rgba(29, 161, 242, 0.13);
-  font-size: 0.82rem;
-  font-weight: 900;
-}
-
-.mini-button.purple {
-  border-color: rgba(145, 70, 255, 0.56);
-  background: rgba(145, 70, 255, 0.15);
-}
-
-.mini-button.disabled {
-  opacity: 0.42;
 }
 
 .history-list {
@@ -1121,8 +790,7 @@ details[open] .rank-chevron {
     line-height: 1.12;
   }
 
-  .hero-grid,
-  .detail-layout {
+  .hero-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -1135,17 +803,7 @@ details[open] .rank-chevron {
     width: min(220px, 64vw);
   }
 
-  .grid,
-  .video-grid,
-  .match-grid,
-  .participant-list,
-  .team-card-grid,
-  .team-member-list,
-  .standee-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .team-page-head {
+  .grid {
     grid-template-columns: 1fr;
   }
 
@@ -1221,59 +879,12 @@ details[open] .rank-chevron {
     margin-top: 20px;
   }
 
-  .ticker {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    overflow: visible;
-    gap: 8px;
-  }
-
-  .stat {
-    min-width: 0;
-    padding: 12px;
-  }
-
-  .stat strong {
-    font-size: 1.45rem;
-  }
-
   .section {
     padding: 28px 0;
   }
 
   .section h2 {
     font-size: 1.42rem;
-  }
-
-  .team-card {
-    grid-template-columns: 92px minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .team-card-thumb {
-    min-height: 64px;
-  }
-
-  .participant-card {
-    grid-template-columns: 64px minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .participant-visual {
-    grid-row: span 2;
-  }
-
-  .link-row {
-    grid-column: 2;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
-  }
-
-  .mini-button {
-    min-width: 0;
-    min-height: 32px;
-    padding: 0 8px;
   }
 
   .panel,

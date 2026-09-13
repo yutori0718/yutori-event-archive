@@ -1,197 +1,21 @@
 # YUTORI EVENT ARCHIVE
 
-## Googleスプレッドシート編集
-
-サイトはGoogleスプレッドシートの公開CSVから内容を読み込めるようになっています。
-
-- 設定ファイル: `data/google-sheets.json`
-- テンプレートCSV: `google-sheets-templates/`
-- PDFマニュアル: `docs/google-sheets-editing-manual.pdf`
-
-使い始める流れ:
-
-1. `google-sheets-templates/` のCSVをGoogleスプレッドシートへ入れる
-2. 各シートを「ウェブに公開」してCSV URLを取得する
-3. `data/google-sheets.json` のURL欄へ貼る
-4. `enabled` を `true` にする
-5. GitHub Pagesへ公開する
-
-URL未設定、または `enabled: false` の場合は、今まで通り `data/*.json` の内容で表示されます。
-
-## GitHub Pages編集アプリ
-
-PC上で管理アプリを起動して、GitHub Pages用のJSONと画像を編集できます。
-
-```powershell
-node tools/editor-server.mjs
-```
-
-起動後に開くURL:
-
-```text
-http://127.0.0.1:5190/
-```
-
-できること:
-
-- Topページ文言の編集
-- Apexカスタム大会情報の編集
-- Apexチーム名、チーム紹介サムネ、メンバー名の編集
-- ワイルドカード参加者一覧の編集
-- ワイルドカード各試合チーム構成の編集
-- 出場履歴の編集
-- 各画像欄からPCファイルを選択して `/images/...` へ保存
-- Apexカスタム、ワイルドカードカスタム、出場履歴、チーム、試合、試合内チームの追加
-- `/images/...` への画像アップロード
-- 保存後にGitHubへ公開
-
-ゆとり主催・参加の Apex Legends カスタム大会アーカイブサイトです。  
-GitHub Pages で公開しています。
+ゆとり主催の Apex Legends カスタム大会の結果発表サイトです。GitHub Pages で公開しています（サーバー費用なし）。
 
 公開URL: <https://yutori0718.github.io/yutori-event-archive/>
 
-## ローカル確認
+## サイト構成
 
-```powershell
-powershell -ExecutionPolicy Bypass -File "C:\Users\Unknown\Documents\ゆとりApexHP\tools\publish-images.ps1"
-```
+- **Top** (`/`) : サイトのトップページ
+- **Apexカスタム** (`/apex-custom/`) : 大会一覧。大会名をクリックすると結果発表ページへ
+- **大会結果発表ページ** (`/apex-custom/detail.html?id=...`) : マップ進行・最終順位（1〜3位はカード、4位以降はリスト）を表示。チーム名をクリックすると、そのチームのパスワードを入力してチーム詳細（試合ごとの成績・メンバー個人のダメージ/キル）を開ける
+- **出場履歴** (`/participation-history/`) : ゆとり自身が出場した大会の履歴
 
-通常の確認は公開URLで行ってください。
+## 管理者ページ（大会結果の新規作成・編集）
 
-## デスクトップから更新する方法
+サイト上の管理者ページから、大会の新規作成・編集ができます。ローカルツールやPCソフトは不要です。
 
-更新用フォルダ:
-
-```text
-C:\Users\Unknown\Desktop\サイト用
-```
-
-使うフォルダ:
-
-```text
-ゆとり祭りvo.1
-ゆとり祭りvo.2
-ワイカですがなにか？vo.1
-ワイカですがなにか？vo.2
-出場履歴
-```
-
-画像や txt を入れたあと、下記をダブルクリックすると GitHub Pages へ反映します。
-
-```text
-C:\Users\Unknown\Desktop\サイト用\画像を公開する.bat
-```
-
-反映には数十秒から数分かかります。
-
-## txtで更新できる内容
-
-空の txt は無視されます。変更したい項目だけ入力してください。
-
-大会ページ:
-
-```text
-page-title.txt        ページ名・大会名
-page-summary.txt      一覧カードの説明
-page-description.txt  詳細ページの大会概要
-memo.txt              メモ欄
-date.txt              開催日
-archive-url.txt       配信アーカイブURL
-ed-youtube-url.txt    ED動画YouTube URL
-```
-
-Apexカスタムのチーム:
-
-```text
-ゆとり祭りvo.1/teams/team-1/
-  team-name.txt
-  team-note.txt
-  member-1-name.txt
-  member-1-stream-url.txt
-  member-2-name.txt
-  member-2-stream-url.txt
-  member-3-name.txt
-  member-3-stream-url.txt
-```
-
-ワイルドカード参加者:
-
-```text
-ワイカですがなにか？vo.1/participants/participant-1/
-  name.txt
-  x-url.txt
-  stream-url.txt
-```
-
-出場履歴:
-
-```text
-出場履歴/exe-apex-custom/
-  page-title.txt
-  date.txt
-  team-name.txt
-  member-1-name.txt
-  member-2-name.txt
-  member-3-name.txt
-  final-rank.txt
-  archive-url.txt
-  memo.txt
-```
-
-## 画像の入れ方
-
-Apexカスタム大会:
-
-```text
-ゆとり祭りvo.1/
-  thumbnail.png
-  team-list.png
-  result-total.png
-  match1.png
-  match2.png
-  match3.png
-  match4.png
-  teams/
-    team-1/
-      thumbnail.png
-      member-1.png
-      member-2.png
-      member-3.png
-```
-
-ワイルドカード大会:
-
-```text
-ワイカですがなにか？vo.1/
-  thumbnail.png
-  team-list.png
-  result-total.png
-  participants/
-    participant-1.png
-    participant-2.png
-```
-
-出場履歴:
-
-```text
-出場履歴/
-  exe-apex-custom/
-    thumbnail.png
-    team-image.png
-```
-
-## ファイル名ルール
-
-- 画像形式は `png` / `jpg` / `jpeg` / `webp` / `svg`
-- 今のJSONは基本的に `png` 名で指定しています
-- 迷ったら `png` で保存してください
-- ファイル名は説明ファイルに書かれている名前と同じにしてください
-
-## 管理者ページ（サイト上からApexカスタムの結果を入力）
-
-PCを開かなくても、サイト上の管理者ページから大会の新規作成・編集ができます。
-
-公開URL: <https://yutori0718.github.io/yutori-event-archive/admin/>
+管理者ページURL: <https://yutori0718.github.io/yutori-event-archive/admin/>
 
 ### 初回だけ：ログイン用トークンの発行
 
@@ -205,63 +29,55 @@ PCを開かなくても、サイト上の管理者ページから大会の新規
 
 1. 管理者ページを開き、発行したトークンを貼り付けて「ログイン」
 2. 「＋ 新規大会を作成」または一覧から「編集」
-3. 大会名・開催日・マップ（試合数は大会ごとに自由に追加/削除できます）・チームごとの最終順位・ポイント内訳・試合ごとのチーム成績・メンバー3名の試合ごとのダメージ/キル数を入力
-4. 「保存してサイトに反映」を押すと、GitHub上のデータファイルへ直接コミットされます（数十秒〜数分でサイトに反映）
+3. 大会名・開催日時・ルール・ステータスを入力
+4. マップ（試合）を大会ごとに自由な数だけ追加・削除できます。試合が終わったら「終了済み」にチェック
+5. チームを追加し、最終順位・合計ポイントを入力（これらは誰でも見られる公開情報）
+6. 同じチーム欄で「マッチpt・ランクボーナス・最高順位・試合ごとの成績・メンバー3名の試合ごとのダメージ/キル」を入力（これらはチームのパスワードで保護される非公開情報）
+7. 「保存してサイトに反映」で、GitHub上のデータファイルへ直接コミットされます（数十秒〜数分でサイトに反映）
 
-### 注意点
+新規チーム作成時は自動でパスワードが発行されます（「再生成」で作り直しも可能）。**保存前に必ずコピーしてチームへ共有してください。保存後は画面に表示されなくなります。**
 
-- トークンはこの端末のブラウザだけに保存されます。共有PCで使ったときは、使い終わったら必ず「ログアウト」してください
-- 大会IDは公開URL（`?id=...`）の一部になるため、作成後の変更はできません
-- 管理者ページのHTML自体は他のページ同様に誰でも開けますが、書き込みには上記トークンが必須なので、トークンを人に教えない限りデータは書き換えられません
-- 写真（サムネイルなど）以外の一部の項目（従来の画像ベースの試合別記録など）は、管理者ページではまだ編集できません。必要な場合は `data/apex-custom.json` を直接編集してください
+## チーム詳細のパスワード保護について
 
-## 結果発表（最終順位・個人成績）の入力方法
+チーム詳細（試合ごとの成績・メンバー個人成績）は、ブラウザ内で **AES-GCM暗号化** されたうえでデータファイルに保存されます。パスワードから鍵を作って復号する方式なので、サーバーを用意しなくても本当にパスワードを知らないと中身を読めません（見た目を隠しているだけではありません）。
 
-大会の最終結果が出たら、`data/apex-custom.json` の各大会オブジェクトに以下のフィールドを追加すると、
-詳細ページに「マップ進行」「最終順位（カード＋アコーディオン）」「チームごとの試合成績・メンバー個人成績」が
-自動的に表示されます（GUIエディタ未対応のため、この項目のみJSONを直接編集してください）。
-
-大会オブジェクト直下:
-
-```jsonc
-"maps": ["ストームポイント", "ワールズエッジ", "オリンパス", "イーディストリクト", "ストームポイント(特別)"]
-```
-
-各チームオブジェクトに追加:
-
-```jsonc
-"rank": 1,
-"point": 61,
-"matchPoint": 61,
-"rankBonus": 0,
-"bestPlace": 1,
-"matchResults": [
-  { "match": 1, "teamRank": 1, "teamPoint": 15, "teamKills": 8 },
-  { "match": 2, "teamRank": 3, "teamPoint": 10, "teamKills": 5 }
-]
-```
-
-各メンバーオブジェクトに追加:
-
-```jsonc
-"damageByMatch": [320, 210, 280, 350, 190],
-"killsByMatch": [3, 2, 3, 2, 1]
-```
-
-- `rank`/`point` が入力されているチームだけが「最終順位」に表示されます（1〜3位はカード、4位以降はリスト）
-- チーム名をクリックすると、そのチームの試合ごとの成績とメンバー3名の個人成績（ダメージ・キル）が開きます
-- `totalDamage`/`totalKills` は省略可能。省略した場合は `damageByMatch`/`killsByMatch` から自動計算されます
-- マップの「終了済み」表示は、いずれかのチームの `matchResults` にその試合番号のデータが入ると自動でつきます
-- この最終順位セクションだけを非表示にしたい場合は `hiddenSections` に `"finalRanking"`（マップ進行は `"mapProgress"`）を追加してください
+- 最終順位（チーム名・順位・合計ポイントのみ）は誰でも見られます
+- チーム詳細を開くには、そのチームのパスワードの入力が必要です
+- パスワードはチームごとに別々に発行できます
+- **サイト側にはパスワードの平文を一切保存していません。** 管理者ページでも、一度保存すると同じチームを再編集する際は改めてパスワードの入力（ロック解除）が必要です。パスワードは管理者ご自身で控えておいてください
+- パスワードを忘れた場合は管理者ページの「パスワードを忘れた（作り直す）」から新しいパスワードを発行できますが、その場合は古い試合結果・個人成績データは復元できず、そのチームのデータは白紙から入力し直しになります
 
 ## データファイル
 
-サイト本体は下記JSONを読み込みます。
-
 ```text
-data/apex-custom.json
-data/wildcard-custom.json
-data/participation-history.json
+data/apex-custom.json          Apexカスタム大会（通常はJSONを直接触らず管理者ページから編集）
+data/participation-history.json  出場履歴（変更なし）
 ```
 
-通常運用ではJSONを直接触らず、デスクトップの txt と画像を編集してください。
+`data/apex-custom.json` の大会オブジェクトの形（`teams[].matchResults` 等は保存時に暗号化されます）:
+
+```jsonc
+{
+  "id": "yutori-fes-vol1",
+  "tournamentName": "ゆとり祭り",
+  "date": "2026/09/12(Sat) 21:00〜",
+  "rule": "バトルロワイヤル・トリオ 20チーム",
+  "status": "全5マッチ終了",
+  "maps": [
+    { "name": "ストームポイント", "completed": true },
+    { "name": "ワールズエッジ", "completed": false }
+  ],
+  "teams": [
+    {
+      "id": "team-1",
+      "rank": 1,
+      "teamNo": 19,
+      "name": "チーム名サンプル",
+      "point": 61,
+      "passwordSalt": "...",
+      "passwordIv": "...",
+      "passwordCipher": "..."
+    }
+  ]
+}
+```

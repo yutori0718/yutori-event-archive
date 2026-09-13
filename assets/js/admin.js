@@ -1,3 +1,5 @@
+import { decryptTeamDetail, encryptTeamDetail, generatePassword } from "./crypto-gate.js";
+
 const OWNER = "yutori0718";
 const REPO = "yutori-event-archive";
 const BRANCH = "main";
@@ -24,7 +26,6 @@ init();
 async function init() {
   root.addEventListener("click", onClick);
   root.addEventListener("input", onInput);
-  root.addEventListener("change", onChange);
   if (state.token) {
     await loginWithToken(state.token, { silent: true });
   } else {
@@ -74,35 +75,6 @@ async function saveDataFile(json, message) {
     body: JSON.stringify({ message, content, sha: state.sha, branch: BRANCH }),
   });
   state.sha = result.content.sha;
-}
-
-async function uploadImageFile(repoPath, file) {
-  const cleanPath = repoPath.replace(/^\//, "");
-  const dataUrl = await fileToDataUrl(file);
-  const base64 = dataUrl.split(",")[1];
-  let sha;
-  try {
-    const existing = await ghRequest(`/repos/${OWNER}/${REPO}/contents/${cleanPath}?ref=${BRANCH}`);
-    sha = existing.sha;
-  } catch {
-    sha = undefined;
-  }
-  const body = { message: `Upload ${cleanPath}`, content: base64, branch: BRANCH };
-  if (sha) body.sha = sha;
-  const result = await ghRequest(`/repos/${OWNER}/${REPO}/contents/${cleanPath}`, {
-    method: "PUT",
-    body: JSON.stringify(body),
-  });
-  return result.content.download_url || "";
-}
-
-function fileToDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 }
 
 function decodeUtf8Base64(base64) {
@@ -166,7 +138,6 @@ function onClick(event) {
   if (!actionEl) return;
   const action = actionEl.dataset.action;
   const index = actionEl.dataset.index !== undefined ? Number(actionEl.dataset.index) : undefined;
-  const teamIndex = actionEl.dataset.teamIndex !== undefined ? Number(actionEl.dataset.teamIndex) : undefined;
 
   if (action === "login-submit") {
     event.preventDefault();
@@ -184,28 +155,9 @@ function onClick(event) {
   if (action === "remove-map") return removeMap(index);
   if (action === "add-team") return addTeam();
   if (action === "remove-team") return removeTeam(index);
-  if (action === "upload-image") {
-    const fileInput = actionEl.parentElement.querySelector('input[type="file"]');
-    fileInput?.click();
-    return;
-  }
-}
-
-function onChange(event) {
-  const target = event.target;
-  if (target.matches('input[type="file"][data-image-path]')) {
-    const file = target.files?.[0];
-    if (file) handleImageUpload(target.dataset.imagePath, file, target);
-    return;
-  }
-  if (target.matches("[data-hidden-section]")) {
-    const section = target.dataset.hiddenSection;
-    const set = new Set(state.form.hiddenSections || []);
-    if (target.checked) set.add(section);
-    else set.delete(section);
-    state.form.hiddenSections = Array.from(set);
-    return;
-  }
+  if (action === "regen-password") return regenPassword(index);
+  if (action === "reset-team-password") return resetTeamPassword(index);
+  if (action === "unlock-team") return unlockTeam(index);
 }
 
 function onInput(event) {
@@ -215,6 +167,7 @@ function onInput(event) {
   const type = target.dataset.type || "text";
   let value = target.value;
   if (type === "number") value = value === "" ? null : Number(value);
+  if (type === "checkbox") value = target.checked;
   setPath(state.form, path, value);
 }
 
@@ -223,34 +176,21 @@ function onInput(event) {
 function blankEvent() {
   return {
     id: "",
-    title: "",
+    tournamentName: "",
     date: "",
-    category: "Apexカスタム",
-    summary: "",
-    description: "",
-    thumbnail: "",
-    teamImage: "",
-    totalResultImage: "",
-    archiveUrl: "",
-    edYoutubeUrl: "",
-    memo: "",
-    hiddenSections: ["totalResults", "totalResultImage", "matches"],
-    maps: ["マップ1", "マップ2", "マップ3"],
+    rule: "",
+    status: "",
+    maps: [blankMap(1), blankMap(2), blankMap(3)],
     teams: [],
-    matches: [],
-    totalResults: [],
-    sponsors: [],
   };
 }
 
-function blankTeam(matchCount) {
+function blankMap(number) {
+  return { name: `マップ${number}`, completed: false };
+}
+
+function blankDetail(matchCount) {
   return {
-    id: `team-${Date.now().toString(36)}`,
-    name: "",
-    thumbnail: "",
-    note: "",
-    rank: null,
-    point: null,
     matchPoint: null,
     rankBonus: null,
     bestPlace: null,
@@ -267,10 +207,41 @@ function blankTeam(matchCount) {
 function blankMember(matchCount) {
   return {
     name: "",
-    standImage: "",
-    streamUrl: "",
     damageByMatch: Array.from({ length: matchCount }, () => null),
     killsByMatch: Array.from({ length: matchCount }, () => null),
+  };
+}
+
+function blankTeam(matchCount) {
+  return {
+    id: `team-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`,
+    rank: null,
+    teamNo: null,
+    name: "",
+    point: null,
+    passwordState: "new",
+    activePassword: generatePassword(),
+    unlockAttempt: "",
+    unlockError: "",
+    detail: blankDetail(matchCount),
+  };
+}
+
+function normalizeFormTeam(team, matchCount) {
+  return {
+    id: team.id,
+    rank: team.rank ?? null,
+    teamNo: team.teamNo ?? null,
+    name: team.name || "",
+    point: team.point ?? null,
+    passwordState: team.passwordCipher ? "locked" : "new",
+    activePassword: team.passwordCipher ? "" : generatePassword(),
+    unlockAttempt: "",
+    unlockError: "",
+    passwordSalt: team.passwordSalt,
+    passwordIv: team.passwordIv,
+    passwordCipher: team.passwordCipher,
+    detail: team.passwordCipher ? null : blankDetail(matchCount),
   };
 }
 
@@ -283,46 +254,18 @@ function openForm(event) {
 }
 
 function normalizeFormEvent(event) {
-  const clone = JSON.parse(JSON.stringify(event));
-  clone.maps = clone.maps || [];
-  clone.hiddenSections = clone.hiddenSections || [];
-  const matchCount = clone.maps.length;
-  clone.teams = (clone.teams || []).map((team) => normalizeFormTeam(team, matchCount));
-  return clone;
-}
-
-function normalizeFormTeam(team, matchCount) {
-  const matchResults = Array.from({ length: matchCount }, (_, i) => {
-    const existing = (team.matchResults || []).find((entry) => Number(entry.match) === i + 1) || team.matchResults?.[i];
-    return {
-      match: i + 1,
-      teamRank: existing?.teamRank ?? null,
-      teamPoint: existing?.teamPoint ?? null,
-      teamKills: existing?.teamKills ?? null,
-    };
-  });
-  const members = Array.from({ length: 3 }, (_, i) => {
-    const existing = team.members?.[i] || {};
-    return {
-      name: existing.name || "",
-      standImage: existing.standImage || "",
-      streamUrl: existing.streamUrl || "",
-      damageByMatch: Array.from({ length: matchCount }, (_, j) => existing.damageByMatch?.[j] ?? null),
-      killsByMatch: Array.from({ length: matchCount }, (_, j) => existing.killsByMatch?.[j] ?? null),
-    };
-  });
+  const maps = (event.maps || []).map((map, index) => ({
+    name: map.name || `マップ${index + 1}`,
+    completed: Boolean(map.completed),
+  }));
   return {
-    id: team.id || `team-${Date.now().toString(36)}`,
-    name: team.name || "",
-    thumbnail: team.thumbnail || "",
-    note: team.note || "",
-    rank: team.rank ?? null,
-    point: team.point ?? null,
-    matchPoint: team.matchPoint ?? null,
-    rankBonus: team.rankBonus ?? null,
-    bestPlace: team.bestPlace ?? null,
-    matchResults,
-    members,
+    id: event.id,
+    tournamentName: event.tournamentName || "",
+    date: event.date || "",
+    rule: event.rule || "",
+    status: event.status || "",
+    maps,
+    teams: (event.teams || []).map((team) => normalizeFormTeam(team, maps.length)),
   };
 }
 
@@ -336,8 +279,9 @@ function closeForm() {
 function syncMatchCount() {
   const n = state.form.maps.length;
   state.form.teams.forEach((team) => {
-    team.matchResults = Array.from({ length: n }, (_, i) => {
-      const existing = team.matchResults[i];
+    if (!team.detail) return; // ロック中のチームは復号しないと試合数を変更できない
+    team.detail.matchResults = Array.from({ length: n }, (_, i) => {
+      const existing = team.detail.matchResults[i];
       return {
         match: i + 1,
         teamRank: existing?.teamRank ?? null,
@@ -345,7 +289,7 @@ function syncMatchCount() {
         teamKills: existing?.teamKills ?? null,
       };
     });
-    team.members.forEach((member) => {
+    team.detail.members.forEach((member) => {
       member.damageByMatch = Array.from({ length: n }, (_, i) => member.damageByMatch[i] ?? null);
       member.killsByMatch = Array.from({ length: n }, (_, i) => member.killsByMatch[i] ?? null);
     });
@@ -353,7 +297,7 @@ function syncMatchCount() {
 }
 
 function addMap() {
-  state.form.maps.push(`マップ${state.form.maps.length + 1}`);
+  state.form.maps.push(blankMap(state.form.maps.length + 1));
   syncMatchCount();
   render();
 }
@@ -363,7 +307,7 @@ function removeMap(index) {
     alert("マップ(試合)は最低1件必要です。");
     return;
   }
-  if (!confirm(`M${index + 1} を削除します。全チームのその試合の成績データも削除されます。よろしいですか？`)) return;
+  if (!confirm(`M${index + 1} を削除します。ロック解除済みチームのその試合の成績データも削除されます。よろしいですか？`)) return;
   state.form.maps.splice(index, 1);
   syncMatchCount();
   render();
@@ -381,26 +325,43 @@ function removeTeam(index) {
   render();
 }
 
-async function handleImageUpload(fallbackPath, file, inputEl) {
-  const statusEl = inputEl.parentElement.querySelector(".upload-status");
-  const textInput = inputEl.parentElement.querySelector('input[type="text"][data-path]');
-  const path = (textInput?.value.trim() || fallbackPath).trim();
-  if (statusEl) statusEl.textContent = "アップロード中...";
+function regenPassword(index) {
+  const team = state.form.teams[index];
+  team.activePassword = generatePassword();
+  render();
+}
+
+function resetTeamPassword(index) {
+  const team = state.form.teams[index];
+  if (!confirm("パスワードをリセットすると、これまでの試合結果・個人成績データは復元できなくなり、白紙から入力し直すことになります。よろしいですか？")) return;
+  team.passwordState = "reset";
+  team.activePassword = generatePassword();
+  team.detail = blankDetail(state.form.maps.length);
+  team.unlockError = "";
+  render();
+}
+
+async function unlockTeam(index) {
+  const team = state.form.teams[index];
+  const input = root.querySelector(`[data-unlock-input="${index}"]`);
+  const password = input?.value || "";
+  if (!password) return;
   try {
-    await uploadImageFile(path, file);
-    if (statusEl) statusEl.textContent = "アップロード完了";
-    if (textInput) {
-      textInput.value = path;
-      setPath(state.form, textInput.dataset.path, path);
-    }
-  } catch (error) {
-    if (statusEl) statusEl.textContent = `失敗: ${error.message}`;
+    const detail = await decryptTeamDetail(password, team);
+    team.detail = detail;
+    team.passwordState = "unlocked";
+    team.activePassword = password;
+    team.unlockError = "";
+    syncMatchCount();
+  } catch {
+    team.unlockError = "パスワードが違います。";
   }
+  render();
 }
 
 function validateForm(form) {
   const errors = [];
-  if (!form.title.trim()) errors.push("大会名を入力してください。");
+  if (!form.tournamentName.trim()) errors.push("大会名を入力してください。");
   if (!state.editingId) {
     if (!/^[a-z0-9-]+$/.test(form.id.trim())) {
       errors.push("IDは半角英小文字・数字・ハイフンのみで入力してください。");
@@ -408,7 +369,27 @@ function validateForm(form) {
       errors.push("同じIDの大会がすでに存在します。");
     }
   }
+  form.teams.forEach((team, index) => {
+    if (team.passwordState !== "locked" && !team.activePassword.trim()) {
+      errors.push(`チーム${index + 1}のパスワードが空です。`);
+    }
+  });
   return errors;
+}
+
+async function buildTeamForSave(team) {
+  const base = {
+    id: team.id,
+    rank: team.rank,
+    teamNo: team.teamNo,
+    name: team.name,
+    point: team.point,
+  };
+  if (team.passwordState === "locked") {
+    return { ...base, passwordSalt: team.passwordSalt, passwordIv: team.passwordIv, passwordCipher: team.passwordCipher };
+  }
+  const encrypted = await encryptTeamDetail(team.activePassword.trim(), team.detail);
+  return { ...base, ...encrypted };
 }
 
 async function handleSave() {
@@ -427,19 +408,26 @@ async function handleSave() {
     state.data = json;
     state.sha = sha;
     state.data.events = state.data.events || [];
-    const cleaned = JSON.parse(JSON.stringify(state.form));
+    const cleaned = {
+      id: state.editingId || state.form.id.trim(),
+      tournamentName: state.form.tournamentName,
+      date: state.form.date,
+      rule: state.form.rule,
+      status: state.form.status,
+      maps: [...state.form.maps],
+      teams: await Promise.all(state.form.teams.map(buildTeamForSave)),
+    };
     if (state.editingId) {
       const index = state.data.events.findIndex((entry) => entry.id === state.editingId);
       if (index === -1) throw new Error("編集対象の大会が見つかりませんでした（他の場所で削除された可能性があります）。");
       state.data.events[index] = cleaned;
     } else {
-      cleaned.id = cleaned.id.trim();
       state.data.events.push(cleaned);
     }
     const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
-    await saveDataFile(state.data, `${state.editingId ? "Update" : "Add"} apex event: ${cleaned.title} (${stamp})`);
+    await saveDataFile(state.data, `${state.editingId ? "Update" : "Add"} apex event: ${cleaned.tournamentName} (${stamp})`);
     state.view = "dashboard";
-    state.message = "保存しました。数十秒〜数分でサイトに反映されます。";
+    state.message = "保存しました。数十秒〜数分でサイトに反映されます。新しく発行したパスワードは今のうちに控えておいてください。";
     state.messageType = "info";
     state.form = null;
     state.editingId = null;
@@ -454,7 +442,7 @@ async function handleSave() {
 
 async function handleDeleteEvent() {
   if (!state.editingId) return;
-  if (!confirm(`「${state.form.title}」を削除します。この操作は取り消せません。よろしいですか？`)) return;
+  if (!confirm(`「${state.form.tournamentName}」を削除します。この操作は取り消せません。よろしいですか？`)) return;
   state.busy = true;
   state.message = "";
   render();
@@ -554,7 +542,7 @@ function renderDashboard() {
             (event) => `
         <div class="event-row">
           <div>
-            <div class="event-row-title">${escapeHtml(event.title || "(無題)")}</div>
+            <div class="event-row-title">${escapeHtml(event.tournamentName || "(無題)")}</div>
             <div class="event-row-meta">${escapeHtml(event.date || "日付未設定")} ・ ${escapeHtml(event.id)}</div>
           </div>
           <button class="button secondary" data-action="edit-event" data-id="${escapeHtml(event.id)}">編集</button>
@@ -581,42 +569,27 @@ function renderForm() {
           ? `<div class="field"><label>ID</label><input type="text" value="${escapeHtml(form.id)}" disabled /></div>`
           : `<div class="field"><label>ID（半角英数字とハイフン。例: yutori-fes-vol3）</label><input type="text" data-path="id" value="${escapeHtml(form.id)}" /></div>`
       }
-      <div class="field"><label>大会名</label><input type="text" data-path="title" value="${escapeHtml(form.title)}" /></div>
+      <div class="field"><label>大会名</label><input type="text" data-path="tournamentName" value="${escapeHtml(form.tournamentName)}" /></div>
       <div class="field-row">
-        <div class="field"><label>開催日</label><input type="text" data-path="date" value="${escapeHtml(form.date)}" placeholder="2026-09-12" /></div>
-        <div class="field"><label>カテゴリ</label><input type="text" data-path="category" value="${escapeHtml(form.category)}" /></div>
-      </div>
-      <div class="field"><label>一覧カードの説明</label><textarea data-path="summary">${escapeHtml(form.summary)}</textarea></div>
-      <div class="field"><label>大会概要</label><textarea data-path="description">${escapeHtml(form.description)}</textarea></div>
-      ${imageField("大会サムネイル", "thumbnail", form.thumbnail, eventImageSuggestion(form, "thumbnail"))}
-      ${imageField("チーム紹介画像", "teamImage", form.teamImage, eventImageSuggestion(form, "teamImage"))}
-      <div class="field-row">
-        <div class="field"><label>配信アーカイブURL</label><input type="url" data-path="archiveUrl" value="${escapeHtml(form.archiveUrl)}" /></div>
-        <div class="field"><label>ED動画YouTube URL</label><input type="url" data-path="edYoutubeUrl" value="${escapeHtml(form.edYoutubeUrl)}" /></div>
-      </div>
-      <div class="field"><label>メモ</label><textarea data-path="memo">${escapeHtml(form.memo)}</textarea></div>
-      <div class="field">
-        <label>非表示にするセクション</label>
-        <div class="checkbox-row">
-          ${["totalResults", "totalResultImage", "matches", "finalRanking", "mapProgress"]
-            .map(
-              (key) => `
-            <label><input type="checkbox" data-hidden-section="${key}" ${form.hiddenSections.includes(key) ? "checked" : ""} /> ${key}</label>
-          `,
-            )
-            .join("")}
-        </div>
+        <div class="field"><label>開催日時</label><input type="text" data-path="date" value="${escapeHtml(form.date)}" placeholder="2026/09/12(Sat) 21:00〜" /></div>
+        <div class="field"><label>ルール</label><input type="text" data-path="rule" value="${escapeHtml(form.rule)}" placeholder="バトルロワイヤル・トリオ 20チーム" /></div>
+        <div class="field"><label>ステータス</label><input type="text" data-path="status" value="${escapeHtml(form.status)}" placeholder="全5マッチ終了" /></div>
       </div>
     </section>
 
     <section class="form-section">
       <h2>マップ進行（試合数：${matchCount}）</h2>
+      <p class="hint">ロック中（パスワード未解除）のチームは、試合数を変えてもデータが自動更新されません。試合数を変える前にロック解除してください。</p>
       ${form.maps
         .map(
-          (mapName, index) => `
+          (map, index) => `
         <div class="map-row">
           <span>M${index + 1}</span>
-          <div class="field"><input type="text" data-path="maps.${index}" value="${escapeHtml(mapName)}" /></div>
+          <div class="field"><input type="text" data-path="maps.${index}.name" value="${escapeHtml(map.name)}" /></div>
+          <label class="map-done-toggle">
+            <input type="checkbox" data-type="checkbox" data-path="maps.${index}.completed" ${map.completed ? "checked" : ""} />
+            終了済み
+          </label>
           <button class="icon-button" data-action="remove-map" data-index="${index}" type="button">削除</button>
         </div>
       `,
@@ -627,8 +600,8 @@ function renderForm() {
 
     <section class="form-section">
       <h2>チーム・最終結果（${form.teams.length}チーム）</h2>
-      <p class="hint">順位・ポイントを入力したチームだけが公開ページの「最終順位」に表示されます。</p>
-      ${form.teams.map((team, teamIndex) => teamBlock(team, teamIndex, matchCount, form)).join("")}
+      <p class="hint">順位・ポイントを入力したチームだけが公開ページの「最終順位」に表示されます。試合ごとの成績・メンバー個人成績はチームごとのパスワードで保護されます。</p>
+      ${form.teams.map((team, teamIndex) => teamBlock(team, teamIndex, matchCount)).join("")}
       <button class="button secondary" data-action="add-team" type="button">＋ チームを追加</button>
     </section>
 
@@ -644,64 +617,21 @@ function renderForm() {
   `);
 }
 
-function imageField(label, path, value, suggested) {
-  const imagePath = value || suggested;
+function teamBlock(team, teamIndex, matchCount) {
   return `
-    <div class="field">
-      <label>${label}</label>
-      <div class="upload-row">
-        <input type="text" data-path="${path}" value="${escapeHtml(value)}" placeholder="/images/apex-custom/..." />
-        <button class="button secondary" data-action="upload-image" type="button">画像を選択</button>
-        <input type="file" accept="image/*" data-image-path="${escapeHtml(imagePath)}" hidden />
-        <span class="upload-status hint"></span>
-      </div>
-    </div>
-  `;
-}
-
-function eventImageSuggestion(form, kind) {
-  const id = (form.id || "new-event").trim() || "new-event";
-  const map = { thumbnail: "thumbnail.png", teamImage: "team-list.png", totalResultImage: "result-total.png" };
-  return `/images/apex-custom/${id}/${map[kind] || "image.png"}`;
-}
-
-function teamImageSuggestion(form, teamIndex) {
-  const id = (form.id || "new-event").trim() || "new-event";
-  return `/images/apex-custom/${id}/チーム/チーム${teamIndex + 1}/thumbnail.png`;
-}
-
-function teamBlock(team, teamIndex, matchCount, form) {
-  return `
-    <details class="team-block">
+    <details class="team-block" open>
       <summary>
         <span>チーム${teamIndex + 1}${team.name ? `：${escapeHtml(team.name)}` : ""}</span>
       </summary>
       <div class="team-block-body">
         <div class="field-row">
           <div class="field"><label>チーム名</label><input type="text" data-path="teams.${teamIndex}.name" value="${escapeHtml(team.name)}" /></div>
-          <div class="field"><label>メモ</label><input type="text" data-path="teams.${teamIndex}.note" value="${escapeHtml(team.note)}" /></div>
-        </div>
-        ${imageField("チームサムネイル", `teams.${teamIndex}.thumbnail`, team.thumbnail, teamImageSuggestion(form, teamIndex))}
-        <div class="field-row">
+          <div class="field"><label>チーム番号</label><input type="number" data-type="number" data-path="teams.${teamIndex}.teamNo" value="${numValue(team.teamNo)}" /></div>
           <div class="field"><label>最終順位</label><input type="number" data-type="number" data-path="teams.${teamIndex}.rank" value="${numValue(team.rank)}" /></div>
           <div class="field"><label>合計ポイント</label><input type="number" data-type="number" data-path="teams.${teamIndex}.point" value="${numValue(team.point)}" /></div>
-          <div class="field"><label>マッチpt</label><input type="number" data-type="number" data-path="teams.${teamIndex}.matchPoint" value="${numValue(team.matchPoint)}" /></div>
-          <div class="field"><label>ランクボーナス</label><input type="number" data-type="number" data-path="teams.${teamIndex}.rankBonus" value="${numValue(team.rankBonus)}" /></div>
-          <div class="field"><label>最高順位</label><input type="number" data-type="number" data-path="teams.${teamIndex}.bestPlace" value="${numValue(team.bestPlace)}" /></div>
         </div>
 
-        <div class="table-wrap">
-          <table class="stat-grid-table">
-            <thead><tr><th>試合ごとのチーム成績</th>${Array.from({ length: matchCount }, (_, m) => `<th>M${m + 1}</th>`).join("")}</tr></thead>
-            <tbody>
-              <tr><th>順位</th>${statCells(teamIndex, "matchResults", "teamRank", matchCount, team.matchResults)}</tr>
-              <tr><th>pt</th>${statCells(teamIndex, "matchResults", "teamPoint", matchCount, team.matchResults)}</tr>
-              <tr><th>キル</th>${statCells(teamIndex, "matchResults", "teamKills", matchCount, team.matchResults)}</tr>
-            </tbody>
-          </table>
-        </div>
-
-        ${team.members.map((member, memberIndex) => memberBlock(member, teamIndex, memberIndex, matchCount)).join("")}
+        ${passwordSection(team, teamIndex, matchCount)}
 
         <button class="icon-button" data-action="remove-team" data-index="${teamIndex}" type="button">このチームを削除</button>
       </div>
@@ -709,17 +639,70 @@ function teamBlock(team, teamIndex, matchCount, form) {
   `;
 }
 
-function statCells(teamIndex, arrayKey, field, matchCount, rows) {
+function passwordSection(team, teamIndex, matchCount) {
+  if (team.passwordState === "locked") {
+    return `
+      <div class="password-box">
+        <p class="hint">🔒 このチームの詳細データ（試合結果・個人成績）はパスワードで保護されています。編集するにはパスワードを入力してください。</p>
+        <div class="field-row">
+          <div class="field"><input type="password" data-unlock-input="${teamIndex}" placeholder="現在のパスワード" /></div>
+          <button class="button secondary" data-action="unlock-team" data-index="${teamIndex}" type="button">ロック解除して編集</button>
+          <button class="icon-button" data-action="reset-team-password" data-index="${teamIndex}" type="button">パスワードを忘れた（作り直す）</button>
+        </div>
+        ${team.unlockError ? `<div class="message-banner error">${escapeHtml(team.unlockError)}</div>` : ""}
+      </div>
+    `;
+  }
+
+  return `
+    <div class="password-box">
+      <div class="field-row">
+        <div class="field">
+          <label>このチームのパスワード（チームに共有してください。保存後は再表示できません）</label>
+          <input type="text" data-path="teams.${teamIndex}.activePassword" value="${escapeHtml(team.activePassword)}" />
+        </div>
+        <button class="button secondary" data-action="regen-password" data-index="${teamIndex}" type="button">再生成</button>
+      </div>
+      ${teamDetailFields(team, teamIndex, matchCount)}
+    </div>
+  `;
+}
+
+function teamDetailFields(team, teamIndex, matchCount) {
+  const detail = team.detail;
+  return `
+    <div class="field-row">
+      <div class="field"><label>マッチpt</label><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.matchPoint" value="${numValue(detail.matchPoint)}" /></div>
+      <div class="field"><label>ランクボーナス</label><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.rankBonus" value="${numValue(detail.rankBonus)}" /></div>
+      <div class="field"><label>最高順位</label><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.bestPlace" value="${numValue(detail.bestPlace)}" /></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="stat-grid-table">
+        <thead><tr><th>試合ごとのチーム成績</th>${Array.from({ length: matchCount }, (_, m) => `<th>M${m + 1}</th>`).join("")}</tr></thead>
+        <tbody>
+          <tr><th>順位</th>${statCells(teamIndex, "teamRank", matchCount, detail.matchResults)}</tr>
+          <tr><th>pt</th>${statCells(teamIndex, "teamPoint", matchCount, detail.matchResults)}</tr>
+          <tr><th>キル</th>${statCells(teamIndex, "teamKills", matchCount, detail.matchResults)}</tr>
+        </tbody>
+      </table>
+    </div>
+
+    ${detail.members.map((member, memberIndex) => memberBlock(member, teamIndex, memberIndex, matchCount)).join("")}
+  `;
+}
+
+function statCells(teamIndex, field, matchCount, rows) {
   return Array.from({ length: matchCount }, (_, m) => {
     const value = rows[m]?.[field];
-    return `<td><input type="number" data-type="number" data-path="teams.${teamIndex}.${arrayKey}.${m}.${field}" value="${numValue(value)}" /></td>`;
+    return `<td><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.matchResults.${m}.${field}" value="${numValue(value)}" /></td>`;
   }).join("");
 }
 
 function memberBlock(member, teamIndex, memberIndex, matchCount) {
   return `
     <div class="member-block">
-      <div class="field"><label>メンバー${memberIndex + 1} 名前</label><input type="text" data-path="teams.${teamIndex}.members.${memberIndex}.name" value="${escapeHtml(member.name)}" /></div>
+      <div class="field"><label>メンバー${memberIndex + 1} 名前</label><input type="text" data-path="teams.${teamIndex}.detail.members.${memberIndex}.name" value="${escapeHtml(member.name)}" /></div>
       <div class="table-wrap">
         <table class="stat-grid-table">
           <thead><tr><th>成績</th>${Array.from({ length: matchCount }, (_, m) => `<th>M${m + 1}</th>`).join("")}</tr></thead>
@@ -735,7 +718,7 @@ function memberBlock(member, teamIndex, memberIndex, matchCount) {
 
 function memberCells(teamIndex, memberIndex, field, matchCount, values) {
   return Array.from({ length: matchCount }, (_, m) => {
-    return `<td><input type="number" data-type="number" data-path="teams.${teamIndex}.members.${memberIndex}.${field}.${m}" value="${numValue(values[m])}" /></td>`;
+    return `<td><input type="number" data-type="number" data-path="teams.${teamIndex}.detail.members.${memberIndex}.${field}.${m}" value="${numValue(values[m])}" /></td>`;
   }).join("");
 }
 

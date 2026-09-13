@@ -1,25 +1,22 @@
-import { applyGoogleSheetsData } from "./google-sheets.js";
+import { decryptTeamDetail } from "./crypto-gate.js";
 
 const BASE_PATH = getBasePath();
 const DATA_PATHS = {
-  site: withBase("/data/site-content.json"),
   apex: withBase("/data/apex-custom.json"),
-  wildcard: withBase("/data/wildcard-custom.json"),
   participation: withBase("/data/participation-history.json"),
-  googleSheets: withBase("/data/google-sheets.json"),
 };
 
 const state = {
-  site: {},
   apex: [],
-  wildcard: [],
   participation: [],
 };
+
+// パスワードで復号したチーム詳細を、このページを開いている間だけメモリ上に保持する
+const unlockedTeams = new Map();
 
 const navItems = [
   { href: "/", label: "Top" },
   { href: "/apex-custom/", label: "Apexカスタム" },
-  { href: "/wildcard-custom/", label: "ワイルドカード" },
   { href: "/participation-history/", label: "出場履歴" },
 ];
 
@@ -29,23 +26,19 @@ const app = document.querySelector("#app");
 init();
 
 async function init() {
+  app.addEventListener("submit", onSubmit);
   try {
-    const [site, apex, wildcard, participation] = await Promise.all([
-      loadJson(DATA_PATHS.site),
+    const [apex, participation] = await Promise.all([
       loadJson(DATA_PATHS.apex),
-      loadJson(DATA_PATHS.wildcard),
       loadJson(DATA_PATHS.participation),
     ]);
-    state.site = site || {};
     state.apex = apex.events || [];
-    state.wildcard = wildcard.events || [];
     state.participation = participation.entries || [];
-    await applyGoogleSheetsData(state, DATA_PATHS.googleSheets);
     render();
   } catch (error) {
     app.innerHTML = layout(`
       <section class="section"><div class="section-inner">
-        <div class="empty">データを読み込めませんでした。ローカル確認はサーバー起動後に開いてください。</div>
+        <div class="empty">データを読み込めませんでした。</div>
       </div></section>
     `);
     console.error(error);
@@ -60,13 +53,30 @@ async function loadJson(path) {
 
 function render() {
   if (page === "home") renderHome();
-  if (page === "apex-list") renderEventList("apex");
-  if (page === "apex-detail") renderEventDetail("apex");
-  if (page === "apex-team") renderTeamDetail();
-  if (page === "wildcard-list") renderEventList("wildcard");
-  if (page === "wildcard-detail") renderEventDetail("wildcard");
+  if (page === "apex-list") renderEventList();
+  if (page === "apex-detail") renderEventDetail();
   if (page === "participation") renderParticipation();
   if (page === "not-found") renderNotFound();
+}
+
+async function onSubmit(event) {
+  const form = event.target.closest("[data-team-unlock]");
+  if (!form) return;
+  event.preventDefault();
+  const teamId = form.dataset.teamUnlock;
+  const password = form.elements.password.value;
+  const messageEl = form.querySelector('[data-role="password-message"]');
+  const eventItem = state.apex.find((entry) => (entry.teams || []).some((team) => team.id === teamId));
+  const team = eventItem?.teams.find((entry) => entry.id === teamId);
+  if (!team) return;
+  messageEl.textContent = "確認中...";
+  try {
+    const detail = await decryptTeamDetail(password, team);
+    unlockedTeams.set(teamId, detail);
+    render();
+  } catch {
+    messageEl.textContent = "パスワードが違います。";
+  }
 }
 
 function layout(content) {
@@ -104,27 +114,17 @@ function isCurrent(href) {
 }
 
 function renderHome() {
-  const totalEvents = state.apex.length + state.wildcard.length;
-  const home = state.site.home || {};
-  const archiveMonth = archiveCoverageLabel();
   app.innerHTML = layout(`
     <section class="hero">
       <div class="section-inner hero-grid">
         <div>
-          ${home.heroEyebrow ? `<div class="eyebrow">${escapeHtml(home.heroEyebrow)}</div>` : ""}
-          <h1>${escapeHtml(home.heroTitle || "YUTORI EVENT ARCHIVE")}</h1>
-          ${home.heroCopy ? `<p class="hero-copy">${escapeHtml(home.heroCopy)}</p>` : ""}
+          <div class="eyebrow">YUTORI EVENT ARCHIVE</div>
+          <h1>Apex Legends 大会結果アーカイブ</h1>
+          <p class="hero-copy">ゆとりが主催したApex Legendsカスタム大会の結果発表ページです。</p>
           <div class="hero-actions">
-            <a class="button" href="${withBase("/#custom-archive")}">${escapeHtml(home.apexButtonLabel || "Apexカスタムを見る")}</a>
-            <a class="button secondary" href="${withBase("/participation-history/")}">${escapeHtml(home.historyButtonLabel || "出場履歴を見る")}</a>
+            <a class="button" href="${withBase("/apex-custom/")}">大会一覧を見る</a>
+            <a class="button secondary" href="${withBase("/participation-history/")}">出場履歴を見る</a>
           </div>
-          <div class="ticker" aria-label="登録データ数">
-            <div class="stat"><strong>${state.apex.length}</strong><span>${escapeHtml(home.apexStatLabel || "Apexカスタム")}</span></div>
-            <div class="stat"><strong>${state.wildcard.length}</strong><span>${escapeHtml(home.wildcardStatLabel || "ワイルドカード")}</span></div>
-            <div class="stat"><strong>${state.participation.length}</strong><span>${escapeHtml(home.historyStatLabel || "出場履歴")}</span></div>
-            <div class="stat"><strong>${totalEvents}</strong><span>${escapeHtml(home.archiveStatLabel || "大会アーカイブ")}</span></div>
-          </div>
-          ${archiveMonth ? `<div class="archive-coverage">掲載データ：${archiveMonth}まで</div>` : ""}
         </div>
         <div class="hero-emblem">
           <div class="emblem-ring">
@@ -133,160 +133,232 @@ function renderHome() {
         </div>
       </div>
     </section>
-    <div id="custom-archive"></div>
-    ${homeSection(home.apexSectionTitle || "Apexカスタム", home.apexSectionLead || "", state.apex, "/apex-custom/detail.html?id=", "/apex-custom/")}
-    ${homeSection(home.wildcardSectionTitle || "Apexワイルドカードカスタム", home.wildcardSectionLead || "", state.wildcard, "/wildcard-custom/detail.html?id=", "/wildcard-custom/")}
-  `);
-}
-function homeSection(title, lead, items, detailBase, listHref) {
-  return `
     <section class="section">
       <div class="section-inner">
         <div class="section-head">
-          <div>
-            <h2>${title}</h2>
-            ${lead ? `<p class="section-lead">${lead}</p>` : ""}
-          </div>
-          <a class="button secondary" href="${withBase(listHref)}">一覧へ</a>
+          <div><h2>Apexカスタム大会</h2></div>
+          <a class="button secondary" href="${withBase("/apex-custom/")}">一覧へ</a>
         </div>
-        <div class="grid">${items.slice(0, 3).map((item) => eventCard(item, detailBase)).join("")}</div>
-      </div>
-    </section>
-  `;
-}
-
-function renderEventList(type) {
-  const isApex = type === "apex";
-  const items = state[type];
-  const title = isApex ? "Apexカスタム" : "Apexワイルドカードカスタム";
-  const lead = isApex
-    ? "ゆとり主催の通常Apexカスタム大会を一覧化。詳細ページでチーム1〜20を選択し、各チーム3名を確認できます。"
-    : "ワイルドカード形式の大会を一覧化。詳細ページで参加者30人の名前、配信URL、Xを確認できます。";
-  const detailBase = isApex ? "/apex-custom/detail.html?id=" : "/wildcard-custom/detail.html?id=";
-
-  app.innerHTML = layout(`
-    ${pageHero(title, lead)}
-    <section class="section">
-      <div class="section-inner">
-        <div class="grid">${items.map((item) => eventCard(item, detailBase)).join("") || empty("大会データがまだありません。")}</div>
+        <div class="grid">${state.apex.slice(0, 3).map(eventCard).join("") || empty("大会データがまだありません。")}</div>
       </div>
     </section>
   `);
 }
 
-function eventCard(item, detailBase) {
+function renderEventList() {
+  app.innerHTML = layout(`
+    ${pageHero("Apexカスタム大会", "ゆとり主催のApexカスタム大会一覧です。大会名をクリックすると結果発表ページを開きます。")}
+    <section class="section">
+      <div class="section-inner">
+        <div class="grid">${state.apex.map(eventCard).join("") || empty("大会データがまだありません。")}</div>
+      </div>
+    </section>
+  `);
+}
+
+function eventCard(event) {
   return `
     <article class="card">
-      <a href="${withBase(detailBase)}${encodeURIComponent(item.id)}">
-        <div class="card-media">${imageOrPlaceholder(item.thumbnail, `${item.title} サムネイル`)}</div>
+      <a href="${withBase("/apex-custom/detail.html")}?id=${encodeURIComponent(event.id)}">
         <div class="card-body">
           <div class="meta-row">
-            <span class="pill">${formatDate(item.date)}</span>
-            <span class="pill purple">${escapeHtml(item.category || "Apex Custom")}</span>
+            <span class="pill">${formatDate(event.date)}</span>
+            ${event.status ? `<span class="pill purple">${escapeHtml(event.status)}</span>` : ""}
           </div>
-          <h3>${escapeHtml(item.title)}</h3>
-          <p>${escapeHtml(item.summary || item.description || "大会概要をJSONに追加できます。")}</p>
+          <h3>${escapeHtml(event.tournamentName || "(無題)")}</h3>
+          ${event.rule ? `<p>${escapeHtml(event.rule)}</p>` : ""}
         </div>
       </a>
     </article>
   `;
 }
 
-function renderEventDetail(type) {
+function renderEventDetail() {
   const id = new URLSearchParams(window.location.search).get("id");
-  const item = state[type].find((event) => event.id === id) || state[type][0];
-  const isApex = type === "apex";
-  const listHref = isApex ? "/apex-custom/" : "/wildcard-custom/";
-  if (!item) {
-    app.innerHTML = layout(`${pageHero("大会詳細", "大会データが見つかりません。")}<section class="section"><div class="section-inner">${empty("大会データがまだありません。")}</div></section>`);
+  const event = state.apex.find((entry) => entry.id === id) || state.apex[0];
+
+  if (!event) {
+    app.innerHTML = layout(`${pageHero("大会結果", "大会データが見つかりません。")}<section class="section"><div class="section-inner">${empty("大会データがまだありません。")}</div></section>`);
     return;
   }
 
   app.innerHTML = layout(`
-    ${pageHero(item.title, `${formatDate(item.date)} / ${item.category || "Apex Custom"}`, listHref)}
+    <section class="hero page-hero">
+      <div class="section-inner">
+        <div class="eyebrow">YUTORI EVENT ARCHIVE</div>
+        <h1>${escapeHtml(event.tournamentName || "(無題)")}</h1>
+        <div class="meta-row" style="margin-top:14px">
+          <span class="pill">${formatDate(event.date)}</span>
+          ${event.rule ? `<span class="pill purple">${escapeHtml(event.rule)}</span>` : ""}
+          ${event.status ? `<span class="pill">${escapeHtml(event.status)}</span>` : ""}
+        </div>
+        <div class="hero-actions"><a class="button secondary" href="${withBase("/apex-custom/")}">一覧へ戻る</a></div>
+      </div>
+    </section>
     <section class="section">
-      <div class="section-inner detail-layout">
-        <main>
-          <article class="panel">
-            <h2>大会概要</h2>
-            <p class="content-text">${escapeHtml(item.description || item.summary || "")}</p>
-          </article>
-          ${isApex && !isHidden(item, "mapProgress") ? mapProgressSection(item) : ""}
-          ${isApex && !isHidden(item, "finalRanking") ? finalRankingSection(item) : ""}
-          ${imagePanel("大会サムネイル", item.thumbnail)}
-          ${isApex ? imagePanel("チーム紹介画像", item.teamImage) : imagePanel("参加者一覧画像", item.teamImage)}
-          ${isApex ? teamCardList(item) : participantList(item.participants)}
-          ${wildcardMatchTeams(item.matchTeams)}
-          ${isHidden(item, "totalResults") ? "" : resultTable(item.totalResults, "総合順位")}
-          ${isHidden(item, "totalResultImage") ? "" : imagePanel("総合順位表画像", item.totalResultImage)}
-          ${isHidden(item, "matches") ? "" : matchSection(item.matches)}
-          ${videoSection("ED動画", item.edYoutubeUrl)}
-          ${sponsorSection(item.sponsors)}
-          ${memoSection(item.memo)}
-        </main>
-        <aside>
-          <div class="panel">
-            <h2>基本情報</h2>
-            <dl class="kv">
-              <div><dt>大会名</dt><dd>${escapeHtml(item.title)}</dd></div>
-              <div><dt>開催日</dt><dd>${formatDate(item.date)}</dd></div>
-              <div><dt>カテゴリ</dt><dd>${escapeHtml(item.category || "")}</dd></div>
-              <div><dt>配信アーカイブ</dt><dd>${linkOrText(item.archiveUrl, "アーカイブを開く")}</dd></div>
-            </dl>
-          </div>
-        </aside>
+      <div class="section-inner">
+        ${mapProgressSection(event)}
+        ${finalRankingSection(event)}
       </div>
     </section>
   `);
 }
 
-function renderTeamDetail() {
-  const params = new URLSearchParams(window.location.search);
-  const eventId = params.get("event");
-  const teamId = params.get("team");
-  const event = state.apex.find((entry) => entry.id === eventId) || state.apex[0];
-  const teams = normalizeTeams(event?.teams || []);
-  const team = teams.find((entry) => entry.id === teamId) || teams[0];
-
-  if (!event || !team) {
-    app.innerHTML = layout(`${pageHero("チーム詳細", "チームデータが見つかりません。")}<section class="section"><div class="section-inner">${empty("チームデータがまだありません。")}</div></section>`);
-    return;
-  }
-
-  app.innerHTML = layout(`
-    ${pageHero(team.name, `${event.title} / チーム`, `/apex-custom/detail.html?id=${encodeURIComponent(event.id)}`)}
-    <section class="section">
-      <div class="section-inner">
-        <article class="panel">
-          <div class="team-profile">
-            <div>
-              <div class="eyebrow">Team</div>
-              <h2>${escapeHtml(team.name)}</h2>
-              ${team.note ? `<p class="content-text">${escapeHtml(team.note)}</p>` : ""}
+function mapProgressSection(event) {
+  const maps = event.maps || [];
+  if (!maps.length) return "";
+  return `
+    <section class="panel">
+      <h2>マップ進行</h2>
+      <div class="map-progress">
+        ${maps
+          .map((map, index) => {
+            const done = Boolean(map.completed);
+            return `
+            <div class="map-step${done ? " done" : ""}">
+              <span class="map-step-label">M${index + 1}</span>
+              <span class="map-step-name">${escapeHtml(map.name)}</span>
+              <span class="map-step-status">${done ? "終了済み" : "未実施"}</span>
             </div>
-            <div class="team-profile-image">${imageOrPlaceholder(team.thumbnail, `${team.name} チーム紹介サムネ`)}</div>
-          </div>
-        </article>
-        <section class="panel">
-          <h2>メンバー</h2>
-          <div class="team-member-list">
-            ${team.members.map((member, index) => `
-              <div class="team-member-name">
-                <span>${String(index + 1).padStart(2, "0")}</span>
-                <strong>${escapeHtml(member.name)}</strong>
-              </div>
-            `).join("")}
-          </div>
-        </section>
+          `;
+          })
+          .join("")}
       </div>
     </section>
-  `);
+  `;
+}
+
+function rankedTeamsList(event) {
+  return (event.teams || [])
+    .filter((team) => typeof team.point === "number" || typeof team.rank === "number")
+    .slice()
+    .sort((a, b) => {
+      const rankA = typeof a.rank === "number" ? a.rank : Infinity;
+      const rankB = typeof b.rank === "number" ? b.rank : Infinity;
+      if (rankA !== rankB) return rankA - rankB;
+      return (b.point || 0) - (a.point || 0);
+    });
+}
+
+function finalRankingSection(event) {
+  const ranked = rankedTeamsList(event);
+  if (!ranked.length) return `<section class="panel"><h2>最終順位</h2>${empty("結果はまだ発表されていません。")}</section>`;
+  const top3 = ranked.slice(0, 3);
+  const rest = ranked.slice(3);
+  const podiumOrder = { 1: "gold", 2: "silver", 3: "bronze" };
+  return `
+    <section class="panel">
+      <h2>最終順位</h2>
+      <div class="rank-podium">
+        ${top3.map((team) => rankEntry(team, `rank-card ${podiumOrder[team.rank] || ""}`)).join("")}
+      </div>
+      ${rest.length ? `<div class="rank-list">${rest.map((team) => rankEntry(team, "rank-row")).join("")}</div>` : ""}
+    </section>
+  `;
+}
+
+function rankEntry(team, className) {
+  const unlocked = unlockedTeams.get(team.id);
+  return `
+    <details class="${className}" ${unlocked ? "open" : ""}>
+      <summary>
+        <span class="rank-badge">${escapeHtml(placeLabel(team.rank))}</span>
+        <span class="rank-team-name">${escapeHtml(team.name)}</span>
+        <span class="rank-points">${escapeHtml(numOrDash(team.point))}pt</span>
+        <span class="rank-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="rank-detail">
+        ${unlocked ? teamDetailBody(unlocked) : passwordGate(team.id)}
+      </div>
+    </details>
+  `;
+}
+
+function passwordGate(teamId) {
+  return `
+    <form class="password-gate" data-team-unlock="${escapeHtml(teamId)}">
+      <p class="hint">チーム詳細（試合ごとの成績・メンバー個人成績）はパスワードで保護されています。<br />大会主催者から発行されたこのチームのパスワードを入力してください。</p>
+      <div class="password-gate-row">
+        <input type="password" name="password" placeholder="チームのパスワード" autocomplete="off" />
+        <button class="button secondary" type="submit">開く</button>
+      </div>
+      <div class="password-gate-message hint" data-role="password-message"></div>
+    </form>
+  `;
+}
+
+function teamDetailBody(detail) {
+  const matchNumbers = (detail.matchResults || []).map((result, index) => result.match ?? index + 1);
+  const results = detail.matchResults || [];
+  const findResult = (matchNo) => results.find((result) => Number(result.match) === matchNo) || {};
+
+  return `
+    <dl class="point-breakdown">
+      <div><dt>マッチpt</dt><dd>${escapeHtml(numOrDash(detail.matchPoint))}</dd></div>
+      <div><dt>ランクボーナス</dt><dd>${escapeHtml(numOrDash(detail.rankBonus))}</dd></div>
+      <div><dt>最高順位</dt><dd>${escapeHtml(placeLabel(detail.bestPlace))}</dd></div>
+    </dl>
+    ${
+      results.length
+        ? `
+    <div class="table-wrap">
+      <table class="stat-table">
+        <thead><tr><th>試合ごとのチーム成績</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}</tr></thead>
+        <tbody>
+          <tr><th>順位</th>${matchNumbers.map((m) => `<td>${placeLabel(findResult(m).teamRank)}</td>`).join("")}</tr>
+          <tr><th>pt</th>${matchNumbers.map((m) => `<td>${numOrDash(findResult(m).teamPoint)}</td>`).join("")}</tr>
+          <tr><th>キル</th>${matchNumbers.map((m) => `<td>${numOrDash(findResult(m).teamKills)}</td>`).join("")}</tr>
+        </tbody>
+      </table>
+    </div>`
+        : ""
+    }
+    ${
+      (detail.members || []).length
+        ? `
+    <div class="member-stats">
+      <h3>メンバー個人成績</h3>
+      ${detail.members.map((member) => memberStatsTable(member, matchNumbers)).join("")}
+    </div>`
+        : ""
+    }
+  `;
+}
+
+function memberStatsTable(member, matchNumbers) {
+  const damage = member.damageByMatch || [];
+  const kills = member.killsByMatch || [];
+  const totalDamage = typeof member.totalDamage === "number" ? member.totalDamage : sumArray(damage);
+  const totalKills = typeof member.totalKills === "number" ? member.totalKills : sumArray(kills);
+  return `
+    <div class="table-wrap member-stat-table">
+      <table class="stat-table">
+        <thead><tr><th>${escapeHtml(member.name || "メンバー")}</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}<th>合計</th></tr></thead>
+        <tbody>
+          <tr><th>ダメージ</th>${matchNumbers.map((m, index) => `<td>${numOrDash(damage[index])}</td>`).join("")}<td>${totalDamage}</td></tr>
+          <tr><th>キル</th>${matchNumbers.map((m, index) => `<td>${numOrDash(kills[index])}</td>`).join("")}<td>${totalKills}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function sumArray(values = []) {
+  return values.reduce((total, value) => total + (Number(value) || 0), 0);
+}
+
+function numOrDash(value) {
+  return typeof value === "number" && !Number.isNaN(value) ? String(value) : "-";
+}
+
+function placeLabel(value) {
+  return typeof value === "number" && !Number.isNaN(value) ? `${value}位` : "-";
 }
 
 function renderParticipation() {
   const archiveMonth = archiveCoverageLabel(state.participation);
   app.innerHTML = layout(`
-    ${pageHero("Apexカスタム出場履歴", "ゆとり自身が出場したApexカスタム大会の履歴。大会名、チーム名、メンバー、最終順位、配信アーカイブ、メモを管理できます。")}
+    ${pageHero("Apexカスタム出場履歴", "ゆとり自身が出場したApexカスタム大会の履歴です。")}
     <section class="section">
       <div class="section-inner">
         ${archiveMonth ? `<div class="archive-coverage panel">出場履歴：${archiveMonth}まで掲載</div>` : ""}
@@ -333,423 +405,6 @@ function pageHero(title, lead, backHref = "") {
   `;
 }
 
-function imagePanel(title, src) {
-  if (!src) return "";
-  return `
-    <section class="panel">
-      <h2>${title}</h2>
-      <div class="image-frame">${imageOrPlaceholder(src, title)}</div>
-    </section>
-  `;
-}
-
-function isHidden(item, section) {
-  return (item.hiddenSections || []).includes(section);
-}
-
-function mapProgressSection(event) {
-  const maps = event.maps || [];
-  if (!maps.length) return "";
-  const completed = completedMatchSet(event);
-  return `
-    <section class="panel">
-      <h2>マップ進行</h2>
-      <div class="map-progress">
-        ${maps.map((mapName, index) => {
-          const matchNo = index + 1;
-          const done = completed.has(matchNo);
-          return `
-            <div class="map-step${done ? " done" : ""}">
-              <span class="map-step-label">M${matchNo}</span>
-              <span class="map-step-name">${escapeHtml(mapName)}</span>
-              <span class="map-step-status">${done ? "終了済み" : "未実施"}</span>
-            </div>
-          `;
-        }).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function completedMatchSet(event) {
-  const set = new Set();
-  (event.teams || []).forEach((team) => {
-    (team.matchResults || []).forEach((result) => {
-      const hasData = ["teamRank", "teamPoint", "teamKills"].some((key) => typeof result?.[key] === "number");
-      if (hasData) set.add(Number(result.match));
-    });
-  });
-  (event.matches || []).forEach((match, index) => {
-    if (typeof match.completed !== "boolean") return;
-    const matchNo = index + 1;
-    if (match.completed) set.add(matchNo);
-    else set.delete(matchNo);
-  });
-  return set;
-}
-
-function rankedTeamsList(event) {
-  return (event.teams || [])
-    .filter((team) => typeof team.point === "number" || typeof team.rank === "number")
-    .slice()
-    .sort((a, b) => {
-      const rankA = typeof a.rank === "number" ? a.rank : Infinity;
-      const rankB = typeof b.rank === "number" ? b.rank : Infinity;
-      if (rankA !== rankB) return rankA - rankB;
-      return (b.point || 0) - (a.point || 0);
-    });
-}
-
-function finalRankingSection(event) {
-  const ranked = rankedTeamsList(event);
-  if (!ranked.length) return "";
-  const top3 = ranked.slice(0, 3);
-  const rest = ranked.slice(3);
-  const podiumOrder = { 1: "gold", 2: "silver", 3: "bronze" };
-  return `
-    <section class="panel">
-      <h2>最終順位</h2>
-      <div class="rank-podium">
-        ${top3.map((team) => rankEntry(team, event, `rank-card ${podiumOrder[team.rank] || ""}`)).join("")}
-      </div>
-      ${rest.length ? `<div class="rank-list">${rest.map((team) => rankEntry(team, event, "rank-row")).join("")}</div>` : ""}
-    </section>
-  `;
-}
-
-function rankEntry(team, event, className) {
-  return `
-    <details class="${className}">
-      <summary>
-        <span class="rank-badge">${escapeHtml(placeLabel(team.rank))}</span>
-        <span class="rank-team-name">${escapeHtml(team.name)}</span>
-        <span class="rank-points">${escapeHtml(numOrDash(team.point))}pt</span>
-        <span class="rank-chevron" aria-hidden="true"></span>
-      </summary>
-      ${teamDetailAccordionBody(team, event)}
-    </details>
-  `;
-}
-
-function teamDetailAccordionBody(team, event) {
-  const resultMatchNumbers = (team.matchResults || []).map((result) => Number(result.match));
-  const matchCount =
-    (event.matches || []).length ||
-    (event.maps || []).length ||
-    (resultMatchNumbers.length ? Math.max(...resultMatchNumbers) : 0) ||
-    5;
-  const matchNumbers = Array.from({ length: matchCount }, (_, index) => index + 1);
-  const results = team.matchResults || [];
-  const findResult = (matchNo) => results.find((result) => Number(result.match) === matchNo) || {};
-
-  return `
-    <div class="rank-detail">
-      <dl class="point-breakdown">
-        <div><dt>マッチpt</dt><dd>${escapeHtml(numOrDash(team.matchPoint))}</dd></div>
-        <div><dt>ランクボーナス</dt><dd>${escapeHtml(numOrDash(team.rankBonus))}</dd></div>
-        <div><dt>最高順位</dt><dd>${escapeHtml(placeLabel(team.bestPlace))}</dd></div>
-      </dl>
-      ${results.length ? `
-      <div class="table-wrap">
-        <table class="stat-table">
-          <thead><tr><th>試合ごとのチーム成績</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}<th>合計</th></tr></thead>
-          <tbody>
-            <tr><th>順位</th>${matchNumbers.map((m) => `<td>${placeLabel(findResult(m).teamRank)}</td>`).join("")}<td>-</td></tr>
-            <tr><th>pt</th>${matchNumbers.map((m) => `<td>${numOrDash(findResult(m).teamPoint)}</td>`).join("")}<td>${numOrDash(team.point)}</td></tr>
-            <tr><th>キル</th>${matchNumbers.map((m) => `<td>${numOrDash(findResult(m).teamKills)}</td>`).join("")}<td>${numOrDash(sumField(results, "teamKills"))}</td></tr>
-          </tbody>
-        </table>
-      </div>` : ""}
-      ${(team.members || []).some((member) => (member.damageByMatch || []).length || (member.killsByMatch || []).length) ? `
-      <div class="member-stats">
-        <h3>メンバー個人成績</h3>
-        ${team.members.map((member) => memberStatsTable(member, matchNumbers)).join("")}
-      </div>` : ""}
-    </div>
-  `;
-}
-
-function memberStatsTable(member, matchNumbers) {
-  const damage = member.damageByMatch || [];
-  const kills = member.killsByMatch || [];
-  if (!damage.length && !kills.length) return "";
-  const totalDamage = typeof member.totalDamage === "number" ? member.totalDamage : sumArray(damage);
-  const totalKills = typeof member.totalKills === "number" ? member.totalKills : sumArray(kills);
-  return `
-    <div class="table-wrap member-stat-table">
-      <table class="stat-table">
-        <thead><tr><th>${escapeHtml(member.name)}</th>${matchNumbers.map((m) => `<th>M${m}</th>`).join("")}<th>合計</th></tr></thead>
-        <tbody>
-          <tr><th>ダメージ</th>${matchNumbers.map((m, index) => `<td>${numOrDash(damage[index])}</td>`).join("")}<td>${totalDamage}</td></tr>
-          <tr><th>キル</th>${matchNumbers.map((m, index) => `<td>${numOrDash(kills[index])}</td>`).join("")}<td>${totalKills}</td></tr>
-        </tbody>
-      </table>
-    </div>
-  `;
-}
-
-function sumArray(values = []) {
-  return values.reduce((total, value) => total + (Number(value) || 0), 0);
-}
-
-function sumField(rows = [], field) {
-  return rows.reduce((total, row) => total + (Number(row?.[field]) || 0), 0);
-}
-
-function numOrDash(value) {
-  return typeof value === "number" && !Number.isNaN(value) ? String(value) : "-";
-}
-
-function placeLabel(value) {
-  return typeof value === "number" && !Number.isNaN(value) ? `${value}位` : "-";
-}
-
-function teamCardList(event) {
-  const normalized = normalizeTeams(event.teams || []);
-  return `
-    <section class="panel">
-      <h2>チーム紹介</h2>
-      <div class="team-card-grid">
-        ${normalized.map((team) => `
-          <a class="team-card" href="${withBase("/apex-custom/team.html")}?event=${encodeURIComponent(event.id)}&team=${encodeURIComponent(team.id)}">
-            <div class="team-card-thumb">${imageOrPlaceholder(team.thumbnail, `${team.name} サムネイル`)}</div>
-            <div>
-              <h3>${escapeHtml(team.name)}</h3>
-              <p>${escapeHtml(team.members.map((member) => member.name).join(" / "))}</p>
-            </div>
-          </a>
-        `).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function normalizeTeams(teams) {
-  return Array.from({ length: 20 }, (_, index) => {
-    const existing = teams[index] || {};
-    const members = normalizeMembers(existing.members, index);
-    return {
-      id: existing.id || `team-${index + 1}`,
-      name: existing.name || `チーム${index + 1}`,
-      thumbnail: existing.thumbnail || `/images/apex-custom/teams/team-${index + 1}/thumbnail.png`,
-      members,
-      note: existing.note || "",
-    };
-  });
-}
-
-function normalizeMembers(members = [], teamIndex = 0) {
-  return Array.from({ length: 3 }, (_, memberIndex) => {
-    const existing = members[memberIndex];
-    if (typeof existing === "string") {
-      return {
-        name: existing,
-        standImage: `/images/apex-custom/teams/team-${teamIndex + 1}/member-${memberIndex + 1}.png`,
-        streamUrl: "",
-      };
-    }
-    return {
-      name: existing?.name || `チーム${teamIndex + 1} メンバー${memberIndex + 1}`,
-      standImage: existing?.standImage || `/images/apex-custom/teams/team-${teamIndex + 1}/member-${memberIndex + 1}.png`,
-      streamUrl: existing?.streamUrl || "",
-    };
-  });
-}
-
-function memberProfile(member) {
-  return `
-    <article class="standee-card">
-      <div class="standee-image">${imageOrPlaceholder(member.standImage, `${member.name} 立ち絵`)}</div>
-      <div class="standee-info">
-        <h3>${escapeHtml(member.name)}</h3>
-        ${member.streamUrl ? `<a class="mini-button" href="${member.streamUrl}" target="_blank" rel="noreferrer">配信</a>` : `<span class="mini-button disabled">配信</span>`}
-      </div>
-    </article>
-  `;
-}
-
-function participantList(participants = []) {
-  const normalized = normalizeParticipants(participants);
-  return `
-    <section class="panel">
-      <h2>参加者一覧</h2>
-      <div class="participant-list">
-        ${normalized.map(participantCard).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function participantCard(participant, index) {
-  const hasVisual = Boolean(participant.standImage);
-  const hasLinks = Boolean(participant.streamUrl || participant.xUrl);
-  const nameBlock = `
-    <div>
-      <span class="participant-number">${String(index + 1).padStart(2, "0")}</span>
-      <h3>${escapeHtml(participant.name)}</h3>
-    </div>
-  `;
-
-  if (!hasVisual && !hasLinks) {
-    return `
-      <article class="participant-card participant-card-name-only">
-        ${nameBlock}
-      </article>
-    `;
-  }
-
-  return `
-    <article class="participant-card">
-      ${hasVisual ? `<div class="participant-visual">${imageOrPlaceholder(participant.standImage, `${participant.name} 立ち絵`)}</div>` : ""}
-      ${nameBlock}
-      ${hasLinks ? `
-        <div class="link-row">
-          ${participant.streamUrl ? `<a class="mini-button" href="${participant.streamUrl}" target="_blank" rel="noreferrer">配信</a>` : ""}
-          ${participant.xUrl ? `<a class="mini-button purple" href="${participant.xUrl}" target="_blank" rel="noreferrer">X</a>` : ""}
-        </div>
-      ` : ""}
-    </article>
-  `;
-}
-
-function normalizeParticipants(participants) {
-  return Array.from({ length: 30 }, (_, index) => {
-    const existing = participants[index] || {};
-    return {
-      name: existing.name || `参加者${index + 1}`,
-      standImage: existing.standImage || "",
-      streamUrl: existing.streamUrl || "",
-      xUrl: existing.xUrl || "",
-    };
-  });
-}
-
-function wildcardMatchTeams(matchTeams = []) {
-  if (!matchTeams.length) return "";
-  return `
-    <section class="panel">
-      <h2>各試合チーム構成</h2>
-      <div class="match-grid">
-        ${matchTeams.map((match) => `
-          <article class="match-card">
-            <h3>${escapeHtml(match.matchName)}</h3>
-            <div class="match-body">
-              ${(match.teams || []).map((team) => `
-                <div class="match-team">
-                  <strong>${escapeHtml(team.name)}</strong>
-                  <ul>
-                    ${(team.members || []).map((member) => `<li>${escapeHtml(member)}</li>`).join("")}
-                  </ul>
-                </div>
-              `).join("")}
-            </div>
-          </article>
-        `).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function resultTable(results = [], title) {
-  if (!results.length) return "";
-  return `
-    <section class="panel">
-      <h2>${title}</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>順位</th><th>チーム名</th><th>ポイント</th><th>メモ</th></tr></thead>
-          <tbody>
-            ${results.map((row) => `<tr><td>${escapeHtml(row.rank)}</td><td>${escapeHtml(row.teamName)}</td><td>${escapeHtml(row.points || "")}</td><td>${escapeHtml(row.note || "")}</td></tr>`).join("")}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  `;
-}
-
-function matchSection(matches = []) {
-  if (!matches.length) return "";
-  return `
-    <section class="panel">
-      <h2>試合別記録</h2>
-      <div class="match-grid">
-        ${matches.map((match) => `
-          <article class="match-card">
-            <h3>${escapeHtml(match.matchName)}</h3>
-            <div class="match-body">
-              ${match.resultImage ? `<div class="image-frame">${imageOrPlaceholder(match.resultImage, `${match.matchName} 順位表`)}</div>` : ""}
-              ${match.results ? compactResults(match.results) : ""}
-              ${youtubeEmbed(match.youtubeUrl, `${match.matchName} 神視点動画`)}
-            </div>
-          </article>
-        `).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function compactResults(results) {
-  return `
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>順位</th><th>チーム名</th><th>ポイント</th></tr></thead>
-        <tbody>${results.map((row) => `<tr><td>${escapeHtml(row.rank)}</td><td>${escapeHtml(row.teamName)}</td><td>${escapeHtml(row.points || "")}</td></tr>`).join("")}</tbody>
-      </table>
-    </div>
-  `;
-}
-
-function videoSection(title, url) {
-  if (!url) return "";
-  return `
-    <section class="panel">
-      <h2>${title}</h2>
-      <div class="video-grid">${youtubeEmbed(url, title)}</div>
-    </section>
-  `;
-}
-
-function youtubeEmbed(url, title) {
-  const id = getYoutubeId(url);
-  if (!id) return `<div class="empty">${escapeHtml(title)} 未設定</div>`;
-  return `
-    <div class="video">
-      <h3>${escapeHtml(title)}</h3>
-      <iframe src="https://www.youtube.com/embed/${id}" title="${escapeHtml(title)}" allowfullscreen loading="lazy"></iframe>
-    </div>
-  `;
-}
-
-function sponsorSection(sponsors = []) {
-  if (!sponsors.length) return "";
-  return `
-    <section class="panel">
-      <h2>スポンサー紹介</h2>
-      <div class="grid">
-        ${sponsors.map((sponsor) => `
-          <article class="card">
-            <div class="card-body">
-              <h3>${escapeHtml(sponsor.name)}</h3>
-              <p>${escapeHtml(sponsor.description || "")}</p>
-              ${linkOrText(sponsor.url, "スポンサーサイト")}
-            </div>
-          </article>
-        `).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function memoSection(memo) {
-  if (!memo) return "";
-  return `
-    <section class="panel">
-      <h2>メモ</h2>
-      <p class="content-text">${escapeHtml(memo)}</p>
-    </section>
-  `;
-}
-
 function imageOrPlaceholder(src, alt) {
   if (!src) return `<div class="image-placeholder">画像準備中</div>`;
   const imageSrc = withBase(src);
@@ -760,20 +415,6 @@ function imageOrPlaceholder(src, alt) {
 function linkOrText(url, label) {
   if (!url) return "未設定";
   return `<a class="button secondary" href="${url}" target="_blank" rel="noreferrer">${label}</a>`;
-}
-
-function getYoutubeId(url) {
-  if (!url) return "";
-  try {
-    const parsed = new URL(url);
-    if (parsed.hostname.includes("youtu.be")) return parsed.pathname.slice(1);
-    if (parsed.searchParams.get("v")) return parsed.searchParams.get("v");
-    if (parsed.pathname.includes("/embed/")) return parsed.pathname.split("/embed/")[1];
-    if (parsed.pathname.includes("/shorts/")) return parsed.pathname.split("/shorts/")[1];
-  } catch {
-    return "";
-  }
-  return "";
 }
 
 function formatDate(value) {
@@ -787,7 +428,7 @@ function formatDate(value) {
   }).format(date);
 }
 
-function archiveCoverageLabel(items = [...state.apex, ...state.wildcard, ...state.participation]) {
+function archiveCoverageLabel(items = []) {
   const latest = items
     .map((item) => parseDate(item.date))
     .filter((date) => !Number.isNaN(date.getTime()))
@@ -829,7 +470,7 @@ function renderNotFound() {
 
 function getBasePath() {
   const firstSegment = window.location.pathname.split("/").filter(Boolean)[0] || "";
-  const pageRoots = new Set(["apex-custom", "wildcard-custom", "participation-history"]);
+  const pageRoots = new Set(["apex-custom", "participation-history"]);
   if (!firstSegment || pageRoots.has(firstSegment)) return "";
   return `/${firstSegment}`;
 }

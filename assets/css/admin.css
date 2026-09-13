@@ -170,6 +170,16 @@
   margin-bottom: 0;
 }
 
+.map-done-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  color: var(--ink);
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+
 .team-block {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -255,38 +265,15 @@
   font-size: 0.8rem;
 }
 
-.upload-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+.password-box {
+  border: 1px solid rgba(29, 161, 242, 0.32);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(29, 161, 242, 0.06);
 }
 
-.upload-row input[type="text"] {
-  flex: 1 1 220px;
-}
-
-.upload-preview {
-  width: 56px;
-  height: 42px;
-  object-fit: cover;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: rgba(2, 6, 23, 0.6);
-}
-
-.checkbox-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-}
-
-.checkbox-row label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--ink);
-  font-size: 0.86rem;
+.password-box .field-row {
+  align-items: end;
 }
 
 .form-actions {
