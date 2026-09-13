@@ -11,7 +11,32 @@
 - **大会結果発表ページ** (`/apex-custom/detail.html?id=...`) : マップ進行・最終順位（1〜3位はカード、4位以降はリスト）を表示。チーム名をクリックすると、そのチームのパスワードを入力してチーム詳細（試合ごとの成績・メンバー個人のダメージ/キル）を開ける
 - **出場履歴** (`/participation-history/`) : ゆとり自身が出場した大会の履歴
 
-## 管理者ページ（大会結果の新規作成・編集）
+## 管理者ページは2種類あります（比較用）
+
+管理者ページの実装を2パターン用意しています。使い比べて、分かりやすい方を採用してください。
+
+| | GitHub版 | Firebase版 |
+|---|---|---|
+| 管理者ページ | `/admin/` | `/admin-firebase/` |
+| 公開ページ（結果発表） | `/apex-custom/` | `/firebase-demo/`（お試し用。採用する場合は本番の`/apex-custom/`に統合します） |
+| データの保存先 | このリポジトリの `data/apex-custom.json`（GitHubへコミット） | Firebase の Firestore データベース |
+| ログイン | メール＋パスワード（内部でGitHubトークンを1端末1回だけ設定） | メール＋パスワード（Firebase Authenticationに直接ログイン、トークン設定一切不要） |
+| 初期セットアップ | Fine-grained Personal Access Tokenの発行（今回つまずいた部分） | Firebaseプロジェクトの作成・Firestore/Authenticationの有効化 |
+
+チームごとのパスワード保護（試合結果・個人成績の暗号化）の仕組みは両方共通です。
+
+どちらか一方に決めたら、教えてください。使わない方は削除します。
+
+### Firebase版の初期設定
+
+1. [Firebaseコンソール](https://console.firebase.google.com)でプロジェクトを作成
+2. **Firestore Database** を作成（本番モード）
+3. **Authentication** → Sign-in method で「メール/パスワード」を有効化
+4. Authentication → Users で管理者用のメールアドレス・パスワードを1件だけ手動登録（公開の新規登録画面は用意していません）
+5. Firestore Database → ルール タブで、このリポジトリの `firestore.rules` の内容を貼り付けて公開
+6. プロジェクトの設定 → マイアプリ で取得した設定値を `assets/js/firebase-config.js` に貼り付け（済み）
+
+## 管理者ページ（GitHub版）の使い方
 
 サイト上の管理者ページから、大会の新規作成・編集ができます。ローカルツールやPCソフトは不要です。
 
