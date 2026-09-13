@@ -25,6 +25,32 @@
         }
       ],
       "teams": []
+    },
+    {
+      "id": "99",
+      "tournamentName": "縛り+自由×2",
+      "date": "2026/10/10",
+      "rule": "",
+      "status": "開催前",
+      "maps": [
+        {
+          "name": "マップ1",
+          "completed": false
+        },
+        {
+          "name": "マップ2",
+          "completed": false
+        },
+        {
+          "name": "マップ3",
+          "completed": false
+        },
+        {
+          "name": "マップ4",
+          "completed": false
+        }
+      ],
+      "teams": []
     }
   ]
 }
