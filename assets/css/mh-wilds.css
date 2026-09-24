@@ -1,0 +1,641 @@
+/* Monster Hunter Wilds 素材トラッカー（styles.css のテーマを継承） */
+
+.mh-loading {
+  padding: 80px 16px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.mh-hero h1 {
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+}
+
+.mh-section {
+  padding-top: 26px;
+}
+
+.mh-link {
+  color: var(--purple);
+  text-decoration: underline;
+}
+
+.mh-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.mh-btn {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--white);
+  background: rgba(42, 24, 14, 0.72);
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mh-btn:hover {
+  border-color: rgba(255, 90, 54, 0.6);
+}
+
+.mh-btn.primary {
+  border-color: rgba(255, 90, 54, 0.58);
+  background: linear-gradient(135deg, rgba(255, 90, 54, 0.95), rgba(255, 176, 32, 0.86));
+}
+
+.mh-btn.active {
+  border-color: rgba(76, 195, 108, 0.7);
+  color: #d5ffe0;
+  background: rgba(76, 195, 108, 0.18);
+}
+
+.mh-btn.danger {
+  border-color: rgba(255, 61, 104, 0.45);
+  color: #ffc4d1;
+}
+
+.mh-btn.small {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.8rem;
+}
+
+.mh-more {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.mh-banner {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 176, 32, 0.6);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(255, 176, 32, 0.12);
+  line-height: 1.7;
+}
+
+.mh-profile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: var(--panel);
+}
+
+.mh-profile-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+}
+
+.mh-profile select,
+.mh-field select,
+.mh-input,
+.mh-num,
+.mh-textarea {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 10px;
+  color: var(--white);
+  background: rgba(11, 7, 4, 0.72);
+}
+
+.mh-profile select {
+  min-width: 160px;
+  font-weight: 800;
+}
+
+.mh-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+  scrollbar-width: none;
+}
+
+.mh-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mh-tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  padding: 0 14px;
+  color: var(--ink);
+  background: none;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.mh-tab[aria-current="page"] {
+  border-bottom-color: var(--blue);
+  color: var(--white);
+}
+
+.mh-tab-count:not(:empty) {
+  min-width: 20px;
+  border-radius: 999px;
+  padding: 1px 6px;
+  color: #1a0e08;
+  background: var(--purple);
+  font-size: 0.72rem;
+}
+
+.mh-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px 14px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: var(--panel);
+}
+
+.mh-field {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.mh-field.grow {
+  flex: 1 1 240px;
+}
+
+.mh-input {
+  width: 100%;
+}
+
+.mh-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blue);
+}
+
+.mh-result-count {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.mh-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
+}
+
+.mh-cards.wide {
+  grid-template-columns: 1fr;
+}
+
+.mh-card .card-body {
+  gap: 10px;
+}
+
+.mh-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mh-card-head h3 {
+  margin-top: 6px;
+}
+
+.mh-rarity {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 8px;
+  color: #140a06;
+  background: #bbb;
+  font-size: 0.72rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.mh-rarity.r1 { background: #d8d8d8; }
+.mh-rarity.r2 { background: #b9e3a5; }
+.mh-rarity.r3 { background: #7fd3a5; }
+.mh-rarity.r4 { background: #7fc7ef; }
+.mh-rarity.r5 { background: #a79bff; }
+.mh-rarity.r6 { background: #f2a0e0; }
+.mh-rarity.r7 { background: #ffb020; }
+.mh-rarity.r8 { background: #ff6a4a; }
+
+.mh-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0;
+}
+
+.mh-stats div {
+  display: flex;
+  gap: 6px;
+}
+
+.mh-stats dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.mh-stats dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.mh-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mh-skill {
+  border: 1px solid rgba(255, 176, 32, 0.4);
+  border-radius: 6px;
+  padding: 2px 8px;
+  color: #ffe2a8;
+  background: rgba(255, 176, 32, 0.08);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.mh-skill.bonus {
+  border-color: rgba(168, 104, 232, 0.5);
+  color: #e3cbff;
+  background: rgba(168, 104, 232, 0.12);
+}
+
+.mh-skill-inline {
+  color: #ffe2a8;
+  font-size: 0.82rem;
+}
+
+.mh-materials {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  border-top: 1px solid var(--line);
+  padding: 8px 0 0;
+  list-style: none;
+}
+
+.mh-materials li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.mh-materials li span:last-child {
+  font-weight: 800;
+}
+
+.mh-materials li.is-done {
+  color: #9fe6b3;
+}
+
+.mh-zenny {
+  color: var(--muted) !important;
+}
+
+.mh-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mh-dot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  background: var(--dot);
+  box-shadow: 0 0 6px var(--dot);
+  transform: rotate(45deg);
+}
+
+.mh-pieces {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 10px;
+}
+
+.mh-piece {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(20, 11, 6, 0.42);
+}
+
+.mh-note {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.mh-note:empty {
+  display: none;
+}
+
+.mh-muted {
+  color: var(--muted);
+}
+
+.mh-desc {
+  font-size: 0.86rem;
+}
+
+.mh-label {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.mh-sources {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.84rem;
+}
+
+.mh-rank {
+  border-radius: 4px;
+  padding: 0 5px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.mh-rank.low {
+  color: #cfe8ff;
+  background: rgba(79, 134, 247, 0.25);
+}
+
+.mh-rank.high {
+  color: #ffd9cf;
+  background: rgba(255, 90, 54, 0.28);
+}
+
+.mh-details summary {
+  color: var(--purple);
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mh-details ul {
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.mh-need-chip {
+  justify-self: start;
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: #1a0e08;
+  background: var(--purple);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.mh-need-chip.is-done {
+  background: #7fd39a;
+}
+
+.mh-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.mh-grid-2 .panel + .panel {
+  margin-top: 0;
+}
+
+.panel h2 small {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.mh-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mh-panel-head h2 {
+  margin-bottom: 0;
+}
+
+.mh-want-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mh-want {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(20, 11, 6, 0.42);
+}
+
+.mh-want.is-done {
+  border-color: rgba(76, 195, 108, 0.5);
+}
+
+.mh-want-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-width: 0;
+}
+
+.mh-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 900;
+}
+
+.mh-stepper > span:not(.mh-stepper-label) {
+  min-width: 28px;
+  text-align: center;
+}
+
+.mh-stepper-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.mh-progress {
+  position: relative;
+  height: 28px;
+  margin: 10px 0 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(11, 7, 4, 0.6);
+}
+
+.mh-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(76, 195, 108, 0.7), rgba(255, 176, 32, 0.7));
+}
+
+.mh-progress span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.mh-table {
+  min-width: 640px;
+}
+
+.mh-table td.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mh-table tr.is-done td {
+  opacity: 0.6;
+}
+
+.mh-num {
+  width: 84px;
+}
+
+.mh-done {
+  color: #7fd39a;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.mh-src-cell {
+  min-width: 240px;
+}
+
+.mh-textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+.mh-import {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mh-subhead {
+  margin: 18px 0 8px;
+}
+
+.mh-need-people {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 520px) {
+  .mh-btn.primary,
+  .mh-btn {
+    width: auto;
+  }
+
+  .mh-profile,
+  .mh-controls {
+    padding: 10px;
+  }
+
+  .mh-profile select {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .mh-field {
+    flex: 1 1 45%;
+  }
+
+  .mh-field select {
+    width: 100%;
+  }
+
+  .mh-import {
+    flex-direction: column;
+  }
+}
