@@ -18,6 +18,7 @@ const navItems = [
   { href: "/", label: "Top" },
   { href: "/apex-custom/", label: "Apexカスタム" },
   { href: "/participation-history/", label: "出場履歴" },
+  { href: "/mh-wilds/", label: "MH Wilds" },
 ];
 
 const page = document.body.dataset.page;
@@ -124,6 +125,7 @@ function renderHome() {
           <div class="hero-actions">
             <a class="button" href="${withBase("/apex-custom/")}">大会一覧を見る</a>
             <a class="button secondary" href="${withBase("/participation-history/")}">出場履歴を見る</a>
+            <a class="button secondary" href="${withBase("/mh-wilds/")}">MH Wilds 素材トラッカー</a>
           </div>
         </div>
         <div class="hero-emblem">
@@ -504,7 +506,7 @@ function renderNotFound() {
 
 function getBasePath() {
   const firstSegment = window.location.pathname.split("/").filter(Boolean)[0] || "";
-  const pageRoots = new Set(["apex-custom", "participation-history"]);
+  const pageRoots = new Set(["apex-custom", "participation-history", "mh-wilds"]);
   if (!firstSegment || pageRoots.has(firstSegment)) return "";
   return `/${firstSegment}`;
 }
